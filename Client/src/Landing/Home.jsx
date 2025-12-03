@@ -274,12 +274,12 @@ const Home = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#E7E9E5] via-[#B7C5C7] to-[#E7E9E5]">
+    <div className="min-h-screen bg-white landing-hero-content">
       <style>{animationStyles}</style>
       <LandingHeader />
 
       {/* Modern Hero Section */}
-      <div className="relative h-screen overflow-hidden">
+      <div className="relative h-screen overflow-hidden -mt-20">
         {heroSlides.map((slide, index) => (
           <div
             key={index}
