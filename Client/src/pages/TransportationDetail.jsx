@@ -23,16 +23,21 @@ import {
   Sparkles,
   ChevronRight,
   Navigation,
-  Package
+  Package,
+  User,
+  MessageSquare
 } from 'lucide-react';
 
 const TransportationDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [transportation, setTransportation] = useState(null);
+  const [driver, setDriver] = useState(null);
   const [loading, setLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState(null);
   const [relatedTransportations, setRelatedTransportations] = useState([]);
+  const [mainTab, setMainTab] = useState('vehicle');
+  const [driverTab, setDriverTab] = useState('info');
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
@@ -47,6 +52,17 @@ const TransportationDetail = () => {
       const transportData = response.data;
       setTransportation(transportData);
       setSelectedImage(transportData.mainImage);
+
+      // Fetch driver if available
+      if (transportData.assignedDrivers && transportData.assignedDrivers.length > 0) {
+        try {
+          const driverId = transportData.assignedDrivers[0];
+          const driverResponse = await axios.get(`/drivers/${driverId}`);
+          setDriver(driverResponse.data);
+        } catch (error) {
+          console.error('Error fetching driver details:', error);
+        }
+      }
 
       // Fetch related transportations
       const allResponse = await axios.get('/transportations', {
@@ -94,12 +110,12 @@ const TransportationDetail = () => {
   }
 
   return (
-    <div className="bg-gradient-to-br px-20 mt-6 from-gray-50 via-white to-teal-50 min-h-screen">
+    <div className="bg-white px-20 mt-6 min-h-screen">
       
 
       {/* Image Gallery */}
       <div className="container mx-auto px-4 pb-8">
-        <div className="bg-white rounded-3xl shadow-2xl overflow-hidden hover:shadow-3xl transition-shadow duration-300">
+        <div className="bg-white rounded-3xl shadow-xl overflow-hidden hover:shadow-3xl transition-shadow duration-300">
           {/* Main Image */}
           <div className="relative h-[500px] overflow-hidden group">
             <img
@@ -183,18 +199,18 @@ const TransportationDetail = () => {
                   key={idx}
                   className={`relative flex-shrink-0 cursor-pointer transition-all duration-300 ${
                     selectedImage === img 
-                      ? 'ring-4 ring-teal-500 scale-105 shadow-xl' 
-                      : 'opacity-60 hover:opacity-100 hover:scale-105 shadow-md'
+                      ? 'ring-4 ring-teal-500 rounded-md scale-105 shadow-xl' 
+                      : 'opacity-70  hover:opacity-100 hover:scale-105 shadow-md'
                   }`}
                   onClick={() => setSelectedImage(img)}
                 >
                   <img
                     src={img}
                     alt={`${transportation.name} ${idx + 1}`}
-                    className="w-28 h-28 object-cover rounded-xl"
+                    className="w-28 h-28 object-cover rounded-md"
                   />
                   {selectedImage === img && (
-                    <div className="absolute inset-0 bg-teal-500/20 rounded-xl flex items-center justify-center">
+                    <div className="absolute inset-0 bg-teal-500/20 rounded-md flex items-center justify-center">
                       <CheckCircle className="w-8 h-8 text-white" />
                     </div>
                   )}
@@ -209,28 +225,56 @@ const TransportationDetail = () => {
       <div className="container mx-auto px-4 pb-12">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Left Column - Details */}
-          <div className="lg:col-span-2 space-y-6">
-            {/* Description */}
-            <div className="bg-white rounded-2xl shadow-md p-8 hover:shadow-lg transition-all duration-300 border border-gray-100">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="bg-white p-3 rounded-xl">
-                  <Sparkles className="w-6 h-6 text-teal-500" />
-                </div>
-                <h2 className="text-2xl font-semibold text-gray-800">About This Vehicle</h2>
+          <div className="lg:col-span-2">
+            {/* Main Tabs */}
+            <div className="bg-white  p-2 mb-8 border border-gray-100">
+              <div className="flex gap-2 mb-6">
+                <button
+                  onClick={() => setMainTab('vehicle')}
+                  className={`flex-1 flex items-center justify-center gap-2 py-4 px-6 rounded-md font-semibold text-lg transition-all duration-300 ${
+                    mainTab === 'vehicle'
+                      ? 'bg-teal-500 text-white shadow-2xl'
+                      : 'bg-gray-50 text-gray-600 hover:bg-gray-100 border-2 border-gray-300'
+                  }`}
+                >
+                  <Car className="w-5 h-5" />
+                  About This Vehicle
+                </button>
+                {driver && (
+                  <button
+                    onClick={() => setMainTab('driver')}
+                    className={`flex-1 flex items-center justify-center gap-2 py-4 px-6 rounded-md font-semibold text-lg transition-all duration-300 ${
+                      mainTab === 'driver'
+                        ? 'bg-teal-500 text-white shadow-lg'
+                        : 'bg-gray-50 text-gray-600 hover:bg-gray-100 border-2 border-gray-300'
+                    }`}
+                  >
+                    <User className="w-5 h-5" />
+                    Your Driver
+                  </button>
+                )}
               </div>
+            </div>
+
+            {/* Vehicle Tab Content */}
+            {mainTab === 'vehicle' && (
+              <div className="space-y-6 shadow-md p-6 rounded-md border border-gray-100">
+            {/* Description */}
+            <div className="bg-white rounded-md  p-8  transition-all duration-300 border border-gray-100">
+              
               <p className="text-gray-700 leading-relaxed text-lg">{transportation.description}</p>
             </div>
 
             {/* Vehicle Specifications */}
-            <div className="bg-gradient-to-br from-teal-50/50 via-green-50/50 to-blue-50/50 rounded-2xl shadow-md p-8 hover:shadow-lg transition-all duration-300 border border-teal-50/10">
+            <div className="bg-gradient-to-br from-teal-50/50 via-green-50/50 to-blue-50/50 rounded-md  p-8  transition-all duration-300 border border-teal-50/10">
               <div className="flex items-center gap-3 mb-6">
-                <div className=" p-3 rounded-xl">
+                <div className=" rounded-xl">
                   <Settings className="w-6 h-6 text-teal-500" />
                 </div>
                 <h2 className="text-2xl font-semibold text-gray-800">Vehicle Specifications</h2>
               </div>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
-                <div className="bg-white/50 rounded-xl p-4 shadow-md hover:shadow-lg transition-all hover:-translate-y-1 border border-gray-100">
+                <div className="bg-white/80 backdrop-blur-sm rounded-md p-4 shadow-sm hover:shadow-md transition-all hover:-translate-y-1 border border-gray-100">
                   <div className="flex items-center gap-3 mb-2">
                     <div className=" p-2 rounded-lg">
                       <Users className="w-5 h-5 text-teal-600" />
@@ -240,7 +284,7 @@ const TransportationDetail = () => {
                   <p className="font-semibold text-xl text-gray-800">{transportation.capacity} persons</p>
                 </div>
                 
-                <div className="bg-white rounded-xl p-4 shadow-md hover:shadow-lg transition-all hover:-translate-y-1 border border-gray-100">
+                <div className="bg-white rounded-md p-4 shadow-sm hover:shadow-md transition-all hover:-translate-y-1 border border-gray-100">
                   <div className="flex items-center gap-3 mb-2">
                     <div className=" p-2 rounded-lg">
                       <Fuel className="w-5 h-5 text-orange-600" />
@@ -250,7 +294,7 @@ const TransportationDetail = () => {
                   <p className="font-semibold text-xl text-gray-800 capitalize">{transportation.fuelType}</p>
                 </div>
                 
-                <div className="bg-white rounded-xl p-4 shadow-md hover:shadow-lg transition-all hover:-translate-y-1 border border-gray-100">
+                <div className="bg-white rounded-md p-4 shadow-sm hover:shadow-md transition-all hover:-translate-y-1 border border-gray-100">
                   <div className="flex items-center gap-3 mb-2">
                     <div className=" p-2 rounded-lg">
                       <Settings className="w-5 h-5 text-purple-600" />
@@ -261,7 +305,7 @@ const TransportationDetail = () => {
                 </div>
                 
                 {transportation.year && (
-                  <div className="bg-white rounded-xl p-4 shadow-md hover:shadow-lg transition-all hover:-translate-y-1 border border-gray-100">
+                  <div className="bg-white rounded-md p-4 shadow-sm hover:shadow-md transition-all hover:-translate-y-1 border border-gray-100">
                     <div className="flex items-center gap-3 mb-2">
                       <div className=" p-2 rounded-lg">
                         <Calendar className="w-5 h-5 text-blue-600" />
@@ -272,7 +316,7 @@ const TransportationDetail = () => {
                   </div>
                 )}
                 
-                <div className="bg-white rounded-xl p-4 shadow-md hover:shadow-lg transition-all hover:-translate-y-1 border border-gray-100">
+                <div className="bg-white rounded-md p-4 shadow-sm hover:shadow-md transition-all hover:-translate-y-1 border border-gray-100">
                   <div className="flex items-center gap-3 mb-2">
                     <div className=" p-2 rounded-lg">
                       <Shield className="w-5 h-5 text-green-600" />
@@ -284,7 +328,7 @@ const TransportationDetail = () => {
                   </p>
                 </div>
                 
-                <div className="bg-white rounded-xl p-4 shadow-md hover:shadow-lg transition-all hover:-translate-y-1 border border-gray-100">
+                <div className="bg-white rounded-md p-4 shadow-sm hover:shadow-md transition-all hover:-translate-y-1 border border-gray-100">
                   <div className="flex items-center gap-3 mb-2">
                     <div className=" p-2 rounded-lg">
                       <Wind className="w-5 h-5 text-cyan-600" />
@@ -300,9 +344,9 @@ const TransportationDetail = () => {
 
             {/* Features */}
             {transportation.features && transportation.features.length > 0 && (
-              <div className="bg-white rounded-2xl shadow-md p-8 hover:shadow-lg transition-all duration-300 border border-gray-100">
+              <div className="bg-white rounded-md  p-8  transition-all duration-300 border border-gray-100">
                 <div className="flex items-center gap-3 mb-6">
-                  <div className=" p-3 rounded-xl">
+                  <div className="  rounded-xl">
                     <Award className="w-6 h-6 text-pink-500" />
                   </div>
                   <h2 className="text-2xl font-bold text-gray-800">Features & Amenities</h2>
@@ -323,10 +367,10 @@ const TransportationDetail = () => {
 
             {/* Pickup & Dropoff Locations */}
             {(transportation.pickupLocations?.length > 0 || transportation.dropoffLocations?.length > 0) && (
-              <div className="bg-white rounded-2xl shadow-lg p-8 hover:shadow-xl transition-all duration-300 border border-gray-100">
+              <div className="bg-white rounded-md  p-8  transition-all duration-300 border border-gray-100">
                 <div className="flex items-center gap-3 mb-6">
-                  <div className="bg-gradient-to-br from-blue-500 to-indigo-500 p-3 rounded-xl">
-                    <Navigation className="w-6 h-6 text-white" />
+                  <div className=" rounded-md">
+                    <Navigation className="w-6 h-6 text-blue-500" />
                   </div>
                   <h2 className="text-2xl font-bold text-gray-800">Pickup & Dropoff Locations</h2>
                 </div>
@@ -350,7 +394,7 @@ const TransportationDetail = () => {
                     </div>
                   )}
                   {transportation.dropoffLocations?.length > 0 && (
-                    <div className="bg-gradient-to-br from-teal-50 to-green-50 p-6 rounded-xl border border-teal-100">
+                    <div className="bg-gradient-to-br from-teal-50 to-green-50 p-6 rounded-xl border ">
                       <h3 className="font-bold text-lg text-gray-800 mb-4 flex items-center gap-2">
                         <MapPin className="w-5 h-5 text-teal-600" />
                         Dropoff Locations
@@ -358,7 +402,7 @@ const TransportationDetail = () => {
                       <ul className="space-y-3">
                         {transportation.dropoffLocations.map((loc, idx) => (
                           <li key={idx} className="flex items-start gap-3 bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition-all">
-                            <div className="bg-teal-100 p-1.5 rounded-lg mt-0.5">
+                            <div className="bg-teal-900 p-1.5 rounded-lg mt-0.5">
                               <MapPin className="w-4 h-4 text-teal-600" />
                             </div>
                             <span className="text-gray-700 font-medium">{loc}</span>
@@ -408,6 +452,165 @@ const TransportationDetail = () => {
                 <p className="text-gray-700 leading-relaxed text-lg">{transportation.cancellationPolicy}</p>
               </div>
             )}
+              </div>
+            )}
+
+            {/* Driver Tab Content */}
+            {mainTab === 'driver' && driver && (
+              <div className="space-y-6">
+                {/* Driver Info */}
+                <div className="bg-white rounded-2xl shadow-lg p-8 hover:shadow-xl transition-all duration-300 border border-gray-100">
+                  <div className="flex items-center gap-3 mb-6">
+                    <div className=" rounded-xl">
+                      <User className="w-6 h-6 text-teal-500" />
+                    </div>
+                    <h2 className="text-2xl font-semibold text-gray-800">Your Driver</h2>
+                  </div>
+
+                  {/* Driver Tabs */}
+                  <div className="flex gap-2 mb-6 border-b border-gray-200">
+                    <button
+                      onClick={() => setDriverTab('info')}
+                      className={`px-6 py-3 mb-4 font-bold transition-all ${
+                        driverTab === 'info'
+                          ? 'text-white bg-teal-500 rounded-md  shadow-lg '
+                          : 'text-gray-600 hover:text-gray-800 border-2 border-gray-300 rounded-md '
+                      }`}
+                    >
+                      <User className="inline w-4 h-4 mr-2" />
+                      Driver Info
+                    </button>
+                    <button
+                      onClick={() => setDriverTab('reviews')}
+                      className={`px-6 py-3 mb-4 font-bold transition-all ${
+                        driverTab === 'reviews'
+                          ? 'text-white bg-teal-500 rounded-md  shadow-lg '
+                          : 'text-gray-600 hover:text-gray-800 border-2 border-gray-300 rounded-md '
+                      }`}
+                    >
+                      <MessageSquare className="inline w-4 h-4 mr-2" />
+                      Reviews ({driver.reviews?.length || 0})
+                    </button>
+                  </div>
+
+                  {/* Driver Info Tab */}
+                  {driverTab === 'info' && (
+                    <div className="space-y-6">
+                      {/* Driver Header */}
+                      <div className="flex items-start gap-6 pb-6 border-b border-gray-200">
+                        <div className="w-24 h-24 bg-gradient-to-br from-purple-200 to-indigo-200 rounded-full flex items-center justify-center flex-shrink-0">
+                          <User className="w-12 h-12 text-purple-600" />
+                        </div>
+                        <div className="flex-1">
+                          <h3 className="text-2xl font-bold text-gray-800 mb-2">
+                            {driver.firstName} {driver.lastName}
+                          </h3>
+                          <div className="flex items-center gap-4 mb-3">
+                            <div className="flex items-center gap-1 bg-yellow-50 px-3 py-1 rounded-full">
+                              <Star className="w-4 h-4 text-yellow-500 fill-current" />
+                              <span className="font-bold text-gray-800">{driver.rating?.toFixed(1) || 0}</span>
+                              <span className="text-sm text-gray-600">({driver.reviews?.length || 0})</span>
+                            </div>
+                            {driver.gender && (
+                              <span className="text-sm bg-green-50 text-green-700 px-3 py-1 rounded-full font-semibold">
+                                {driver.gender.charAt(0).toUpperCase() + driver.gender.slice(1)}
+                              </span>
+                            )}
+                          </div>
+                          {driver.joinDate && (
+                            <p className="text-sm text-gray-600">
+                              Joined {new Date(driver.joinDate).toLocaleDateString()}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Contact Information */}
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {driver.phone && (
+                          <div className="bg-gradient-to-br from-blue-50/50 to-indigo-50/50 p-4 rounded-xl border border-blue-100">
+                            <div className="flex items-center gap-3 mb-2">
+                              <Phone className="w-5 h-5 text-blue-600" />
+                              <span className="text-sm font-medium text-gray-600">Phone</span>
+                            </div>
+                            <p className="text-lg font-semibold text-gray-800">{driver.phone}</p>
+                          </div>
+                        )}
+                        {driver.email && (
+                          <div className="bg-gradient-to-br from-purple-50/50 to-pink-50/50 p-4 rounded-xl border border-purple-100">
+                            <div className="flex items-center gap-3 mb-2">
+                              <Mail className="w-5 h-5 text-purple-600" />
+                              <span className="text-sm font-medium text-gray-600">Email</span>
+                            </div>
+                            <p className="text-sm font-semibold text-gray-800 truncate">{driver.email}</p>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Languages */}
+                      {driver.languagesSpoken && driver.languagesSpoken.length > 0 && (
+                        <div className="bg-gradient-to-br from-teal-50/50 to-green-50/50 p-4 rounded-xl ">
+                          <h4 className="font-semibold text-gray-800 mb-3">Languages Spoken</h4>
+                          <div className="flex flex-wrap gap-2">
+                            {driver.languagesSpoken.map((lang, idx) => (
+                              <span key={idx} className="bg-white px-4 py-2 rounded-full text-sm font-medium text-teal-700 border border-teal-200">
+                                {lang}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Address */}
+                      {driver.address && (
+                        <div className="bg-gradient-to-br from-orange-50/50 to-yellow-50/50 p-4 rounded-xl border border-orange-100">
+                          <div className="flex items-center gap-3 mb-3">
+                            <MapPin className="w-5 h-5 text-orange-600" />
+                            <h4 className="font-semibold text-gray-800">Address</h4>
+                          </div>
+                          <p className="text-gray-700">
+                            {typeof driver.address === 'string' ? driver.address : `${driver.address.street || ''}, ${driver.address.city || ''}, ${driver.address.country || ''}`}
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  )}
+
+                  {/* Reviews Tab */}
+                  {driverTab === 'reviews' && (
+                    <div className="space-y-4">
+                      {driver.reviews && driver.reviews.length > 0 ? (
+                        driver.reviews.map((review, idx) => (
+                          <div key={idx} className="bg-gray-50 p-5 rounded-xl border border-gray-200 hover:border-teal-200 transition-colors">
+                            <div className="flex items-start justify-between mb-3">
+                              <div className="flex-1">
+                                <div className="flex items-center gap-2 mb-2">
+                                  <div className="flex items-center gap-1">
+                                    {[...Array(5)].map((_, i) => (
+                                      <Star
+                                        key={i}
+                                        className={`w-4 h-4 ${i < (review.rating || 0) ? 'text-yellow-500 fill-current' : 'text-gray-300'}`}
+                                      />
+                                    ))}
+                                  </div>
+                                  <span className="text-sm font-semibold text-gray-600">{review.rating || 0}/5</span>
+                                </div>
+                                {review.comment && <p className="text-gray-700">{review.comment}</p>}
+                              </div>
+                            </div>
+                          </div>
+                        ))
+                      ) : (
+                        <div className="text-center py-8">
+                          <MessageCircle className="w-12 h-12 text-gray-300 mx-auto mb-3" />
+                          <p className="text-gray-600">No reviews yet</p>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Right Column - Booking Card */}
@@ -429,34 +632,13 @@ const TransportationDetail = () => {
                 )}
               </div>
 
-              {/* Driver Info */}
-              <div className="mb-6 p-5 rounded-xl border-2 border-purple-200/90">
-                <div className="flex items-center justify-between">
-                  <span className="text-gray-700 font-medium"> Driver</span>
-                  <span className={`font-bold ${transportation.driverIncluded ? 'text-green-600' : 'text-orange-600'}`}>
-                    {transportation.driverIncluded ? '✓ Included' : '✗ Not Included'}
-                  </span>
-                </div>
-              </div>
+              
 
-              {/* Availability Status */}
-              <div className="mb-8">
-                {transportation.availability === 'available' ? (
-                  <div className="flex items-center justify-center gap-3  text-green-500 p-4 rounded-xl shadow-lg">
-                    <CheckCircle className="w-6 h-6" />
-                    <span className="font-semibold text-lg">Available for Booking</span>
-                  </div>
-                ) : (
-                  <div className="flex items-center justify-center gap-3 bg-gradient-to-r from-yellow-500 to-orange-500 text-white p-4 rounded-xl shadow-lg">
-                    <Clock className="w-6 h-6" />
-                    <span className="font-bold text-lg capitalize">{transportation.availability}</span>
-                  </div>
-                )}
-              </div>
+              
 
               {/* Contact Information */}
               {transportation.contactDetails && (
-                <div className="mb-8 bg-white rounded-xl p-6 shadow-md border border-gray-200">
+                <div className="mb-8 bg-white rounded-md p-6  border border-gray-200">
                   <h3 className="font-semibold text-lg text-gray-800 mb-4 flex items-center gap-2">
                     <Phone className="w-5 h-5 text-teal-500" />
                     Contact Information
@@ -467,7 +649,7 @@ const TransportationDetail = () => {
                       href={`tel:${transportation.contactDetails.phone}`}
                       className="flex items-center gap-3 text-gray-700 hover:text-teal-600 hover:bg-teal-50 p-3 rounded-lg transition-all"
                     >
-                      <div className="bg-teal-100 p-2 rounded-lg">
+                      <div className="bg-teal-900 p-2 rounded-lg">
                         <Phone className="w-4 h-4 text-teal-600" />
                       </div>
                       {transportation.contactDetails.phone}
@@ -503,9 +685,9 @@ const TransportationDetail = () => {
 
               {/* Book Now Button */}
               <button
-                className={`w-full py-4 rounded-xl font-bold text-lg transition-all duration-300 shadow-xl ${
+                className={`w-full py-4 rounded-md font-bold text-lg transition-all duration-300 shadow-xl ${
                   transportation.availability === 'available'
-                    ? 'bg-gradient-to-r from-teal-500 to-blue-500 text-white hover:from-teal-600 hover:to-blue-600 hover:shadow-2xl hover:-translate-y-1'
+                    ? 'bg-teal-500 text-white hover:bg-white hover:text-black border-2 hover:border-teal-500 hover:scale-102'
                     : 'bg-gray-300 text-gray-500 cursor-not-allowed opacity-50'
                 }`}
                 disabled={transportation.availability !== 'available'}
@@ -523,18 +705,7 @@ const TransportationDetail = () => {
                 )}
               </button>
 
-              {/* Google Map Link */}
-              {transportation.googleMapLink && (
-                <a
-                  href={transportation.googleMapLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-2 w-full mt-4 py-4 border-2 border-teal-500 text-teal-600 rounded-xl font-bold text-lg hover:bg-teal-500 hover:text-white transition-all shadow-md hover:shadow-lg"
-                >
-                  <MapPin className="w-5 h-5" />
-                  View Location on Map
-                </a>
-              )}
+              
             </div>
           </div>
         </div>
@@ -543,16 +714,16 @@ const TransportationDetail = () => {
         {relatedTransportations.length > 0 && (
           <div className="mt-16">
             <div className="flex items-center gap-4 mb-8">
-              <div className="bg-gradient-to-br from-teal-500 to-blue-500 p-3 rounded-xl">
-                <Car className="w-7 h-7 text-white" />
+              <div className="  rounded-xl">
+                <Car className="w-7 h-7 text-teal-500" />
               </div>
-              <h2 className="text-3xl font-black text-gray-800">Similar Vehicles You Might Like</h2>
+              <h2 className="text-2xl font-semibold text-gray-800">Similar Vehicles You Might Like</h2>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {relatedTransportations.map((related) => (
                 <div
                   key={related._id}
-                  className="bg-white rounded-2xl shadow-lg overflow-hidden cursor-pointer hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border border-gray-100 group"
+                  className="bg-white rounded-md shadow-lg overflow-hidden cursor-pointer hover:shadow-xl transition-all duration-300  border border-gray-100 group"
                   onClick={() => navigate(`/transportations/${related._id}`)}
                 >
                   <div className="relative overflow-hidden h-48">
@@ -563,15 +734,15 @@ const TransportationDetail = () => {
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
                     <div className="absolute bottom-3 left-3 bg-white/95 backdrop-blur-sm px-3 py-1 rounded-full">
-                      <span className="text-sm font-bold text-teal-600 capitalize">{related.type}</span>
+                      <span className="text-sm font-bold text-teal-200 capitalize">{related.type}</span>
                     </div>
                   </div>
                   <div className="p-5">
-                    <h3 className="font-bold text-lg text-gray-900 mb-3 group-hover:text-teal-600 transition-colors">{related.name}</h3>
+                    <h3 className="font-bold text-lg text-gray-900 mb-3 transition-colors">{related.name}</h3>
                     <div className="flex justify-between items-center mb-3">
                       <div className="flex items-baseline gap-1">
                         <DollarSign className="w-4 h-4 text-teal-600" />
-                        <span className="text-2xl font-black text-teal-600">
+                        <span className="text-2xl font-black text-teal-200">
                           {related.pricePerDay}
                         </span>
                         <span className="text-sm text-gray-600">/day</span>
@@ -591,7 +762,7 @@ const TransportationDetail = () => {
             <div className="text-center mt-10">
               <button
                 onClick={() => navigate('/transportations')}
-                className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-teal-500 to-blue-500 text-white rounded-xl font-bold text-lg hover:from-teal-600 hover:to-blue-600 shadow-xl hover:shadow-2xl transition-all hover:-translate-y-1"
+                className="inline-flex items-center gap-2 px-8 py-4 bg-teal-500 text-white rounded-md font-semibold text-lg hover:bg-white hover:text-black border-2 hover:border-teal-500 shadow-xl hover:shadow-2xl transition-all hover:scale-105 duration-300"
               >
                 View All Vehicles
                 <ChevronRight className="w-5 h-5" />

@@ -302,8 +302,7 @@ const Transportations = () => {
         {/* Loading State */}
         {loading && (
           <div className="text-center py-12">
-            <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500"></div>
-            <p className="mt-4 text-gray-600">Loading vehicles...</p>
+            <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-teal-500"></div>
           </div>
         )}
 
@@ -336,14 +335,14 @@ const Transportations = () => {
                 onClick={() => handleViewDetails(transport._id)}
               >
                 {/* Image */}
-                <div className="relative h-64 sm:h-72">
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent z-10" />
+                <div className="relative h-64 sm:h-72 group">
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent z-10" />
                   <img
                     src={transport.mainImage}
                     alt={transport.name}
                     className="w-full h-full object-cover  "
                   />
-                   <div className="absolute bottom-0 left-0 right-0 h-full bg-black/0 group-hover:bg-black/35 transition-all duration-300 z-[15]"></div>
+                   <div className="absolute bottom-0 left-0 right-0 h-full bg-black/0 group-hover:bg-gradient-to-t from-black/40 to-transparent transition-all duration-300 z-[15]"></div>
                   {transport.availability !== 'available' && (
                     <div className="absolute top-2 right-2 bg-yellow-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
                       {transport.availability}
@@ -364,9 +363,9 @@ const Transportations = () => {
                    
                     </span>
                   </motion.div>
-                  <div className="absolute bottom-0 left-0 right-0 p-4 z-20 transform transition-all duration-300 hover:scale-105  group-hover:translate-x-4">
+                  <div className="absolute bottom-0 left-0 right-0 p-4 z-20 transform transition-all duration-300 hover:scale-105  group-hover:translate-x-3">
                       <motion.h4 
-                        className="font-bold text-xl text-white line-clamp-2 mb-2"
+                        className="font-bold text-2xl text-white line-clamp-2 mb-1"
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.7, duration: 0.5 }}
@@ -374,14 +373,14 @@ const Transportations = () => {
                         {transport.name}
                       </motion.h4>
                       <motion.p 
-                        className="text-gray-200 text-sm flex items-center"
+                        className="text-gray-100 text-sm flex items-center"
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.8, duration: 0.5 }}
                       >
                         {/* Capacity */}
                       <div className="flex items-center text-sm text-gray-100">
-                        <Users className="w-4 h-4 mr-1 text-white" />
+                        <Users className="w-4 h-4 mr-1 text-emerald-200" />
                         <span>{transport.capacity} seats</span>
                       </div>
                       </motion.p>
@@ -410,7 +409,7 @@ const Transportations = () => {
 
                   {/* Features */}
                   {transport.features && transport.features.length > 0 && (
-                    <div className="flex flex-wrap gap-1 mb-3">
+                    <div className="flex flex-wrap gap-2 mb-3">
                       {transport.features.slice(0, 3).map((feature, idx) => (
                         <span
                           key={idx}

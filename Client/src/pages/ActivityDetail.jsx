@@ -67,7 +67,7 @@ const ActivityDetail = () => {
 
     if (loading) {
         return (
-            <div className="min-h-screen flex flex-col justify-center items-center bg-gray-50">
+            <div className="min-h-screen flex flex-col justify-center items-center bg-white">
                 {/* Only one loading spinner, styled to match the rest of the app */}
                 <div
                     className="animate-spin rounded-full h-16 w-16 border-4 border-lapis_lazuli-500 border-t-indigo_dye-500 border-b-ash_gray-500 border-r-platinum-500 bg-platinum-500 shadow-lg"
@@ -85,7 +85,7 @@ const ActivityDetail = () => {
 
     if (!activity) {
         return (
-            <div className="min-h-screen flex flex-col justify-center items-center bg-gray-50">
+            <div className="min-h-screen flex flex-col justify-center items-center bg-white">
                 <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
                     <h2 className="text-xl font-bold mb-2">Activity Not Found</h2>
                     <p>Sorry, we couldn't find the activity you're looking for.</p>
@@ -95,7 +95,7 @@ const ActivityDetail = () => {
     }
 
     return (
-        <div className="bg-gray-50">
+        <div className="bg-white px-20">
             {/* Hero Image Gallery */}
             <ActivityImageGallery activity={activity} />
             
@@ -105,7 +105,7 @@ const ActivityDetail = () => {
                 
                 <div className="mt-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
                     {/* Left Column - Details Tabs */}
-                    <div className="lg:col-span-2">
+                    <div className="lg:col-span-2 ">
                         <ActivityTabs activity={activity} />
                     </div>
                     
@@ -116,7 +116,7 @@ const ActivityDetail = () => {
                 </div>
                 
                 {/* Related Activities */}
-                <div className="mt-16">
+                <div className="mt-16 ">
                     <RelatedActivities activities={relatedActivities} />
                 </div>
             </div>

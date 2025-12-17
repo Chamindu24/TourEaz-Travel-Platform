@@ -80,11 +80,12 @@ const BookingForm = ({ activity }) => {
     const availableDates = generateDateOptions();
 
     return (
-        <div className="bg-platinum-500 rounded-lg shadow-md overflow-hidden sticky top-24">
-            <div className="bg-lapis_lazuli-500 text-white p-4">
-                <div className="text-2xl font-bold">${activity.price}</div>
-                <div className="text-sm opacity-75">per person</div>
+        <div className="bg-white/50 rounded-md shadow-md overflow-hidden sticky top-24">
+            <div className="bg-teal-500 flex  items-baseline gap-2 text-white p-4 rounded-t-lg shadow-md">
+            <div className="text-3xl tracking-wider font-bold">${activity.price}</div>
+            <div className="text-sm opacity-90">per person</div>
             </div>
+
             
             <form onSubmit={handleSubmit} className="p-6 space-y-4">
                 {/* Date Picker (react-datepicker) */}
@@ -106,7 +107,7 @@ const BookingForm = ({ activity }) => {
                         })()}
                         dateFormat="yyyy-MM-dd"
                         placeholderText="Choose a date"
-                        className="w-full px-3 py-2 border border-ash_gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-lapis_lazuli-500"
+                        className="w-full px-3 py-2 border border-teal-400 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
                     />
                 </div>
                 
@@ -117,7 +118,7 @@ const BookingForm = ({ activity }) => {
                         id="guests"
                         value={guests}
                         onChange={(e) => setGuests(parseInt(e.target.value))}
-                        className="w-full px-3 py-2 border border-ash_gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-lapis_lazuli-500"
+                        className="w-full px-3 py-2 border border-teal-400 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
                     >
                         {guestOptions.map((num) => (
                             <option key={num} value={num}>
@@ -144,7 +145,7 @@ const BookingForm = ({ activity }) => {
                     <button 
                         type="button"
                         onClick={(e) => handleSubmit(e, 'inquiry')}
-                        className="w-full py-3 px-4 bg-lapis_lazuli-500 text-white rounded-lg font-medium hover:bg-indigo_dye-500 transition-colors focus:outline-none focus:ring-2 focus:ring-lapis_lazuli-500 focus:ring-offset-2"
+                        className="w-full py-3 px-4 bg-white text-black border-2 border-teal-500 rounded-md font-medium hover:bg-teal-500 hover:text-white transition-colors focus:outline-none focus:ring-2 duration-300 focus:ring-teal-500 focus:ring-offset-2"
                     >
                         Send Inquiry
                     </button>
@@ -152,13 +153,13 @@ const BookingForm = ({ activity }) => {
                     <button
                         type="button"
                         onClick={(e) => handleSubmit(e, 'booking')}
-                        className="w-full bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-semibold py-4 px-6 rounded-xl transition-all duration-200 flex items-center justify-center shadow-lg hover:shadow-xl"
+                        className="w-full bg-teal-500 text-white border-2  hover:bg-white duration-300 hover:text-black hover:border-teal-500 font-semibold py-4 px-6 rounded-md transition-all  flex items-center justify-center shadow-lg hover:shadow-xl"
                     >
                         Book Now
                     </button>
                 </div>
                 
-                <p className="text-ash_gray-400 text-sm mt-4">
+                <p className="text-gray-600 text-sm mt-4">
                     <strong>Send Inquiry:</strong> Request information and pricing details<br/>
                     <strong>Book Now:</strong> Reserve your activity (payment details will be provided separately)
                 </p>

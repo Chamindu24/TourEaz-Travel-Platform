@@ -43,6 +43,8 @@ function HotelProfile() {
   const [menuImageUrl, setMenuImageUrl] = useState("")
   const [newRating, setNewRating] = useState(5)
   const [newComment, setNewComment] = useState("")
+  const [mainImageIndex, setMainImageIndex] = useState(0)
+  const [imageTransition, setImageTransition] = useState(false)
   const [usersData, setUsersData] = useState({})
   const [bookingData, setBookingData] = useState({
     checkIn: null,
@@ -291,6 +293,10 @@ function HotelProfile() {
 
   const closeMenuModal = () => setMenuModalOpen(false)
 
+  const handleImageSwap = (index) => {
+    setMainImageIndex(index)
+  }
+
   if (loading)
     return (
       <div className="flex justify-center items-center h-screen">
@@ -306,7 +312,7 @@ function HotelProfile() {
       </div>
     )
 
-  const tabItems = ["Overview", "Rooms", "Dining", "Gallery", "Reviews"]
+  const tabItems = [ "Rooms", "Overview","Dining", "Gallery", "Reviews"]
   const {
     name,
     location,
@@ -322,88 +328,100 @@ function HotelProfile() {
 
   return (
     <>
-      <div className="min-h-screen bg-slate-50 font-['Inter',sans-serif]">
-        {/* Hero Section with Photo Collage */}
-        <section className="relative h-96 sm:h-[500px] md:h-[600px] overflow-hidden">
-          <div className="grid grid-cols-12 gap-2 h-full p-2">
-            {/* Main large image */}
-            <div className="col-span-12 md:col-span-8 relative overflow-hidden rounded-xl">
-              <img 
-                src={gallery[0] || "/placeholder.svg"} 
-                alt={name} 
-                className="w-full h-full object-cover transition-transform duration-700 hover:scale-105" 
+      <div className="min-h-screen bg-slate-50 mt-4  font-['Inter',sans-serif]">
+        {/* Image Gallery Section */}
+        <div className="container mx-auto px-20 pb-8">
+          <div className="bg-white rounded-3xl shadow-xl overflow-hidden hover:shadow-3xl transition-shadow duration-300">
+            {/* Main Image */}
+            <div className="relative h-[500px] overflow-hidden group">
+              <img
+                src={gallery[mainImageIndex] || "/placeholder.svg"}
+                alt={name}
+                className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
-            </div>
-            
-            {/* Secondary images */}
-            <div className="hidden md:flex md:col-span-4 flex-col gap-2">
-              <div className="flex-1 relative overflow-hidden rounded-xl">
-                <img 
-                  src={gallery[1] || gallery[0] || "/placeholder.svg"} 
-                  alt={`${name} view 2`} 
-                  className="w-full h-full object-cover transition-transform duration-700 hover:scale-105" 
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-              </div>
-              <div className="flex-1 relative overflow-hidden rounded-xl">
-                <img 
-                  src={gallery[2] || gallery[0] || "/placeholder.svg"} 
-                  alt={`${name} view 3`} 
-                  className="w-full h-full object-cover transition-transform duration-700 hover:scale-105" 
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-              </div>
-            </div>
-          </div>
-          
-          {/* Text overlay */}
-          <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-8 md:p-12">
-            <div className="max-w-4xl">
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-3 leading-tight tracking-tight">{name}</h1>
-              <div className="flex flex-wrap items-center gap-4 sm:gap-6 text-white/90 mb-4 text-sm sm:text-base">
-                <div className="flex items-center bg-black/20 backdrop-blur-sm rounded-full px-3 py-1.5">
-                  <MdLocationOn className="text-white mr-2 w-4 h-4" />
-                  {location}
-                </div>
-                <div className="flex items-center bg-black/20 backdrop-blur-sm rounded-full px-3 py-1.5">
-                  {[...Array(starRating)].map((_, i) => (
-                    <AiFillStar key={i} className="text-yellow-400 w-4 h-4" />
-                  ))}
-                  <span className="ml-2 font-medium">{starRating} Star Hotel</span>
+              
+              {/* Gradient Overlay */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
+              
+              {/* Text overlay */}
+              <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-8 md:p-12">
+                <div className="max-w-4xl">
+                  <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-3 leading-tight tracking-tight">{name}</h1>
+                  <div className="flex flex-wrap items-center gap-4 sm:gap-6 text-white/90 mb-4 text-sm sm:text-base">
+                    <div className="flex items-center bg-black/20 backdrop-blur-sm rounded-full px-3 py-1.5">
+                      <MdLocationOn className="text-white mr-2 w-4 h-4" />
+                      {location}
+                    </div>
+                    <div className="flex items-center bg-black/20 backdrop-blur-sm rounded-full px-3 py-1.5">
+                      {[...Array(starRating)].map((_, i) => (
+                        <AiFillStar key={i} className="text-yellow-400 w-4 h-4" />
+                      ))}
+                      <span className="ml-2 font-medium">{starRating} Star Hotel</span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
+
+            {/* Thumbnail Gallery */}
+            {gallery && gallery.length > 1 && (
+              <div className="flex gap-3 p-6 overflow-x-auto bg-gradient-to-r from-gray-50 to-teal-50">
+                {gallery.map((img, idx) => (
+                  <div
+                    key={idx}
+                    className={`relative flex-shrink-0 cursor-pointer transition-all duration-300 ${
+                      mainImageIndex === idx
+                        ? 'ring-4 ring-teal-500 rounded-md scale-105 shadow-xl' 
+                        : 'opacity-70 hover:opacity-100 hover:scale-105 shadow-md'
+                    }`}
+                    onClick={() => handleImageSwap(idx)}
+                  >
+                    <img
+                      src={img}
+                      alt={`${name} ${idx + 1}`}
+                      className="w-28 h-28 object-cover rounded-md"
+                    />
+                    {mainImageIndex === idx && (
+                      <div className="absolute inset-0 bg-teal-500/20 rounded-md flex items-center justify-center">
+                        <IoIosCheckmarkCircle className="w-8 h-8 text-white" />
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
-        </section>
+        </div>
 
         <main className="container mx-auto px-4 sm:px-6 py-8 sm:py-12 max-w-7xl">
           {/* Modern Tab Navigation */}
-          <div className="sticky top-0 z-10 mb-8 sm:mb-12">
-            <div className="bg-white/80 backdrop-blur-md rounded-2xl p-2 shadow-sm border border-slate-200">
-              <div className="flex overflow-x-auto scrollbar-hide">
+          <div className="sticky top-0 z-10 mb-4">
+            <div className="bg-white/80 backdrop-blur-md rounded-2xl  border border-slate-200">
+              <div className="flex">
                 {tabItems.map((tab, idx) => (
                   <button
                     key={idx}
                     onClick={() => handleTabChange(idx)}
-                    className={`relative px-6 py-3 text-sm font-medium rounded-xl transition-all duration-300 min-w-[100px] whitespace-nowrap ${
-                      activeTab === idx 
-                        ? "text-lapis_lazuli font-semibold" 
-                        : "text-slate-600 hover:text-lapis_lazuli hover:bg-slate-50"
-                    }`}
+                    className={`flex-1 px-4 py-3 text-sm font-medium transition-all duration-300
+                      ${
+                        activeTab === idx
+                          ? "bg-teal-500 text-white shadow-md"
+                          : "text-slate-600 hover:bg-teal-50 hover:text-teal-600"
+                      }
+                      ${idx === 0 ? "rounded-l-2xl" : ""}
+                      ${idx === tabItems.length - 1 ? "rounded-r-2xl" : ""}
+                    `}
                   >
                     {tab}
-                    {activeTab === idx && (
-                      <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-8 h-0.5 bg-lapis_lazuli rounded-full transition-all duration-300"></div>
-                    )}
                   </button>
                 ))}
               </div>
             </div>
           </div>
 
+
           <div className="bg-white rounded-3xl shadow-sm border border-slate-200 p-6 sm:p-8">
-            {activeTab === 0 && (
+            {activeTab === 1 && (
               <div className="grid grid-cols-1 xl:grid-cols-3 gap-8 lg:gap-12">
                 <div className="xl:col-span-2 space-y-8">
                   {/* About Section */}
@@ -499,8 +517,9 @@ function HotelProfile() {
                 </div>
               </div>
             )}
-            {activeTab === 1 && (
+            {activeTab === 0 && (
               <div className="w-full">
+              <div className="flex justify-between">
                 <div className="flex items-center mb-8">
                   <div className="bg-lapis_lazuli/10 p-3 rounded-xl mr-4">
                     <FaBed className="w-6 h-6 text-lapis_lazuli" />
@@ -510,38 +529,40 @@ function HotelProfile() {
                     <p className="text-slate-500">Find your perfect accommodation</p>
                   </div>
                 </div>
-
-                {roomsData.length > 0 && (
-                  <div className="mb-8 bg-gradient-to-r from-emerald-50 to-green-50 border border-emerald-200 rounded-xl p-6 text-center">
-                    <div className="flex items-center justify-center mb-3">
-                      <div className="bg-emerald-100 p-2 rounded-full mr-3">
-                        <IoIosCheckmarkCircle className="w-5 h-5 text-emerald-600" />
+                <div>
+                  {roomsData.length > 0 && (
+                    <div className="mb-8 bg-gradient-to-r from-emerald-50 to-green-50 border border-emerald-200 rounded-xl p-6 text-center">
+                      <div className="flex items-center justify-center mb-3">
+                        <div className="bg-emerald-100 p-2 rounded-full mr-3">
+                          <IoIosCheckmarkCircle className="w-5 h-5 text-emerald-600" />
+                        </div>
+                        <h3 className="text-lg font-semibold text-emerald-800">
+                          {roomsData.length} Room{roomsData.length !== 1 ? "s" : ""} Available
+                        </h3>
                       </div>
-                      <h3 className="text-lg font-semibold text-emerald-800">
-                        {roomsData.length} Room{roomsData.length !== 1 ? "s" : ""} Available
-                      </h3>
+                      <p className="text-sm text-emerald-600">
+                        for{" "}
+                        {bookingData.checkIn?.toLocaleDateString("en-US", {
+                          month: "short",
+                          day: "numeric",
+                          year: "numeric",
+                        })}{" "}
+                        to{" "}
+                        {bookingData.checkOut?.toLocaleDateString("en-US", {
+                          month: "short",
+                          day: "numeric",
+                          year: "numeric",
+                        })}
+                      </p>
                     </div>
-                    <p className="text-sm text-emerald-600">
-                      for{" "}
-                      {bookingData.checkIn?.toLocaleDateString("en-US", {
-                        month: "short",
-                        day: "numeric",
-                        year: "numeric",
-                      })}{" "}
-                      to{" "}
-                      {bookingData.checkOut?.toLocaleDateString("en-US", {
-                        month: "short",
-                        day: "numeric",
-                        year: "numeric",
-                      })}
-                    </p>
-                  </div>
-                )}
+                  )}
+                </div>
+              </div>
 
-                <div className="space-y-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                   {roomsData.length > 0 ? (
                     roomsData.map((room) => (
-                      <div key={room._id} className="transform transition-all duration-200 hover:scale-[1.01]">
+                      <div key={room._id} className="transform transition-all duration-200">
                         <RoomCard 
                           room={{
                             ...room,
@@ -555,7 +576,7 @@ function HotelProfile() {
                       </div>
                     ))
                   ) : (
-                    <div className="text-center py-16 bg-gradient-to-br from-slate-50 to-white rounded-2xl border border-slate-200">
+                    <div className="col-span-1 sm:col-span-2 lg:col-span-3 text-center py-16 bg-gradient-to-br from-slate-50 to-white rounded-2xl border border-slate-200">
                       <div className="bg-slate-100 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-6">
                         <FaBed className="h-8 w-8 text-slate-400" />
                       </div>
@@ -665,8 +686,8 @@ function HotelProfile() {
             {activeTab === 4 && (
               <div>
                 <div className="flex items-center mb-8">
-                  <div className="bg-lapis_lazuli/10 p-3 rounded-xl mr-4">
-                    <FaHeart className="w-6 h-6 text-lapis_lazuli" />
+                  <div className="bg-teal-500/10 p-3 rounded-xl mr-4">
+                    <FaHeart className="w-6 h-6 text-teal-500" />
                   </div>
                   <div>
                     <h2 className="text-2xl sm:text-3xl font-bold text-slate-800 tracking-tight">Guest Reviews</h2>
@@ -774,8 +795,8 @@ function HotelProfile() {
                     </div>
                     <button
                       onClick={submitReview}
-                      className="bg-lapis_lazuli hover:bg-lapis_lazuli/90 text-white px-6 py-3 
-                               rounded-xl transition-all duration-200 shadow-sm hover:shadow-md text-sm font-medium min-h-[44px]
+                      className="bg-teal-500 hover:bg-white text-white hover:text-black border-2 hover:border-teal-500 px-6 py-3 
+                               rounded-md transition-all duration-200 shadow-sm hover:shadow-md text-sm font-medium min-h-[44px]
                                flex items-center transform hover:scale-105"
                     >
                       <FaHeart className="w-4 h-4 mr-2" />

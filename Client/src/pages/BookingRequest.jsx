@@ -130,30 +130,30 @@ const BookingRequest = ({ sidebarOpen }) => {
 
   // --- DESKTOP LAYOUT ---
   const renderDesktopLayout = () => (
-    <div className="min-h-screen bg-gradient-to-b from-[#E7E9E5] to-[#B7C5C7] flex flex-col">
+    <div className="min-h-screen bg-gray-50 flex flex-col">
       <div className="flex flex-1">
         <div className={`flex-1 transition-all duration-300 ${sidebarOpen ? "md:ml-64" : "md:ml-20"} ml-0`}>
-          <div className="container mx-auto px-6 py-8 max-w-7xl overflow-x-hidden">
+          <div className="container mx-auto  py-8 max-w-7xl overflow-x-hidden">
             {loadingData ? (
               <div className="flex items-center justify-center h-screen">
                 <div className="text-center">
-                  <div className="w-16 h-16 border-4 border-[#005E84] border-t-transparent rounded-full animate-spin mx-auto"></div>
+                  <div className="w-16 h-16 border-4 border-teal-500 border-t-transparent rounded-full animate-spin mx-auto"></div>
                   <p className="mt-3 text-gray-600 text-lg font-medium">Loading booking information...</p>
                 </div>
               </div>
             ) : (
               <>
                 {activeStep < 3 && (
-                  <div className="relative rounded-2xl overflow-hidden mb-8 shadow-xl">
+                  <div className="relative  overflow-hidden mb-8 shadow-xl">
                     <img
-                      src="https://i.postimg.cc/k4MRXkFx/maldives-3793871-1280.jpg"
+                      src="https://www.bigworldsmallpockets.com/wp-content/uploads/2023/10/Sri-Lanka-5-Star-Hotel-Jetwing-Blue.jpg"
                       alt="Maldives"
                       className="w-full h-64 object-cover"
                     />
                     <div className="absolute inset-0 bg-gradient-to-r from-[#0A435C]/70 to-transparent flex flex-col justify-center px-10">
                       <h1 className="text-4xl font-bold text-white mb-2">Book Your Luxury Escape</h1>
-                      <p className="text-lg text-[#B7C5C7] max-w-xl">
-                        Complete your booking at {hotelName} for an unforgettable Maldives getaway
+                      <p className="text-lg text-gray-100 max-w-xl">
+                        Complete your booking at <span className="relative inline-block text-yellow-200 blur-[0.2px] drop-shadow-[0_0_10px_rgba(253,224,71,0.9)] ">{hotelName}</span> for an unforgettable Maldives getaway
                       </p>
                     </div>
                   </div>
@@ -167,13 +167,13 @@ const BookingRequest = ({ sidebarOpen }) => {
                           <div key={step} className="flex flex-col items-center relative w-full">
                             <div
                               className={`w-10 h-10 rounded-full flex items-center justify-center text-base font-semibold z-10 ${
-                                activeStep >= index ? "bg-[#0A435C] text-white" : "bg-gray-200 text-gray-600"
+                                activeStep >= index ? "bg-teal-500 text-white" : "bg-gray-200 text-gray-600"
                               }`}
                             >
                               {index + 1}
                             </div>
                             <p
-                              className={`mt-2 text-sm font-medium ${activeStep >= index ? "text-[#0A435C]" : "text-gray-500"}`}
+                              className={`mt-2 text-sm font-medium ${activeStep >= index ? "text-teal-200" : "text-gray-500"}`}
                             >
                               {step}
                             </p>
@@ -256,7 +256,7 @@ const BookingRequest = ({ sidebarOpen }) => {
                       )}
                       <button
                         onClick={activeStep === 2 ? handleConfirmSubmit : handleNext}
-                        className="bg-[#075375] text-white px-6 py-2 rounded-lg hover:bg-[#0A435C] transition-colors ml-auto"
+                        className="bg-teal-500 text-white px-6 py-2 rounded-md hover:bg-white hover:text-black border-2 hover:border-teal-500 hover:scale-105 duration-300 transition-colors ml-auto"
                         disabled={loading}
                       >
                         {loading ? "Submitting..." : activeStep === 2 ? "Confirm Booking" : "Continue"}

@@ -263,8 +263,7 @@ export default function EnhancedRoomProfile() {
     return (
       <div className="flex items-center justify-center h-screen bg-gradient-to-b from-gray-50 to-gray-100">
         <div className="text-center">
-          <div className="w-16 h-16 border-4 border-lapis_lazuli border-t-transparent rounded-full animate-spin mx-auto"></div>
-          <p className="mt-4 text-gray-600 text-lg font-medium">Loading room details...</p>
+          <div className="w-16 h-16 border-4 border-teal-500 border-t-transparent rounded-full animate-spin mx-auto"></div>
         </div>
       </div>
     );
@@ -279,7 +278,7 @@ export default function EnhancedRoomProfile() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 font-poppins">
+    <div className="min-h-screen bg-gray-50 font-poppins">
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         <button
           onClick={handleBack}
@@ -288,40 +287,64 @@ export default function EnhancedRoomProfile() {
           <FaArrowLeft className="mr-2 text-lg" /> Back to {roomData.hotelName}
         </button>
 
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold text-gray-900">{roomData.roomName}</h1>
-          <p className="text-lg text-gray-600 mt-2">{roomData.hotelName}</p>
-        </div>
+
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-2 space-y-8">
+          <div className="lg:col-span-2 space-y-4">
             <div className="bg-white rounded-2xl overflow-hidden shadow-md">
-              <div className="relative h-[500px]">
-                <img
-                  src={roomData.images[activeImage]}
-                  alt={roomData.roomName}
-                  className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-500"
-                />
-                <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
-                  {roomData.images.map((_, idx) => (
-                    <button
-                      key={idx}
-                      onClick={() => setActiveImage(idx)}
-                      className={`w-3 h-3 rounded-full transition-colors ${
-                        activeImage === idx ? 'bg-white' : 'bg-white/50 hover:bg-white/80'
-                      }`}
-                    />
-                  ))}
-                </div>
+            <div className="relative h-[500px] overflow-hidden rounded-t-2xl shadow-lg group">
+
+              {/* Main Image */}
+              <img
+                src={roomData.images[activeImage]}
+                alt={roomData.roomName}
+                className="w-full h-full object-cover rounded-t-2xl transition-transform duration-700 ease-out group-hover:scale-105"
+              />
+
+              {/* Gradient Overlay (intensifies on hover) */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/25 to-transparent pointer-events-none transition-colors duration-300 group-hover:from-black/80 group-hover:via-black/55" />
+
+              {/* Centered Title (appears on hover) */}
+              <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6 sm:px-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <h1 className="text-white text-3xl sm:text-4xl md:text-5xl font-bold drop-shadow-lg mb-2 leading-tight">
+                  {roomData.roomName}
+                </h1>
+                <p className="text-white/90 text-lg sm:text-xl font-medium drop-shadow-md">
+                  {roomData.hotelName}
+                </p>
               </div>
-              <div className="flex p-4 gap-3 overflow-x-auto">
+
+              {/* Image Counter */}
+              <div className="absolute top-4 right-4 bg-black/60 text-white text-sm px-3 py-1 rounded-full backdrop-blur-md">
+                {activeImage + 1} / {roomData.images.length}
+              </div>
+
+              {/* Dots Navigation */}
+              <div className="absolute bottom-5 left-1/2 -translate-x-1/2 flex items-center gap-2">
+                {roomData.images.map((_, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => setActiveImage(idx)}
+                    className={`transition-all duration-300 rounded-full
+                      ${
+                        activeImage === idx
+                          ? 'w-8 h-2 bg-white'
+                          : 'w-2 h-2 bg-white/60 hover:bg-white'
+                      }`}
+                  />
+                ))}
+              </div>
+
+            </div>
+
+              <div className="flex p-2 gap-2 overflow-x-auto">
                 {roomData.images.map((img, idx) => (
                   <img
                     key={idx}
                     src={img}
                     alt={`View ${idx + 1}`}
                     className={`h-24 w-36 object-cover cursor-pointer rounded-lg transition-all ${
-                      activeImage === idx ? 'ring-2 ring-lapis_lazuli' : 'hover:ring-2 hover:ring-lapis_lazuli/60'
+                      activeImage === idx ? 'ring-2 ring-teal-500' : 'hover:ring-2 hover:ring-teal-500/60'
                     }`}
                     onClick={() => setActiveImage(idx)}
                   />
@@ -329,7 +352,7 @@ export default function EnhancedRoomProfile() {
               </div>
             </div>
 
-            <div className="bg-white rounded-2xl shadow-md p-8">
+            <div className="bg-emerald-50/60 rounded-md shadow-sm p-8">
               <h2 className="text-2xl font-semibold text-gray-800 mb-4">About This Room</h2>
               <p className="text-gray-600 leading-relaxed mb-6">
                 {roomData.description}
@@ -351,25 +374,25 @@ export default function EnhancedRoomProfile() {
               )}
             </div>
 
-            <div className="bg-white rounded-2xl shadow-md p-8">
+            <div className="bg-amber-50/60 rounded-md shadow-sm p-8">
               <h2 className="text-2xl font-semibold text-gray-800 mb-4">Room Details</h2>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
                 <div className="flex items-center">
-                  <FaRulerCombined className="text-lapis_lazuli mr-3 text-2xl" />
+                  <FaRulerCombined className="text-teal-500 mr-3 text-2xl" />
                   <div>
                     <p className="text-sm text-gray-500">Room Size</p>
                     <p className="font-medium text-gray-800">{roomData.size} m²</p>
                   </div>
                 </div>
                 <div className="flex items-center">
-                  <FaBed className="text-lapis_lazuli mr-3 text-2xl" />
+                  <FaBed className="text-teal-500 mr-3 text-2xl" />
                   <div>
                     <p className="text-sm text-gray-500">Bed Type</p>
                     <p className="font-medium text-gray-800">{roomData.bedType}</p>
                   </div>
                 </div>
                 <div className="flex items-center">
-                  <FaUsers className="text-lapis_lazuli mr-3 text-2xl" />
+                  <FaUsers className="text-teal-500 mr-3 text-2xl" />
                   <div>
                     <p className="text-sm text-gray-500">Occupancy</p>
                     <p className="font-medium text-gray-800">
@@ -382,11 +405,11 @@ export default function EnhancedRoomProfile() {
             </div>
 
             {roomData.transportations && roomData.transportations.length > 0 && (
-              <div className="bg-white rounded-2xl shadow-md p-8">
+              <div className="bg-emerald-50 rounded-md shadow-sm p-8">
                 <h2 className="text-2xl font-semibold text-gray-800 mb-4">Transportation</h2>
                 <div className="flex flex-wrap gap-2">
                   {roomData.transportations.map((t, idx) => (
-                    <div key={idx} className="flex items-center gap-2 bg-[#B7C5C733] text-indigo_dye px-4 py-2 rounded-lg text-sm">
+                    <div key={idx} className="flex items-center gap-2 bg-teal-900 text-teal-200 px-4 py-2 rounded-lg text-sm">
                       {getTransportIcon(t.method)}
                       <span className="font-medium">
                         {t.type.charAt(0).toUpperCase() + t.type.slice(1)}: {t.method}
@@ -397,7 +420,7 @@ export default function EnhancedRoomProfile() {
               </div>
             )}
 
-            <div className="bg-white rounded-2xl shadow-md p-8">
+            <div className="bg-amber-50/60 rounded-md shadow-sm p-8">
               <h2 className="text-2xl font-semibold text-gray-800 mb-4">Amenities</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {roomData.amenities.map((amenity, idx) => (
@@ -413,15 +436,38 @@ export default function EnhancedRoomProfile() {
           </div>
 
           <div className="lg:col-span-1">
-            <div className="bg-white rounded-2xl shadow-md p-6 sticky top-24">
+            <div className="bg-white rounded-md shadow-md p-6 sticky top-24">
               <div className="mb-6">
-                <h3 className="text-xl font-semibold text-gray-800 mb-2">Price Details</h3>
-                <div className="flex items-baseline mb-2">
-                  <span className="text-4xl font-bold text-indigo_dye">
-                    ${perNightPrice}
-                  </span>
-                  <span className="text-gray-600 ml-2 text-lg">per night</span>
+                <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-8 mb-8">
+  
+                {/* Price Section */}
+                <div className="flex-1">
+                  <h3 className="text-sm  tracking-wide text-gray-800 mb-1">
+                    Price Details
+                  </h3>
+                  <div className="flex items-baseline">
+                    <span className="text-4xl font-extrabold text-teal-300">
+                      ${perNightPrice}
+                    </span>
+                    <span className="ml-2 text-lg text-gray-600">/ night</span>
+                  </div>
                 </div>
+
+                {/* Divider */}
+                <div className="hidden md:block w-px h-20 bg-gray-500"></div>
+
+                {/* Room Info */}
+                <div className="flex-1">
+                  <h1 className="text-3xl font-bold text-teal-300">
+                    {roomData.roomName}
+                  </h1>
+                  <p className="text-lg text-gray-800 mt-1">
+                    {roomData.hotelName}
+                  </p>
+                </div>
+
+              </div>
+
                 {selectedMarketObj?.name && (
                   <div className="text-sm text-indigo_dye mt-1">
                     Price adjusted for {selectedMarketObj.name} market
@@ -441,7 +487,7 @@ export default function EnhancedRoomProfile() {
                 <div className="relative">
                   <input
                     type="text"
-                    className={`w-full h-10 px-3 border ${!selectedMarketObj?.name && !selectedMarket ? 'border-red-300' : 'border-gray-300'} rounded-md`}
+                    className={`w-full h-10 px-3 border ${!selectedMarketObj?.name && !selectedMarket ? 'border-red-300' : 'border-gray-300'} rounded-md inline-block focus:outline-none focus:ring-2 focus:ring-teal-500 text-sm`}
                     placeholder="Search market..."
                     value={marketSearch || (selectedMarketObj ? selectedMarketObj.name : '')}
                     onChange={e => {
@@ -506,7 +552,7 @@ export default function EnhancedRoomProfile() {
                       className="relative bg-white rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-all cursor-pointer"
                       onClick={() => datePickerRef.current?.setOpen(true)}
                     >
-                      <div className="absolute left-3 top-1/2 -translate-y-1/2 text-lapis_lazuli">
+                      <div className="absolute left-3 top-1/2 -translate-y-1/2 text-teal-500">
                         <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path
                             strokeLinecap="round"
@@ -529,7 +575,7 @@ export default function EnhancedRoomProfile() {
                         }
                         readOnly
                         placeholder="Select check-in date"
-                        className="w-full pl-9 pr-3 py-2 bg-transparent text-gray-700 focus:outline-none focus:ring-2 focus:ring-lapis_lazuli rounded-lg cursor-pointer text-xs"
+                        className="w-full pl-9 pr-3 py-2 bg-transparent text-gray-700 focus:outline-none focus:ring-2 focus:ring-teal-500 rounded-lg cursor-pointer text-xs"
                       />
                     </div>
                   </div>
@@ -564,7 +610,7 @@ export default function EnhancedRoomProfile() {
                         }
                         readOnly
                         placeholder="Select check-out date"
-                        className="w-full pl-9 pr-3 py-2 bg-transparent text-gray-700 focus:outline-none focus:ring-2 focus:ring-lapis_lazuli rounded-lg cursor-pointer text-xs"
+                        className="w-full pl-9 pr-3 py-2 bg-transparent text-gray-700 focus:outline-none focus:ring-2 focus:ring-teal-500 rounded-lg cursor-pointer text-xs"
                       />
                     </div>
                   </div>
@@ -619,13 +665,13 @@ export default function EnhancedRoomProfile() {
 
               <button
                 onClick={handleInquireNow}
-                className="w-full mb-3 bg-lapis_lazuli hover:bg-[#005E84] text-white font-semibold py-3 rounded-lg flex items-center justify-center gap-2 transition-transform transform hover:scale-105"
+                className="w-full mb-3 bg-white duration-300 text-black border-2 border-teal-500 hover:bg-teal-500 hover:text-white font-semibold py-3 rounded-lg flex items-center justify-center gap-2 transition-transform transform hover:scale-105"
               >
                 <FaCheckCircle className="text-lg" /> Inquire Now
               </button>
               <button
                 onClick={handleBookNow}
-                className="w-full bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-semibold py-4 px-6 rounded-xl transition-all duration-200 flex items-center justify-center shadow-lg hover:shadow-xl gap-2"
+                className="w-full bg-teal-500 hover:bg-white hover:text-black border-2 hover:border-teal-500 text-white font-semibold py-4 px-6 rounded-xl transition-all duration-200 flex items-center justify-center shadow-lg hover:shadow-xl gap-2 hover:scale-105"
               >
                 <FaBook className="text-lg" /> Book Now
               </button>

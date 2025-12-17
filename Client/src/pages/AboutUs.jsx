@@ -543,52 +543,7 @@ const AboutUs = () => (
       </div>
     </section>
 
-    {/* Team Section */}
-    <section className="py-14 bg-white relative overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-        <div className="text-center mb-16">
-          <div className="inline-flex items-center px-4 py-1.5 bg-white text-[#005E84] rounded-full text-sm font-semibold tracking-widest uppercase mb-5 border-2 border-[#0A435C] relative overflow-hidden group cursor-pointer">
-            <span className="w-2 h-2 bg-[#0A435C] rounded-full mr-2 "></span>
-              Our Team
-            <span className="absolute top-0 left-0 w-full h-full border-1 border-[#0A435C] rounded-full "></span>
-        </div>
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4 leading-tight">
-            Meet Our <span className="text-teal-500">Experts</span>
-          </h2>
-          <p className="text-lg md:text-xl text-teal-200 max-w-3xl mx-auto animate-fade-in-up animate-delay-2">
-            The passionate professionals behind our success
-          </p>
-        </div>
 
-        <HoverEffect items={team} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {team.map((member, index) => (
-            <div
-              key={index}
-              className="group bg-gradient-to-br from-white to-teal-900/10 rounded-xl p-8 shadow-xl border-1 border-teal-500 hover:border-hidden hover:shadow-2xl transform hover:-translate-y-3 transition-all duration-500 border border-[#B7C5C7]/30 overflow-hidden animate-fade-in-up shine-effect"
-              style={{ animationDelay: `${(index + 3) * 0.2}s` }}
-            >
-              <div className="relative mb-6">
-                <div className="w-32 h-32 rounded-full overflow-hidden mx-auto border-4  border-teal-600  group-hover:scale-110 transition-transform duration-300 animate-glow">
-                  <img
-                    src={member.img}
-                    alt={member.name}
-                    className="w-full h-full object-cover  "
-                  />
-                </div>
-  
-              </div>
-              <h3 className="text-xl font-bold text-black mb-1 text-center  transition-colors">
-                {member.name}
-              </h3>
-              <p className="text-gray-600 font-semibold  text-center text-sm">
-                {member.role}
-              </p>
-
-            </div>
-          ))}
-        </HoverEffect>
-      </div>
-    </section>
 
     {/* Journey Timeline Section - Enhanced Design */}
     <section className="py-16 px-6 bg-[#E7E9E5]">
