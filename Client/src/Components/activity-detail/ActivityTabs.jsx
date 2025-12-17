@@ -30,33 +30,23 @@ const ActivityTabs = ({ activity }) => {
     const hasGoogleMapLink = activity.googleMapLink && activity.googleMapLink.trim() !== '';
 
     return (
-        <div className="bg-platinum-500 rounded-lg shadow-md overflow-hidden">
+        <div className="bg-white/50  rounded-md shadow-md overflow-hidden">
             {/* Tabs Navigation */}
-            <div className="flex border-b border-ash_gray-300">
-                <button 
-                    className={`px-4 py-3 text-sm font-medium ${activeTab === 'description' ? 'text-lapis_lazuli-500 border-b-2 border-lapis_lazuli-500' : 'text-ash_gray-400 hover:text-lapis_lazuli-400'}`}
-                    onClick={() => setActiveTab('description')}
+            <div className="flex border-b border-gray-300 rounded-t-lg overflow-hidden">
+            {['description', 'inclusions', 'requirements', 'location'].map((tab) => (
+                <button
+                key={tab}
+                className={`flex-1 text-sm font-medium px-4 py-3 transition-colors duration-300
+                    ${
+                    activeTab === tab
+                        ? 'bg-teal-500 text-white'
+                        : 'bg-gray-100 text-gray-600 hover:bg-gray-200 hover:text-gray-600'
+                    }`}
+                onClick={() => setActiveTab(tab)}
                 >
-                    Description
+                {tab.charAt(0).toUpperCase() + tab.slice(1)}
                 </button>
-                <button 
-                    className={`px-4 py-3 text-sm font-medium ${activeTab === 'inclusions' ? 'text-lapis_lazuli-500 border-b-2 border-lapis_lazuli-500' : 'text-ash_gray-400 hover:text-lapis_lazuli-400'}`}
-                    onClick={() => setActiveTab('inclusions')}
-                >
-                    Inclusions
-                </button>
-                <button 
-                    className={`px-4 py-3 text-sm font-medium ${activeTab === 'requirements' ? 'text-lapis_lazuli-500 border-b-2 border-lapis_lazuli-500' : 'text-ash_gray-400 hover:text-lapis_lazuli-400'}`}
-                    onClick={() => setActiveTab('requirements')}
-                >
-                    Requirements
-                </button>
-                <button 
-                    className={`px-4 py-3 text-sm font-medium ${activeTab === 'location' ? 'text-lapis_lazuli-500 border-b-2 border-lapis_lazuli-500' : 'text-ash_gray-400 hover:text-lapis_lazuli-400'}`}
-                    onClick={() => setActiveTab('location')}
-                >
-                    Location
-                </button>
+            ))}
             </div>
             
             {/* Tab Content */}

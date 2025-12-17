@@ -35,54 +35,56 @@ const DatesGuestsStep = ({
       <h2 className="text-2xl font-bold text-gray-800 mb-6">Select Dates & Guests</h2>
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
         <div className="lg:col-span-2">
-          <div className="bg-white rounded-xl overflow-hidden shadow-lg border border-gray-100 transition-transform hover:scale-[1.02]">
-            <div className="relative">
+          <div className="bg-white rounded-xl overflow-hidden shadow-lg border border-gray-100 transition-transform hover:scale-[1.02] group">
+            <div className="relative h-80">
               <img
                 src={hotel?.gallery[0] || "/placeholder.svg"}
                 alt={hotelName}
-                className="w-full h-56 object-cover"
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
               />
-            </div>
-            <div className="p-5">
-              <h3 className="text-xl font-bold text-gray-800">{hotelName}</h3>
-              <div className="flex items-center mt-2 mb-4">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-4 w-4 text-[#005E84]"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                  />
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-                  />
-                </svg>
-                <span className="text-sm text-gray-600 ml-1">{hotel?.location}</span>
-              </div>
-              <div className="flex items-center justify-between border-t border-gray-100 pt-4 mt-4">
-                <div>
-                  <span className="text-2xl font-bold text-[#0A435C]">${getFinalPerNightPrice(basePricePerNight, marketSurcharge)}</span>
-                  <span className="text-sm text-gray-500 ml-1">per night</span>
+              {/* Darker overlay */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent"></div>
+              
+              {/* Content overlay */}
+              <div className="absolute inset-0 flex flex-col justify-end p-6">
+                <h3 className="text-2xl font-bold text-white mb-2 drop-shadow-lg">{hotelName}</h3>
+                <div className="flex items-center mb-4">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-4 w-4 text-white"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                    />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                    />
+                  </svg>
+                  <span className="text-sm text-white/90 ml-1 drop-shadow-md">{hotel?.location}</span>
+                </div>
+                <div className="flex items-baseline bg-white/10 backdrop-blur-sm rounded-lg px-4 py-3 w-fit border border-white/20">
+                  <span className="text-3xl font-bold text-white drop-shadow-lg">${getFinalPerNightPrice(basePricePerNight, marketSurcharge)}</span>
+                  <span className="text-sm text-white/90 ml-2">per night</span>
                 </div>
               </div>
             </div>
           </div>
-          <div className="bg-gradient-to-br from-[#E7E9E5] to-[#B7C5C7] rounded-xl p-5 mt-6 border border-[#B7C5C7]">
+          <div className="bg-emerald-50 rounded-xl p-5 mt-6 border border-[#B7C5C7]">
             <h3 className="text-lg font-semibold text-gray-800 mb-3">Property Highlights</h3>
             <span className="text-sm text-gray-700">{hotel?.descriptionShort}</span>
           </div>
         </div>
         <div className="lg:col-span-3">
-          <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
+          <div className="bg-white rounded-md shadow-md p-6 border border-gray-100">
             <h3 className="text-lg font-semibold text-gray-800 mb-4">Select Dates and Guests</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
               <div>
@@ -143,7 +145,7 @@ const DatesGuestsStep = ({
                   name="rooms"
                   value={bookingData.rooms}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 text-sm"
+                  className="w-full px-3 py-2  border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500 text-sm focus:outline-none border-2 "
                 >
                   {[1, 2, 3, 4].map((num) => (
                     <option key={num} value={num}>
@@ -158,7 +160,7 @@ const DatesGuestsStep = ({
             <div className="mb-8">
               <h3 className="text-lg font-semibold text-gray-800 mb-4">Room Configuration</h3>
               {roomConfigs.map((config, roomIdx) => (
-                <div key={roomIdx} className="bg-gray-50 p-4 rounded-lg mb-4 border border-gray-200">
+                <div key={roomIdx} className="bg-emerald-50 p-4 rounded-lg mb-4 border border-gray-200">
                   <h4 className="text-md font-medium text-gray-700 mb-3">Room {roomIdx + 1}</h4>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
@@ -166,7 +168,7 @@ const DatesGuestsStep = ({
                       <select
                         value={config.adults}
                         onChange={(e) => handleRoomConfigChange(roomIdx, 'adults', e.target.value)}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 text-sm"
+                        className="w-full px-3 py-2 border-2 border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500 text-sm focus:outline-none "
                       >
                         {Array.from({ length: room?.maxOccupancy?.adults || 6 }, (_, i) => i + 1).map((num) => (
                           <option key={num} value={num}>
@@ -180,7 +182,7 @@ const DatesGuestsStep = ({
                       <select
                         value={config.children}
                         onChange={(e) => handleRoomConfigChange(roomIdx, 'children', e.target.value)}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 text-sm"
+                        className="w-full px-3 py-2 border-2 border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500 text-sm focus:outline-none "
                       >
                         {Array.from({ length: (room?.maxOccupancy?.children || 4) + 1 }, (_, i) => i).map((num) => (
                           <option key={num} value={num}>
@@ -199,7 +201,7 @@ const DatesGuestsStep = ({
                             key={childIdx}
                             value={age}
                             onChange={(e) => handleChildAgeChange(roomIdx, childIdx, e.target.value)}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 text-sm"
+                            className="w-full px-3 py-2 border-2 border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500 text-sm focus:outline-none "
                           >
                             <option value={0}>Select age</option>
                             {[...Array(18).keys()].map((num) => (
@@ -217,13 +219,13 @@ const DatesGuestsStep = ({
             </div>
             <div className="mt-4">
               <label className="block text-sm font-medium text-gray-700 mb-2">Selected Meal Plan</label>
-              <div className="w-full h-10 px-3 py-2 border border-gray-300 rounded-md bg-gray-50 text-gray-700 text-sm flex items-center">
+              <div className="w-full h-10 px-3 py-2 border-2 border-gray-300 rounded-md bg-gray-50 text-gray-700 text-sm flex items-center">
                 {bookingData.mealPlan} (+${bookingData.selectedMealPlan?.price || 0})
               </div>
             </div>
             <div className="mt-4">
               <label className="block text-sm font-medium text-gray-700 mb-2">Selected Country (Market)</label>
-              <div className="w-full h-10 px-3 py-2 border border-gray-300 rounded-md bg-gray-50 text-gray-700 text-sm flex items-center">
+              <div className="w-full h-10 px-3 py-2 border-2 border-gray-300 rounded-md bg-gray-50 text-gray-700 text-sm flex items-center">
                 {market || 'Not selected'}
                 {marketSurcharge > 0 && (
                   <span className="ml-2 text-[#075375]">(+${marketSurcharge} per night)</span>
@@ -240,7 +242,7 @@ const DatesGuestsStep = ({
                 </label>
                 <ul className="flex flex-wrap gap-2">
                   {room.transportations.map((t, idx) => (
-                    <li key={idx} className="flex items-center gap-2 bg-[#E7E9E5] border border-[#B7C5C7] text-[#0A435C] px-4 py-2 rounded-full text-xs shadow-sm hover:bg-[#B7C5C7] transition-all">
+                    <li key={idx} className="flex items-center gap-2 bg-teal-50 border border-[#B7C5C7] text-teal-200 px-4 py-2 rounded-full text-xs shadow-sm hover:bg-[#B7C5C7] transition-all">
                       {getTransportIcon(t.method)}
                       <span className="font-medium capitalize">{t.type}: {t.method}</span>
                     </li>
@@ -325,7 +327,7 @@ const DatesGuestsStep = ({
               )
             })()}
             {bookingData.checkIn && bookingData.checkOut && nights > 0 && (
-              <div className="bg-gradient-to-r from-[#E7E9E5] to-[#B7C5C7] rounded-xl p-6 border border-[#B7C5C7] mt-6">
+              <div className="bg-gray-50 rounded-md p-6 border border-teal-900 mt-6">
                 <h4 className="text-lg font-medium text-gray-900 mb-4">Price Summary</h4>
                 <div className="flex justify-between items-center mb-3">
                   <div className="text-gray-600 text-sm">
@@ -371,7 +373,7 @@ const DatesGuestsStep = ({
                   <div className="font-semibold text-lg text-gray-800">Total</div>
                   <div className="font-bold text-xl text-indigo-600">${/* Calculate total */}</div>
                 </div>
-                <div className="mt-4 text-xs text-indigo-700 bg-indigo-100 px-3 py-2 rounded-lg flex items-center">
+                <div className="mt-4 text-xs text-gray-800 bg-yellow-100/80 px-3 py-2 rounded-lg flex items-center">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="h-4 w-4 mr-1 flex-shrink-0"

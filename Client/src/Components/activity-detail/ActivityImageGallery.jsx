@@ -22,7 +22,7 @@ const ActivityImageGallery = ({ activity }) => {
     }
 
     return (
-        <div className="bg-gray-900">
+        <div className="bg-gray-100">
             <div className="container mx-auto">
                 {/* Main Image */}
                 <div className="h-96 md:h-[500px] overflow-hidden relative flex items-center justify-center">
@@ -35,7 +35,7 @@ const ActivityImageGallery = ({ activity }) => {
                     <div className="absolute inset-0 bg-gradient-to-b from-transparent to-gray-900 opacity-50 pointer-events-none"></div>
                 </div>
                 {/* Thumbnail strip */}
-                <div className="bg-gray-800 p-2">
+                <div className="bg-gray-white p-2">
                     <div className="flex overflow-x-auto space-x-2 pb-2 hide-scrollbar">
                         {images.map((img, index) => (
                             <div 

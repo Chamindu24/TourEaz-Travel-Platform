@@ -221,7 +221,7 @@ const RoomInquiry = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-8">
+    <div className="min-h-screen bg-gray-50 py-8">
       <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header with back button */}
         <div className="flex items-center mb-8">
@@ -253,7 +253,7 @@ const RoomInquiry = () => {
 
         {/* Room Summary Card */}
         <div className="bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden mb-8">
-          <div className="bg-gradient-to-r from-[#005E84] to-[#075375] p-6">
+          <div className="bg-teal-500 p-6">
             <h2 className="text-2xl font-bold text-white flex items-center">
               Room Details
             </h2>
@@ -373,7 +373,7 @@ const RoomInquiry = () => {
 
         {/* Inquiry Form */}
         <div className="bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden">
-          <div className="bg-gradient-to-r from-[#005E84] to-[#0A435C] p-6">
+          <div className="bg-teal-500 p-6">
             <h2 className="text-2xl font-bold text-white">
               Contact Information
             </h2>
