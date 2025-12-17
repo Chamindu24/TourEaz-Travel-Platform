@@ -62,7 +62,7 @@ const AdminLayout = ({ children, title = 'Admin Management' }) => {
   const openProfileMenu = (e) => setAnchorEl(e.currentTarget);
   const closeProfileMenu = () => setAnchorEl(null);
   const goTo = (path) => { navigate(path); closeProfileMenu(); };
-  const handleLogout = () => axios.post('/api/auth/logout', {}, { withCredentials: true }).finally(() => goTo('/login'));
+  const handleLogout = () => axios.post('/auth/logout', {}, { withCredentials: true }).finally(() => goTo('/login'));
 
   const menuItems = [
     { id: 'dashboard', text: 'Dashboard', icon: <DashboardIcon />, path: '/admin' },

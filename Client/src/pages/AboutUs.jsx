@@ -1,4 +1,7 @@
 import React from "react";
+import { HoverEffect } from "../Components/ui/card-hover-effect";
+import MagicButton from "../Components/ui/MagicButton";
+import { Timeline } from "../Components/ui/timeline";
 
 // Add custom CSS animations
 const animationStyles = `
@@ -271,6 +274,8 @@ const journey = [
   },
 ];
 
+
+
 const values = [
   {
     icon: (
@@ -355,16 +360,26 @@ const values = [
 ];
 
 const AboutUs = () => (
-  <div className="min-h-screen bg-gradient-to-br from-[#E7E9E5] via-[#B7C5C7] to-[#E7E9E5]">
+  <div 
+    className="min-h-screen bg-gradient-to-br from-[#E7E9E5] via-[#B7C5C7] to-[#E7E9E5]"
+
+  >
     <style>{animationStyles}</style>
 
     {/* Modern Hero Section */}
-    <section className="relative py-24 bg-gradient-to-br from-[#005E84] via-[#075375] to-[#0A435C] overflow-hidden animate-gradient-flow">
-      <div className="absolute inset-0 bg-black/10"></div>
+    <section 
+      className="relative py-24 mt-4 bg-gradient-to-br from-[#005E84] via-[#075375] to-[#0A435C] overflow-hidden animate-gradient-flow"
+          style={{
+          backgroundImage: "url('/travel-services/brand.jpg')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+      >
+      <div className="absolute inset-0 bg-black/15"></div>
       <div className="absolute inset-0 bg-gradient-to-r from-[#005E84]/50 to-[#0A435C]/50"></div>
 
       {/* Floating Elements */}
-      <div className="absolute top-20 right-20 w-32 h-32 border-4 border-white/20 rounded-full animate-float animate-glow"></div>
+      <div className="absolute top-20 right-20 w-32 h-32 border-4 border-white/50 rounded-full animate-float animate-glow"></div>
       <div className="absolute bottom-20 left-20 w-20 h-20 border-2 border-white/30 rounded-full animate-pulse-slow animate-glow"></div>
       <div
         className="absolute top-1/2 left-1/4 w-6 h-6 bg-white/40 rounded-full animate-float animate-glow"
@@ -373,15 +388,15 @@ const AboutUs = () => (
 
       {/* Animated particles */}
       <div
-        className="absolute top-40 right-40 w-16 h-16 bg-white/5 rounded-full animate-float"
+        className="absolute top-40 right-40 w-16 h-16 bg-white/20 rounded-full animate-float"
         style={{ animationDelay: "0.5s" }}
       ></div>
       <div
-        className="absolute bottom-40 left-1/3 w-20 h-20 bg-white/5 rounded-full animate-float"
+        className="absolute bottom-40 left-1/3 w-20 h-20 bg-white/15 rounded-full animate-float"
         style={{ animationDelay: "1.2s" }}
       ></div>
       <div
-        className="absolute top-1/3 right-1/4 w-12 h-12 bg-white/5 rounded-full animate-float"
+        className="absolute top-1/3 right-1/4 w-12 h-12 bg-white/25 rounded-full animate-float"
         style={{ animationDelay: "1.8s" }}
       ></div>
 
@@ -389,43 +404,48 @@ const AboutUs = () => (
       <div className="absolute inset-0 animate-shimmer opacity-20"></div>
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <div className="inline-flex items-center px-4 py-2 bg-[#B7C5C7]/20 backdrop-blur-sm rounded-full text-sm font-medium mb-8 border border-[#B7C5C7]/30 animate-fade-in-up animate-glow">
-          <span className="w-2 h-2 bg-[#E7E9E5] rounded-full mr-2 animate-pulse-slow"></span>
+        <div className="inline-flex items-center px-4 py-2 bg-white backdrop-blur-sm rounded-full text-sm font-medium mb-8 border border-[#B7C5C7]/30 animate-fade-in-up animate-glow">
+          <span className="w-2 h-2 bg-[#70716f] rounded-full mr-2 animate-pulse-slow"></span>
           About Us
         </div>
-        <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-[#E7E9E5] mb-8 tracking-tight leading-tight animate-fade-in-up animate-delay-1">
-          About IsleKey <span className="text-[#B7C5C7]">Holidays</span>
+        <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-white mb-8 tracking-tight leading-tight animate-fade-in-up animate-delay-1">
+          About IsleKey{" "}
+          <span className="relative inline-block text-yellow-300 blur-[0.6px] drop-shadow-[0_0_10px_rgba(253,224,71,0.3)] ">
+            Holidays
+          </span>
         </h1>
-        <p className="text-xl md:text-2xl text-[#E7E9E5]/90 mb-12 max-w-4xl mx-auto font-light animate-fade-in-up animate-delay-2">
+
+        <p className="text-xl md:text-2xl text-gray-100 mb-12 max-w-4xl mx-auto font-light animate-fade-in-up animate-delay-2">
           Your trusted gateway to the Maldives. We bridge travel, investment,
           and opportunity in paradise, creating unforgettable experiences and
           lasting partnerships.
         </p>
         <div className="flex flex-wrap justify-center gap-4 animate-fade-in-up animate-delay-3">
-          <span className="px-6 py-3 bg-[#B7C5C7]/20 backdrop-blur-sm rounded-full text-sm font-medium border border-[#B7C5C7]/30 hover:bg-[#B7C5C7]/30 transition-all shine-effect animate-glow">
-            Travel Excellence
+          <span className="px-6 py-3 bg-white/50 backdrop-blur-sm rounded-full text-sm font-medium border border-[#B7C5C7]/30 hover:bg-[#B7C5C7]/30 transition-all shine-effect animate-glow">
+            Resorts
           </span>
-          <span className="px-6 py-3 bg-[#B7C5C7]/20 backdrop-blur-sm rounded-full text-sm font-medium border border-[#B7C5C7]/30 hover:bg-[#B7C5C7]/30 transition-all shine-effect animate-glow">
-            Real Estate
+          <span className="px-6 py-3 bg-white/50 backdrop-blur-sm rounded-full text-sm font-medium border border-[#B7C5C7]/30 hover:bg-[#B7C5C7]/30 transition-all shine-effect animate-glow">
+            Tours
           </span>
-          <span className="px-6 py-3 bg-[#B7C5C7]/20 backdrop-blur-sm rounded-full text-sm font-medium border border-[#B7C5C7]/30 hover:bg-[#B7C5C7]/30 transition-all shine-effect animate-glow">
-            Investment
+          <span className="px-6 py-3 bg-white/50   backdrop-blur-sm rounded-full text-sm font-medium border border-[#B7C5C7]/30 hover:bg-[#B7C5C7]/30 transition-all shine-effect animate-glow">
+            Activities
           </span>
-          <span className="px-6 py-3 bg-[#B7C5C7]/20 backdrop-blur-sm rounded-full text-sm font-medium border border-[#B7C5C7]/30 hover:bg-[#B7C5C7]/30 transition-all shine-effect animate-glow">
-            Brand Partnerships
+          <span className="px-6 py-3 bg-white/55 backdrop-blur-sm rounded-full text-sm font-medium border border-[#B7C5C7]/30 hover:bg-[#B7C5C7]/30 transition-all shine-effect animate-glow">
+            Transportaions
           </span>
         </div>
       </div>
     </section>
 
     {/* Mission Section */}
-    <section className="py-24 bg-[#E7E9E5] relative overflow-hidden">
+    <section className="py-20 bg-white relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           <div className="space-y-8 animate-fade-in-left">
-            <div className="inline-flex items-center px-4 py-2 bg-[#B7C5C7] text-[#005E84] rounded-full text-sm font-medium shine-effect">
-              <span className="w-2 h-2 bg-[#005E84] rounded-full mr-2 animate-pulse-slow"></span>
+            <div className="inline-flex items-center px-4 py-1.5 bg-white text-[#005E84] rounded-full text-sm font-semibold tracking-widest uppercase mb-1 border-2 border-[#0A435C] relative overflow-hidden group cursor-pointer">
+              <span className="w-2 h-2 bg-[#0A435C] rounded-full mr-2 "></span>
               Our Mission
+              <span className="absolute top-0 left-0 w-full h-full border-1 border-[#0A435C] rounded-full "></span>
             </div>
             <h2 className="text-4xl md:text-5xl font-bold text-[#075375]">
               To be the premier <span className="text-[#0A435C]">bridge</span>
@@ -437,15 +457,15 @@ const AboutUs = () => (
               integrity and local expertise.
             </p>
             <div className="grid grid-cols-2 gap-6">
-              <div className="text-center p-4 bg-gradient-to-br from-[#B7C5C7] to-[#E7E9E5] rounded-2xl shadow-xl hover:shadow-2xl transition-all transform hover:-translate-y-1 duration-500 shine-effect">
-                <div className="text-3xl font-bold text-[#005E84] mb-2">
+              <div className="text-center p-4 bg-gradient-to-br from-teal-500/10 to-teal-700/50 rounded-2xl shadow-xl hover:shadow-2xl transition-all transform hover:-translate-y-1 duration-500 shine-effect">
+                <div className="text-3xl font-bold text-teal-200 mb-2">
                   500+
                 </div>
-                <div className="text-[#075375]">Happy Clients</div>
+                <div className="text-teal-300">Happy Clients</div>
               </div>
-              <div className="text-center p-4 bg-gradient-to-br from-[#B7C5C7] to-[#E7E9E5] rounded-2xl shadow-xl hover:shadow-2xl transition-all transform hover:-translate-y-1 duration-500 shine-effect">
-                <div className="text-3xl font-bold text-[#005E84] mb-2">8+</div>
-                <div className="text-[#075375]">Years Experience</div>
+              <div className="text-center p-4 bg-gradient-to-br from-teal-500/10 to-teal-700/50 rounded-2xl shadow-xl hover:shadow-2xl transition-all transform hover:-translate-y-1 duration-500 shine-effect">
+                <div className="text-3xl font-bold text-teal-300 mb-2">8+</div>
+                <div className="text-teal-400">Years Experience</div>
               </div>
             </div>
           </div>
@@ -467,105 +487,106 @@ const AboutUs = () => (
     </section>
 
     {/* Values Section */}
-    <section className="py-24 bg-gradient-to-br from-[#E7E9E5] to-[#B7C5C7] relative overflow-hidden">
+    <section className="py-12 bg-white relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-        <div className="text-center mb-16">
-          <div className="inline-flex items-center px-4 py-2 bg-[#B7C5C7] text-[#005E84] rounded-full text-sm font-medium mb-6 animate-fade-in-up">
-            <span className="w-2 h-2 bg-[#005E84] rounded-full mr-2"></span>
-            Our Values
-          </div>
-          <h2 className="text-4xl md:text-5xl font-bold text-[#075375] mb-6 animate-fade-in-up animate-delay-1">
-            Our Core <span className="text-[#0A435C]">Values</span>
+        <div className="text-center mb-10">
+        <div className="inline-flex items-center px-4 py-1.5 bg-white text-[#005E84] rounded-full text-sm font-semibold tracking-widest uppercase mb-5 border-2 border-[#0A435C] relative overflow-hidden group cursor-pointer">
+          <span className="w-2 h-2 bg-[#0A435C] rounded-full mr-2 "></span>
+          Our Values
+          <span className="absolute top-0 left-0 w-full h-full border-1 border-[#0A435C] rounded-full "></span>
+        </div>
+
+          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4 leading-tight">
+            Our Core <span className="text-teal-500">Values</span>
           </h2>
-          <p className="text-xl text-[#075375] max-w-3xl mx-auto animate-fade-in-up animate-delay-2">
+          <p className="text-lg md:text-xl text-teal-200 max-w-3xl mx-auto animate-fade-in-up animate-delay-2">
             The principles that guide everything we do
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <HoverEffect items={values} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {values.map((value, index) => (
             <div
-              key={index}
-              className="group relative bg-gradient-to-br from-white to-[#E7E9E5] rounded-3xl p-8 shadow-xl hover:shadow-2xl transform hover:-translate-y-3 transition-all duration-500 border border-[#B7C5C7]/30 overflow-hidden animate-fade-in-up shine-effect"
-              style={{ animationDelay: `${(index + 3) * 0.2}s` }}
-            >
-              <div className="absolute inset-0 bg-gradient-to-br from-[#005E84]/5 to-[#0A435C]/5 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-              <div className="relative">
-                <div className="bg-gradient-to-br from-[#005E84] to-[#0A435C] rounded-2xl p-4 w-16 h-16 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 animate-glow">
-                  {value.icon}
-                </div>
-                <h3 className="text-xl font-bold text-[#075375] mb-4 group-hover:text-[#005E84] transition-colors">
-                  {value.title}
-                </h3>
-                <p className="text-[#0A435C] leading-relaxed">
-                  {value.description}
-                </p>
-              </div>
+          key={index}
+          className="group relative bg-white rounded-xl shadow-lg transition-all duration-500 border border-slate-100 hover:shadow-2xl hover:shadow-orange-100/50 flex flex-col h-full cursor-pointer overflow-hidden"
+        >
+          
+          <div className="relative bg-gradient-to-r from-teal-600 to-teal-800 p-6 py-4 flex justify-between items-start">
+            {/* Sequential Number (Large, Muted) */}
+            <div className="text-4xl md:text-5xl font-bold text-white/90 transition-colors duration-300 group-hover:text-white/95 tracking-tighter">
+              {String(index + 1).padStart(2, '0')}
             </div>
-          ))}
+            
+            {/* Icon (Foreground) */}
+            <div className="rounded-full p-3 w-12 h-12 flex items-center justify-center bg-teal-600 text-white   transition-transform duration-300 transform group-hover:scale-110">
+              {value.icon} 
+            </div>
+          </div>
+          
+          {/* Bottom Block: Text Content */}
+          <div className="p-6 md:p-8 flex flex-col h-full flex-grow">
+            {/* Title */}
+            <h3 className="text-xl font-bold text-gray-600 mb-3 group-hover:text-teal-400 transition-colors">
+              {value.title}
+            </h3>
+            
+            {/* Description */}
+            <p className="text-gray-600 text-base leading-relaxed flex-grow">
+              {value.description}
+            </p>
+
+
+          </div>
         </div>
+          ))}
+        </HoverEffect>
       </div>
     </section>
 
     {/* Team Section */}
-    <section className="py-24 bg-[#E7E9E5] relative overflow-hidden">
+    <section className="py-14 bg-white relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         <div className="text-center mb-16">
-          <div className="inline-flex items-center px-4 py-2 bg-[#B7C5C7] text-[#005E84] rounded-full text-sm font-medium mb-6 animate-fade-in-up">
-            <span className="w-2 h-2 bg-[#005E84] rounded-full mr-2"></span>
-            Our Team
-          </div>
-          <h2 className="text-4xl md:text-5xl font-bold text-[#075375] mb-6 animate-fade-in-up animate-delay-1">
-            Meet Our <span className="text-[#0A435C]">Experts</span>
+          <div className="inline-flex items-center px-4 py-1.5 bg-white text-[#005E84] rounded-full text-sm font-semibold tracking-widest uppercase mb-5 border-2 border-[#0A435C] relative overflow-hidden group cursor-pointer">
+            <span className="w-2 h-2 bg-[#0A435C] rounded-full mr-2 "></span>
+              Our Team
+            <span className="absolute top-0 left-0 w-full h-full border-1 border-[#0A435C] rounded-full "></span>
+        </div>
+          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4 leading-tight">
+            Meet Our <span className="text-teal-500">Experts</span>
           </h2>
-          <p className="text-xl text-[#075375] max-w-3xl mx-auto animate-fade-in-up animate-delay-2">
+          <p className="text-lg md:text-xl text-teal-200 max-w-3xl mx-auto animate-fade-in-up animate-delay-2">
             The passionate professionals behind our success
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <HoverEffect items={team} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {team.map((member, index) => (
             <div
               key={index}
-              className="group bg-gradient-to-br from-white to-[#E7E9E5] rounded-3xl p-8 shadow-xl hover:shadow-2xl transform hover:-translate-y-3 transition-all duration-500 border border-[#B7C5C7]/30 overflow-hidden animate-fade-in-up shine-effect"
+              className="group bg-gradient-to-br from-white to-teal-900/10 rounded-xl p-8 shadow-xl border-1 border-teal-500 hover:border-hidden hover:shadow-2xl transform hover:-translate-y-3 transition-all duration-500 border border-[#B7C5C7]/30 overflow-hidden animate-fade-in-up shine-effect"
               style={{ animationDelay: `${(index + 3) * 0.2}s` }}
             >
               <div className="relative mb-6">
-                <div className="w-24 h-24 rounded-full overflow-hidden mx-auto border-4 border-[#B7C5C7] group-hover:border-[#005E84] transition-colors animate-glow">
+                <div className="w-32 h-32 rounded-full overflow-hidden mx-auto border-4  border-teal-600  group-hover:scale-110 transition-transform duration-300 animate-glow">
                   <img
                     src={member.img}
                     alt={member.name}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                    className="w-full h-full object-cover  "
                   />
                 </div>
-                <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-gradient-to-br from-[#005E84] to-[#0A435C] rounded-full flex items-center justify-center animate-pulse-slow">
-                  <svg
-                    className="w-4 h-4 text-white"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                    />
-                  </svg>
-                </div>
+  
               </div>
-              <h3 className="text-xl font-bold text-[#075375] mb-2 text-center group-hover:text-[#005E84] transition-colors">
+              <h3 className="text-xl font-bold text-black mb-1 text-center  transition-colors">
                 {member.name}
               </h3>
-              <p className="text-[#005E84] font-semibold mb-4 text-center text-sm">
+              <p className="text-gray-600 font-semibold  text-center text-sm">
                 {member.role}
               </p>
-              <p className="text-[#0A435C] text-sm leading-relaxed text-center">
-                {member.description}
-              </p>
+
             </div>
           ))}
-        </div>
+        </HoverEffect>
       </div>
     </section>
 
@@ -602,64 +623,22 @@ const AboutUs = () => (
       </div>
     </section>
 
-    {/* Testimonial Section */}
-    <section className="py-24 bg-gradient-to-br from-[#005E84] via-[#075375] to-[#0A435C] relative overflow-hidden animate-gradient-flow">
-      <div className="absolute inset-0 bg-black/10"></div>
-      <div className="absolute inset-0 bg-gradient-to-r from-[#005E84]/50 to-[#0A435C]/50"></div>
 
-      {/* Animated particles */}
-      <div
-        className="absolute top-20 left-20 w-32 h-32 bg-white/5 rounded-full animate-float"
-        style={{ animationDelay: "0s" }}
-      ></div>
-      <div
-        className="absolute top-40 right-40 w-20 h-20 bg-white/5 rounded-full animate-float"
-        style={{ animationDelay: "0.5s" }}
-      ></div>
-      <div
-        className="absolute bottom-20 left-1/3 w-24 h-24 bg-white/5 rounded-full animate-float"
-        style={{ animationDelay: "1s" }}
-      ></div>
-      <div
-        className="absolute top-1/3 right-1/4 w-16 h-16 bg-white/5 rounded-full animate-float"
-        style={{ animationDelay: "1.5s" }}
-      ></div>
-
-      {/* Shimmering overlay */}
-      <div className="absolute inset-0 animate-shimmer opacity-30"></div>
-
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-        <div className="text-6xl text-[#E7E9E5]/30 mb-6 animate-fade-in-up animate-glow">
-          "
-        </div>
-        <blockquote className="text-xl md:text-2xl font-light italic mb-8 leading-relaxed text-[#E7E9E5]/90 animate-fade-in-up animate-delay-1">
-          With years of experience bridging travel, real estate, investment, and
-          brand representation, we are your trusted partner in unlocking the
-          true potential of the Maldives.
-        </blockquote>
-        <div className="flex items-center justify-center animate-fade-in-up animate-delay-2">
-          <div className="w-12 h-0.5 bg-[#E7E9E5]/50 mr-4 animate-pulse-slow"></div>
-          <cite className="font-semibold not-italic text-[#E7E9E5] shine-effect">
-            The IsleKey Holidays Team
-          </cite>
-          <div className="w-12 h-0.5 bg-[#E7E9E5]/50 ml-4 animate-pulse-slow"></div>
-        </div>
-      </div>
-    </section>
 
     {/* Statistics Section - Modern Design */}
-    <section className="py-24 bg-gradient-to-br from-[#E7E9E5] to-[#B7C5C7] relative overflow-hidden">
+    <section className="py-16 bg-white relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         <div className="text-center mb-16">
-          <div className="inline-flex items-center px-4 py-2 bg-[#B7C5C7] text-[#005E84] rounded-full text-sm font-medium mb-6 animate-fade-in-up">
-            <span className="w-2 h-2 bg-[#005E84] rounded-full mr-2"></span>
-            Our Impact
-          </div>
-          <h2 className="text-4xl md:text-5xl font-bold text-[#075375] mb-6 animate-fade-in-up animate-delay-1">
-            Numbers That <span className="text-[#0A435C]">Matter</span>
+        <div className="inline-flex items-center px-4 py-1.5 bg-white text-[#005E84] rounded-full text-sm font-semibold tracking-widest uppercase mb-5 border-2 border-[#0A435C] relative overflow-hidden group cursor-pointer">
+            <span className="w-2 h-2 bg-[#0A435C] rounded-full mr-2 "></span>
+              Our Impact
+            <span className="absolute top-0 left-0 w-full h-full border-1 border-[#0A435C] rounded-full "></span>
+        </div>
+          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4 leading-tight">
+           Numbers That <span className="text-teal-500">Matter</span>
           </h2>
-          <p className="text-xl text-[#075375] max-w-3xl mx-auto animate-fade-in-up animate-delay-2">
-            Our achievements and impact in the Maldives market
+          <p className="text-lg md:text-xl text-teal-200 max-w-3xl mx-auto animate-fade-in-up animate-delay-2">
+            TOur achievements and impact in the Maldives market
           </p>
         </div>
 
@@ -748,54 +727,72 @@ const AboutUs = () => (
           ].map((stat, index) => (
             <div
               key={index}
-              className="group bg-gradient-to-br from-white to-[#E7E9E5] rounded-3xl p-8 shadow-xl hover:shadow-2xl transform hover:-translate-y-3 transition-all duration-500 border border-[#B7C5C7]/30 overflow-hidden animate-fade-in-up shine-effect"
-              style={{ animationDelay: `${(index + 3) * 0.2}s` }}
+              className="group rounded-lg border-2 border-teal-200 bg-gradient-to-r from-white to-teal-900/30 p-8 
+                        shadow-[4px_4px_0px_#0A435C]  
+                        hover:shadow-[6px_6px_0px_#005E84] hover:-translate-y-3 
+                        transition-all duration-500"
             >
-              <div
-                className={`absolute inset-0 bg-gradient-to-br from-[#005E84]/5 to-[#0A435C]/5 rounded-3xl opacity-0 group-hover:opacity-5 transition-opacity duration-500`}
-              ></div>
-              <div className="relative">
-                <div
-                  className={`bg-gradient-to-br from-[#005E84] to-[#0A435C] rounded-2xl p-4 w-16 h-16 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 animate-glow`}
-                >
-                  {stat.icon}
-                </div>
-                <div className="text-4xl font-bold text-[#075375] mb-2 group-hover:text-[#005E84] transition-colors">
-                  {stat.number}
-                </div>
-                <div className="text-[#0A435C] font-medium text-lg">
-                  {stat.label}
-                </div>
-                <div className="mt-4 pt-4 border-t border-[#B7C5C7]">
-                  <div className="flex items-center text-sm text-[#005E84]">
-                    <div className="w-2 h-2 bg-[#005E84] rounded-full mr-2 animate-pulse-slow"></div>
-                    <span>Growing steadily</span>
-                  </div>
-                </div>
+              <div className="w-16 h-16 mb-4 bg-teal-200 rounded-xl flex items-center justify-center 
+                              text-white group-hover:bg-teal-300 transition">
+                {stat.icon}
               </div>
+
+              <h3 className="text-4xl font-black text-teal-200 group-hover:text-teal-300 transition">
+                {stat.number}
+              </h3>
+              <p className="text-teal-300 text-lg font-semibold">{stat.label}</p>
             </div>
+
           ))}
         </div>
       </div>
     </section>
 
     {/* Call to Action Section */}
-    <section className="py-24 bg-[#E7E9E5] relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-r from-[#005E84]/5 via-transparent to-[#005E84]/5 animate-shimmer"></div>
+  <section 
+      className="py-24  relative overflow-hidden"
+      style={{
+          backgroundImage: "url('/travel-services/brand.jpg')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+    >
+              <div className="absolute inset-0 bg-black/20"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-[#005E84]/40 to-[#0A435C]/35"></div>
+
+        {/* Animated particles */}
+        <div
+          className="absolute top-20 left-20 w-32 h-32 bg-white/15 rounded-full animate-float"
+          style={{ animationDelay: "0s" }}
+        ></div>
+        <div
+          className="absolute top-40 right-40 w-20 h-20 bg-white/15 rounded-full animate-float"
+          style={{ animationDelay: "0.5s" }}
+        ></div>
+        <div
+          className="absolute bottom-20 left-1/3 w-24 h-24 bg-white/15 rounded-full animate-float"
+          style={{ animationDelay: "1s" }}
+        ></div>
+        <div
+          className="absolute top-1/3 right-1/4 w-16 h-16 bg-white/15 rounded-full animate-float"
+          style={{ animationDelay: "1.5s" }}
+        ></div>
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative">
-        <div className="inline-flex items-center px-4 py-2 bg-[#B7C5C7] text-[#005E84] rounded-full text-sm font-medium mb-8 animate-fade-in-up animate-glow shine-effect">
-          <span className="w-2 h-2 bg-[#005E84] rounded-full mr-2 animate-pulse-slow"></span>
-          Get Started
+        <div className="inline-flex items-center px-4 py-1.5 bg-white text-[#005E84] rounded-full text-sm font-semibold tracking-widest uppercase mb-5 border-2 border-[#0A435C] relative overflow-hidden group cursor-pointer">
+            <span className="w-2 h-2 bg-[#0A435C] rounded-full mr-2 "></span>
+              Get Started
+            <span className="absolute top-0 left-0 w-full h-full border-1 border-[#0A435C] rounded-full "></span>
         </div>
-        <h2 className="text-4xl md:text-5xl font-bold text-[#075375] mb-6 animate-fade-in-up animate-delay-1">
-          Ready to Start Your <span className="text-[#0A435C]">Journey?</span>
+        <h2 className="text-4xl md:text-5xl font-bold text-white mb-6 animate-fade-in-up animate-delay-1">
+          Ready to Start Your <span className="text-yellow-300">Journey?</span>
         </h2>
-        <p className="text-xl text-[#075375] mb-12 max-w-3xl mx-auto animate-fade-in-up animate-delay-2">
+        <p className="text-xl text-gray-200 mb-12 max-w-3xl mx-auto animate-fade-in-up animate-delay-2">
           Let us help you discover the endless possibilities that await in the
           Maldives. Contact us today to begin your adventure.
         </p>
-        <div className="flex flex-col sm:flex-row gap-6 justify-center items-center animate-fade-in-up animate-delay-3">
-          <button className="group bg-gradient-to-r from-[#005E84] to-[#0A435C] text-[#E7E9E5] font-bold py-4 px-8 rounded-full shadow-2xl hover:shadow-3xl transition-all transform hover:scale-105 shine-effect animate-glow">
+        <div className="flex flex-col sm:flex-row gap-6 justify-center items-center ">
+          <MagicButton text="Contact Us Today" className="px-4 md:px-10 py-2 md:py-3 bg-teal-400 text-white hover:bg-white hover:ring-1 hover:ring-teal-400 hover:text-black shadow-md transition-all transform hover:scale-105 duration-300 ">
             <span className="flex items-center">
               Contact Us Today
               <svg
@@ -812,10 +809,10 @@ const AboutUs = () => (
                 />
               </svg>
             </span>
-          </button>
-          <button className="group border-2 border-[#005E84] text-[#005E84] font-bold py-4 px-8 rounded-full hover:bg-[#005E84] hover:text-[#E7E9E5] transition-all transform hover:scale-105 shine-effect">
+          </MagicButton>
+          <MagicButton text="View Our Services" className="px-4 md:px-10 py-2 md:py-3 hover:bg-teal-400 text-black bg-white ring-1 ring-teal-400 hover:text-white shadow-md transition-all transform hover:scale-105 duration-300 shine-effect">
             View Our Services
-          </button>
+          </MagicButton>
         </div>
       </div>
     </section>

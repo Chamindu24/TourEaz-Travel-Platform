@@ -386,6 +386,154 @@ async function sendBookingStatusUpdate(booking) {
   }
 }
 
+const sendVerificationEmail = async (email, verificationToken, firstName) => {
+	try {
+		const mailOptions = {
+			from: process.env.MAIL_USER,
+			to: email,
+			subject: 'Verify your email address',
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 20px auto; padding: 25px; background: #ffffff; border-radius: 10px; border: 1px solid #e5e5e5;">
+          
+          <h2 style="color: #1976d2; text-align: center; margin-bottom: 20px;">
+            Email Verification
+          </h2>
+
+          <p style="font-size: 16px; color: #333;">
+            Hi <strong>${firstName}</strong>,
+          </p>
+
+          <p style="font-size: 16px; color: #555; line-height: 1.6;">
+            Thank you for signing up! Use the verification code below to activate your account.
+          </p>
+
+          <!-- OTP Box -->
+          <div style="text-align: center; margin: 30px 0;">
+            <div style="
+              display: inline-block;
+              font-size: 34px;
+              font-weight: bold;
+              letter-spacing: 12px;
+              padding: 18px 30px;
+              background: #f1f6ff;
+              color: #1976d2;
+              border-radius: 10px;
+            ">
+              ${verificationToken}
+            </div>
+          </div>
+
+          <p style="font-size: 14px; color: #777;">
+            This code is valid for <strong>24 hours</strong>. If you didn’t request this, you can safely ignore this email.
+          </p>
+
+          <p style="font-size: 14px; color: #555; margin-top: 30px;">
+            Best regards,<br>
+            <strong>The TourEaz Team</strong>
+          </p>
+
+        </div>
+      `
+		};
+		
+		await transporter.sendMail(mailOptions);
+		console.log('Verification email sent to:', email);
+		return true;
+	} catch (error) {
+		console.error('Error sending verification email:', error);
+		throw error;
+	}
+};
+
+const sendWelcomeEmail = async (email, firstName) => {
+	try {
+		const mailOptions = {
+			from: process.env.MAIL_USER,
+			to: email,
+			subject: 'Welcome to TourEaz!',
+			html: `
+				<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+					<h2 style="color: #1976d2; text-align: center;">Welcome to TourEaz!</h2>
+					<p>Hi ${firstName},</p>
+					<p>Your email has been verified successfully! You can now log in to your account and start exploring our amazing travel services.</p>
+					<div style="text-align: center; margin: 30px 0;">
+						<a href="${process.env.CLIENT_URL}/login" style="background-color: #1976d2; color: white; padding: 12px 30px; text-decoration: none; border-radius: 5px; font-weight: bold;">Log In Now</a>
+					</div>
+					<p>If you have any questions, feel free to contact our support team.</p>
+					<p>Happy travels!<br>The TourEaz Team</p>
+				</div>
+			`
+		};
+		
+		await transporter.sendMail(mailOptions);
+		console.log('Welcome email sent to:', email);
+		return true;
+	} catch (error) {
+		console.error('Error sending welcome email:', error);
+		throw error;
+	}
+};
+
+const sendPasswordResetEmail = async (email, resetUrl, firstName) => {
+	try {
+		const mailOptions = {
+			from: process.env.MAIL_USER,
+			to: email,
+			subject: 'Reset Your Password',
+			html: `
+				<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+					<h2 style="color: #1976d2; text-align: center;">Password Reset Request</h2>
+					<p>Hi ${firstName},</p>
+					<p>We received a request to reset your password. Click the button below to create a new password.</p>
+					<div style="text-align: center; margin: 30px 0;">
+						<a href="${resetUrl}" style="background-color: #1976d2; color: white; padding: 12px 30px; text-decoration: none; border-radius: 5px; font-weight: bold;">Reset Password</a>
+					</div>
+					<p>This link expires in 1 hour.</p>
+					<p>If you didn't request this, you can ignore this email and your password will remain unchanged.</p>
+					<p>Best regards,<br>The TourEaz Team</p>
+				</div>
+			`
+		};
+		
+		await transporter.sendMail(mailOptions);
+		console.log('Password reset email sent to:', email);
+		return true;
+	} catch (error) {
+		console.error('Error sending password reset email:', error);
+		throw error;
+	}
+};
+
+const sendResetSuccessEmail = async (email, firstName) => {
+	try {
+		const mailOptions = {
+			from: process.env.MAIL_USER,
+			to: email,
+			subject: 'Password Changed Successfully',
+			html: `
+				<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+					<h2 style="color: #1976d2; text-align: center;">Password Changed</h2>
+					<p>Hi ${firstName},</p>
+					<p>Your password has been changed successfully. You can now log in with your new password.</p>
+					<div style="text-align: center; margin: 30px 0;">
+						<a href="${process.env.CLIENT_URL}/login" style="background-color: #1976d2; color: white; padding: 12px 30px; text-decoration: none; border-radius: 5px; font-weight: bold;">Log In</a>
+					</div>
+					<p>If you didn't make this change, please contact our support team immediately.</p>
+					<p>Best regards,<br>The TourEaz Team</p>
+				</div>
+			`
+		};
+		
+		await transporter.sendMail(mailOptions);
+		console.log('Password reset success email sent to:', email);
+		return true;
+	} catch (error) {
+		console.error('Error sending password reset success email:', error);
+		throw error;
+	}
+};
+
+
 module.exports = {
   sendEmail,
   templates,
@@ -393,5 +541,9 @@ module.exports = {
   sendContactFormNotification,
   sendContactFormResponse,
   sendBookingNotification,
-  sendBookingStatusUpdate
+  sendBookingStatusUpdate,
+  sendVerificationEmail,
+  sendWelcomeEmail,
+  sendPasswordResetEmail,
+  sendResetSuccessEmail
 }; 

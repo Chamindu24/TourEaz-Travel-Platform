@@ -88,6 +88,24 @@ const getRoomPrice = (room, market, checkIn, checkOut) => {
 // Create a new room (admin only)
 router.post('/', auth, async (req, res) => {
   try {
+    const ServiceProvider = require('../models/ServiceProvider');
+    const User = require('../models/User');
+
+    // Get user and their service provider profile
+    const user = await User.findById(req.user.userId);
+    if (!user) {
+      return res.status(404).json({ msg: 'User not found' });
+    }
+    
+    // For service providers, automatically assign their profile
+    if (user.serviceProvider) {
+      const serviceProvider = await ServiceProvider.findOne({ user: req.user.userId });
+      if (!serviceProvider) {
+        return res.status(404).json({ msg: 'Service provider profile not found' });
+      }
+      req.body.serviceProvider = serviceProvider._id;
+    }
+
     console.log('Incoming prices:', req.body.prices);
     const room = new Room(req.body);
     await room.save();
@@ -110,6 +128,31 @@ router.get('/', async (req, res) => {
   } catch (err) {
     console.error('Error fetching rooms:', err);
     res.status(500).json({ msg: 'Server error' });
+  }
+});
+router.get('/my-rooms', auth, async (req, res) => {
+  try {
+    const ServiceProvider = require('../models/ServiceProvider');
+    const User = require('../models/User');
+    
+    // Get user and their service provider profile
+    const user = await User.findById(req.user.userId);
+    if (!user) {
+      return res.status(404).json({ msg: 'User not found' });
+    }
+    
+    const serviceProvider = await ServiceProvider.findOne({ user: req.user.userId });
+    if (!serviceProvider) {
+      return res.status(404).json({ msg: 'Service provider profile not found' });
+    }
+    
+    // Return full transportation docs (service providers need complete data for editing/dashboard)
+    const rooms = await Room.find({ serviceProvider: serviceProvider._id })
+    
+    res.json(rooms);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ msg: 'Server error', error: err.message });
   }
 });
 

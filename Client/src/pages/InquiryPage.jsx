@@ -272,7 +272,7 @@ const InquiryPage = () => {
 
         {/* Tour Summary Card */}
         <div className="bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden mb-8">
-          <div className="bg-gradient-to-r from-[#005E84] to-[#075375] p-6">
+          <div className="bg-teal-300 p-6">
             <h2 className="text-2xl font-bold text-white flex items-center">
               Tour Details
             </h2>
@@ -392,7 +392,7 @@ const InquiryPage = () => {
 
         {/* Inquiry Form */}
         <div className="bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden">
-          <div className="bg-gradient-to-r from-[#005E84] to-[#0A435C] p-6">
+          <div className="bg-teal-300 p-6">
             <h2 className="text-2xl font-bold text-white">
               Contact Information
             </h2>
@@ -609,7 +609,7 @@ const InquiryPage = () => {
                 variant="contained"
                 onClick={handleSubmitInquiry}
                 sx={{
-                  backgroundColor: '#005E84',
+                  backgroundColor: '#009788',
                   color: '#FFFFFF',
                   padding: '14px 40px',
                   fontSize: '16px',
@@ -618,7 +618,7 @@ const InquiryPage = () => {
                   boxShadow: '0 4px 12px rgba(0, 94, 132, 0.3)',
                   transition: 'all 0.3s ease',
                   '&:hover': {
-                    backgroundColor: '#075375',
+                    backgroundColor: '#009788',
                     boxShadow: '0 6px 16px rgba(7, 83, 117, 0.4)',
                     transform: 'translateY(-2px)',
                   },

@@ -156,6 +156,28 @@ exports.getActivityById = async (req, res) => {
 // @access  Private (Admin only)
 exports.createActivity = async (req, res) => {
   try {
+    const ServiceProvider = require('../models/ServiceProvider');
+    const User = require('../models/User');
+    
+    // Get user if authenticated
+    if (req.user && req.user.userId) {
+      const user = await User.findById(req.user.userId);
+      
+      // For service providers, automatically assign their profile
+      if (user.serviceProvider) {
+        const serviceProvider = await ServiceProvider.findOne({ user: req.user.userId });
+        if (serviceProvider) {
+          req.body.serviceProvider = serviceProvider._id;
+        }
+      }
+      else {
+        return res.status(403).json({
+          success: false,
+          error: 'Only service providers can create activities'
+        });
+      }
+    }
+    
     const activity = await Activity.create(req.body);
     
     res.status(201).json({

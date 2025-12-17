@@ -52,12 +52,20 @@ exports.uploadImage = async (req, res) => {
     // Get the uploaded file
     const file = req.files.file;
     
-    // Validate file type (allow only images)
-    const validMimeTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+    // Validate file type (allow images + common documents)
+    const validMimeTypes = [
+      'image/jpeg',
+      'image/png',
+      'image/gif',
+      'image/webp',
+      'application/pdf',
+      'application/msword',
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+    ];
     if (!validMimeTypes.includes(file.mimetype)) {
       return res.status(400).json({
         success: false,
-        error: `Invalid file type: ${file.mimetype}. Only images are allowed.`
+        error: `Invalid file type: ${file.mimetype}. Allowed: images, pdf, doc, docx.`
       });
     }
     
@@ -133,11 +141,8 @@ exports.uploadImage = async (req, res) => {
       
       // Return the Cloudinary URL
       return res.status(200).json({
-        success: true,
-        data: {
-          url: result.secure_url,
-          public_id: result.public_id
-        }
+        url: result.secure_url,
+        public_id: result.public_id
       });
     } catch (cloudinaryError) {
       console.error('Cloudinary upload error:', cloudinaryError);

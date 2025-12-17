@@ -300,7 +300,7 @@ const TourDetails = ({ sidebarOpen }) => {
         <div className={`transition-all duration-300 ${sidebarOpen ? 'sm:pl-64' : 'sm:pl-16'} pl-0`}>
           <div className="flex items-center justify-center min-h-[60vh]">
             <div className="text-center">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#005E84] mx-auto"></div>
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-500 mx-auto"></div>
               <p className="mt-4 text-gray-600">Loading tour details...</p>
             </div>
           </div>
@@ -318,7 +318,7 @@ const TourDetails = ({ sidebarOpen }) => {
               <h2 className="text-2xl font-bold text-gray-800 mb-4">Tour not found</h2>
               <Button
                 onClick={() => navigate('/tours')}
-                className="bg-[#005E84] hover:bg-[#075375] text-white px-6 py-2 rounded-lg"
+                className="bg-teal-500 hover:bg-teal-500 text-white px-6 py-2 rounded-lg"
               >
                 Back to Tours
               </Button>
@@ -428,7 +428,7 @@ const TourDetails = ({ sidebarOpen }) => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-gray-50">
       <div className={`transition-all duration-300 ${sidebarOpen ? 'sm:pl-64' : 'sm:pl-16'} pl-0`}>
         {/* Navigation removed */}
 
@@ -482,7 +482,7 @@ const TourDetails = ({ sidebarOpen }) => {
             <div className="xl:col-span-3 space-y-8">
               {/* Enhanced Package Selection */}
               <div className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
-                <div className="bg-gradient-to-r from-[#005E84] to-[#075375] p-6">
+                <div className="bg-teal-500 p-6">
                   <h2 className="text-2xl font-bold text-white flex items-center">
                     <Sparkles className="w-7 h-7 mr-3 text-gray-100" />
                     Customize Your Experience
@@ -495,7 +495,7 @@ const TourDetails = ({ sidebarOpen }) => {
                   {tour.nights && (
                     <div className="animate-in fade-in-50 duration-500">
                       <h3 className="text-xl font-bold text-gray-700 mb-4 flex items-center">
-                        <Calendar className="w-5 h-5 mr-2 text-[#005E84]" />
+                        <Calendar className="w-5 h-5 mr-2 text-teal-500" />
                         Choose Your Duration
                       </h3>
                       <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
@@ -508,19 +508,19 @@ const TourDetails = ({ sidebarOpen }) => {
                             }}
                             className={`group relative p-6 rounded-xl border-2 transition-all duration-300 transform hover:scale-105 hover:shadow-lg ${
                               selectedNightsKey === key
-                                ? 'border-[#005E84] bg-gray-50 ring-2 ring-[#005E84]/20 shadow-md'
-                                : 'border-gray-200 hover:border-[#075375] bg-white hover:bg-gray-50'
+                                ? 'border-teal-500 bg-gray-50 ring-2 ring-teal-500/20 shadow-md'
+                                : 'border-gray-200 hover:border-teal-500 bg-white hover:bg-gray-50'
                             }`}
                           >
                             {selectedNightsKey === key && (
-                              <div className="absolute -top-2 -right-2 bg-[#005E84] text-white rounded-full p-1">
+                              <div className="absolute -top-2 -right-2 bg-teal-500 text-white rounded-full p-1">
                                 <CheckCircle className="w-4 h-4" />
                               </div>
                             )}
                             <div className={`font-bold text-lg ${selectedNightsKey === key ? 'text-[#0A435C]' : 'text-gray-700'}`}>
                               {key} Nights
                             </div>
-                            <div className={`text-sm ${selectedNightsKey === key ? 'text-[#005E84]' : 'text-gray-400'}`}>
+                            <div className={`text-sm ${selectedNightsKey === key ? 'text-teal-500' : 'text-gray-400'}`}>
                               {parseInt(key) + 1} Days
                             </div>
                           </button>
@@ -533,7 +533,7 @@ const TourDetails = ({ sidebarOpen }) => {
                   {selectedNightsKey && tour.nights[selectedNightsKey] && (
                     <div className="animate-in slide-in-from-left-4 duration-500">
                       <h3 className="text-xl font-bold text-gray-700 mb-4 flex items-center">
-                        <Star className="w-5 h-5 mr-2 text-[#005E84]" />
+                        <Star className="w-5 h-5 mr-2 text-teal-500" />
                         Package Options
                       </h3>
                       <div className="space-y-3">
@@ -543,8 +543,8 @@ const TourDetails = ({ sidebarOpen }) => {
                             onClick={() => setSelectedNightsOption(optKey)}
                             className={`w-full p-5 rounded-xl border-2 transition-all duration-300 text-left hover:shadow-md transform hover:scale-[1.02] ${
                               selectedNightsOption === optKey
-                                ? 'border-[#005E84] bg-gray-50 ring-2 ring-[#005E84]/20'
-                                : 'border-gray-200 hover:border-[#075375] bg-white hover:bg-gray-50'
+                                ? 'border-teal-500 bg-gray-50 ring-2 ring-teal-500/20'
+                                : 'border-gray-200 hover:border-teal-500 bg-white hover:bg-gray-50'
                             }`}
                           >
                             <div className="flex items-center justify-between">
@@ -552,7 +552,7 @@ const TourDetails = ({ sidebarOpen }) => {
                                 {tour.nights[selectedNightsKey][optKey].option}
                               </div>
                               {selectedNightsOption === optKey && (
-                                <CheckCircle className="w-5 h-5 text-[#005E84]" />
+                                <CheckCircle className="w-5 h-5 text-teal-500" />
                               )}
                             </div>
                           </button>
@@ -565,7 +565,7 @@ const TourDetails = ({ sidebarOpen }) => {
                   {tour.food_category && (
                     <div className="animate-in slide-in-from-right-4 duration-500">
                       <h3 className="text-xl font-bold text-gray-700 mb-4 flex items-center">
-                        <DollarSign className="w-5 h-5 mr-2 text-[#005E84]" />
+                        <DollarSign className="w-5 h-5 mr-2 text-teal-500" />
                         Select Meal Plan
                       </h3>
                       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -578,7 +578,7 @@ const TourDetails = ({ sidebarOpen }) => {
                               className={`group relative p-6 rounded-xl border-2 transition-all duration-300 transform hover:scale-105 hover:shadow-lg ${
                                 selectedFoodCategory === key
                                   ? 'border-[#0A435C] bg-gray-50 ring-2 ring-[#0A435C]/20 shadow-md'
-                                  : 'border-gray-200 hover:border-[#075375] bg-white hover:bg-gray-50'
+                                  : 'border-gray-200 hover:border-teal-500 bg-white hover:bg-gray-50'
                               }`}
                             >
                               {selectedFoodCategory === key && (
@@ -606,9 +606,9 @@ const TourDetails = ({ sidebarOpen }) => {
                         {tour.facilities.map((facility, index) => (
                           <div
                             key={index}
-                            className="flex items-center p-4 bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl border border-gray-200 transition-all duration-300 hover:shadow-md hover:scale-[1.02]"
+                            className="flex items-center p-4 bg-gradient-to-r from-gray-50 to-teal-50 rounded-xl border border-gray-200 transition-all duration-300 hover:shadow-md hover:scale-[1.02]"
                           >
-                            <div className="bg-[#0A435C] rounded-full p-1 mr-3 flex-shrink-0">
+                            <div className="bg-teal-500 rounded-full p-1 mr-3 flex-shrink-0">
                               <Check className="w-4 h-4 text-white" />
                             </div>
                             <span className="text-gray-700 font-medium">{facility}</span>
@@ -622,7 +622,7 @@ const TourDetails = ({ sidebarOpen }) => {
 
               {/* Enhanced Image Gallery Section */}
               <div className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
-                <div className="bg-gradient-to-r from-[#0A435C] to-[#005E84] p-6">
+                <div className="bg-teal-500 p-6">
                   <h2 className="text-2xl font-bold text-white flex items-center">
                     <Eye className="w-7 h-7 mr-3 text-gray-100" />
                     Visual Journey
@@ -639,7 +639,7 @@ const TourDetails = ({ sidebarOpen }) => {
                         className="group cursor-pointer transform transition-all duration-500 hover:scale-[1.03]" 
                         onClick={() => setDestinationPopup(true)}
                       >
-                        <div className="relative rounded-2xl overflow-hidden shadow-lg h-64 bg-gradient-to-br from-[#005E84] to-[#075375]">
+                        <div className="relative rounded-2xl overflow-hidden shadow-lg h-64 bg-gradient-to-br from-teal-500 to-teal-500">
                           <img
                             src={tour.destination_images[0]}
                             alt="Destinations"
@@ -674,7 +674,7 @@ const TourDetails = ({ sidebarOpen }) => {
                         className="group cursor-pointer transform transition-all duration-500 hover:scale-[1.03]" 
                         onClick={() => setActivityPopup(true)}
                       >
-                        <div className="relative rounded-2xl overflow-hidden shadow-lg h-64 bg-gradient-to-br from-[#075375] to-[#0A435C]">
+                        <div className="relative rounded-2xl overflow-hidden shadow-lg h-64 bg-gradient-to-br from-teal-500 to-[#0A435C]">
                           <img
                             src={tour.activity_images[0]}
                             alt="Activities"
@@ -709,7 +709,7 @@ const TourDetails = ({ sidebarOpen }) => {
                         className="group cursor-pointer transform transition-all duration-500 hover:scale-[1.03]" 
                         onClick={() => setHotelPopup(true)}
                       >
-                        <div className="relative rounded-2xl overflow-hidden shadow-lg h-64 bg-gradient-to-br from-[#0A435C] to-[#075375]">
+                        <div className="relative rounded-2xl overflow-hidden shadow-lg h-64 bg-gradient-to-br from-[#0A435C] to-teal-500">
                           <img
                             src={tour.hotel_images[0]}
                             alt="Hotels"
@@ -743,7 +743,7 @@ const TourDetails = ({ sidebarOpen }) => {
 
               {/* Enhanced Itinerary Section */}
               <div className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
-                <div className="bg-gradient-to-r from-[#075375] to-[#0A435C] p-6">
+                <div className="bg-teal-500 p-6">
                   <h2 className="text-2xl font-bold text-white flex items-center">
                     <Calendar className="w-7 h-7 mr-3 text-gray-100" />
                     Your Journey Timeline
@@ -760,11 +760,11 @@ const TourDetails = ({ sidebarOpen }) => {
             <div className="xl:col-span-1">
               <div className="sticky top-8 space-y-4">
                 {/* Premium Price Card */}
-                <div className="bg-gradient-to-br from-gray-700 via-gray-600 to-gray-700 rounded-2xl shadow-2xl overflow-hidden border border-gray-400">
+                <div className="bg-gradient-to-br from-teal-500 via-teal-600 to-teal-500 rounded-2xl shadow-2xl overflow-hidden border border-teal-400">
                   <div className="p-3">
                     <div className="flex items-center justify-between mb-3">
                       <h3 className="text-lg font-bold text-white">Total Investment</h3>
-                      <div className="bg-[#005E84] rounded-full p-1">
+                      <div className="bg-teal-500 rounded-full p-1">
                         <DollarSign className="w-4 h-4 text-white" />
                       </div>
                     </div>
@@ -784,7 +784,7 @@ const TourDetails = ({ sidebarOpen }) => {
                     </div>
 
                     {finalOldPrice > totalPrice && (
-                      <div className="bg-[#0A435C]/30 border border-[#005E84]/50 rounded-xl p-2 mb-3">
+                      <div className="bg-[#0A435C]/30 border border-teal-500/50 rounded-xl p-2 mb-3">
                         <div className="text-white font-semibold text-center text-xs">
                           You Save {selectedCurrency} {convertPrice(finalOldPrice - totalPrice)}!
                         </div>
@@ -796,10 +796,10 @@ const TourDetails = ({ sidebarOpen }) => {
                 {/* Enhanced Tour Details Cards */}
                 <div className="space-y-2">
                   {/* Duration Card */}
-                  <div className="bg-white rounded-xl shadow-lg p-3 border-l-4 border-[#005E84] transform transition-all duration-300 hover:scale-[1.02] hover:shadow-xl">
+                  <div className="bg-white rounded-xl shadow-lg p-3 border-l-4 border-teal-500 transform transition-all duration-300 hover:scale-[1.02] hover:shadow-xl">
                     <div className="flex items-center">
                       <div className="bg-gray-100 rounded-full p-1 mr-2">
-                        <Clock className="w-4 h-4 text-[#005E84]" />
+                        <Clock className="w-4 h-4 text-teal-500" />
                       </div>
                       <div>
                         <div className="font-bold text-gray-700 text-sm">Duration</div>
@@ -809,10 +809,10 @@ const TourDetails = ({ sidebarOpen }) => {
                   </div>
 
                   {/* Valid Period Card */}
-                  <div className="bg-white rounded-xl shadow-lg p-3 border-l-4 border-[#075375] transform transition-all duration-300 hover:scale-[1.02] hover:shadow-xl">
+                  <div className="bg-white rounded-xl shadow-lg p-3 border-l-4 border-teal-500 transform transition-all duration-300 hover:scale-[1.02] hover:shadow-xl">
                     <div className="flex items-center">
                       <div className="bg-gray-100 rounded-full p-1 mr-2">
-                        <Calendar className="w-4 h-4 text-[#075375]" />
+                        <Calendar className="w-4 h-4 text-teal-500" />
                       </div>
                       <div>
                         <div className="font-bold text-gray-700 text-sm">Valid Period</div>
@@ -832,10 +832,10 @@ const TourDetails = ({ sidebarOpen }) => {
                   </div>
 
                   {/* Expiry Card */}
-                  <div className="bg-white rounded-xl shadow-lg p-3 border-l-4 border-[#0A435C] transform transition-all duration-300 hover:scale-[1.02] hover:shadow-xl">
+                  <div className="bg-white rounded-xl shadow-lg p-3 border-l-4 border-teal-500 transform transition-all duration-300 hover:scale-[1.02] hover:shadow-xl">
                     <div className="flex items-center">
                       <div className="bg-gray-100 rounded-full p-1 mr-2">
-                        <CalendarMonthIcon className="w-4 h-4 text-[#0A435C]" />
+                        <CalendarMonthIcon className="w-4 h-4 text-teal-500" />
                       </div>
                       <div>
                         <div className="font-bold text-gray-700 text-sm">Offer Expires</div>
@@ -856,7 +856,7 @@ const TourDetails = ({ sidebarOpen }) => {
                   {/* Primary CTA - Book Now */}
                   <button
                     onClick={handleBookNow}
-                    className="w-full bg-gradient-to-r from-[#0A435C] via-[#075375] to-[#005E84] hover:from-[#075375] hover:via-[#005E84] hover:to-[#0A435C] text-white font-bold py-2 px-4 rounded-xl transition-all duration-300 flex items-center justify-center shadow-2xl hover:shadow-[#005E84]/25 transform hover:scale-[1.02] hover:-translate-y-1 group"
+                    className="w-full bg-teal-500 hover:bg-white text-white hover:text-black border-2 hover:border-teal-500 font-bold py-2 px-4 rounded-lg transition-all duration-300 flex items-center justify-center shadow-2xl hover:shadow-teal-500/25 transform hover:scale-[1.02] hover:-translate-y-1 group"
                   >
                     <CalendarMonthIcon className="w-4 h-4 mr-1 group-hover:rotate-12 transition-transform duration-300" />
                     <span className="text-sm">Secure Your Spot</span>
@@ -868,7 +868,7 @@ const TourDetails = ({ sidebarOpen }) => {
                       e.preventDefault();
                       handleOpenDialog();
                     }}
-                    className="w-full bg-gradient-to-r from-[#005E84] via-[#075375] to-[#0A435C] hover:from-[#075375] hover:via-[#0A435C] hover:to-[#005E84] text-white font-semibold py-2 px-4 rounded-xl transition-all duration-300 flex items-center justify-center shadow-xl hover:shadow-[#075375]/25 transform hover:scale-[1.02] group"
+                    className="w-full bg-white text-black border-2 border-teal-500 hover:bg-teal-500 duration-500 hover:text-white font-semibold py-2 px-4 rounded-md transition-all  flex items-center justify-center shadow-xl hover:shadow-teal-500/25 transform hover:scale-[1.05] group"
                   >
                     <SendIcon className="w-3 h-3 mr-1 group-hover:translate-x-1 transition-transform duration-300" />
                     <span>Get Custom Quote</span>
@@ -877,7 +877,7 @@ const TourDetails = ({ sidebarOpen }) => {
                   {/* Tertiary Action */}
                   <button
                     onClick={() => navigate('/tours')}
-                    className="w-full bg-gradient-to-r from-gray-100 to-gray-200 hover:from-gray-200 hover:to-gray-300 text-gray-700 font-semibold py-2 px-4 rounded-xl transition-all duration-300 border border-gray-300 hover:border-gray-400 transform hover:scale-[1.02]"
+                    className="w-full bg-teal-500 hover:bg-white text-white hover:text-black border-2 hover:border-teal-500 font-semibold py-2 px-4 rounded-md transition-all duration-500  border-gray-300  transform hover:scale-[1.05]"
                   >
                     ← Explore More Tours
                   </button>

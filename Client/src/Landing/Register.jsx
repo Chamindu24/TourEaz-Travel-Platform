@@ -33,6 +33,10 @@ const Register = () => {
     phoneNumber: '',
     password: '',
     repeatPassword: '',
+    userType: 'traveler', // 'traveler' or 'service-provider'
+    services: [], // For service providers
+    companyName: '',
+    companyDescription: '',
   });
 
   const [errors, setErrors] = useState({});
@@ -66,6 +70,27 @@ const Register = () => {
     }
   };
 
+  const handleServiceToggle = (service) => {
+    setFormData(prev => ({
+      ...prev,
+      services: prev.services.includes(service)
+        ? prev.services.filter(s => s !== service)
+        : [...prev.services, service]
+    }));
+  };
+
+  const handleUserTypeChange = (type) => {
+    setFormData(prev => ({
+      ...prev,
+      userType: type,
+      services: [] // Reset services when changing user type
+    }));
+    // Clear userType errors
+    if (errors.userType || errors.services) {
+      setErrors(prev => ({ ...prev, userType: '', services: '' }));
+    }
+  };
+
   const handleFocus = (fieldName) => {
     setFocusedField(fieldName);
   };
@@ -85,6 +110,21 @@ const Register = () => {
         newErrors[field] = 'This field is required';
       }
     });
+
+    // Validate user type selection
+    if (!formData.userType) {
+      newErrors.userType = 'Please select a user type';
+    }
+
+    // Validate services for service providers
+    if (formData.userType === 'service-provider') {
+      if (formData.services.length === 0) {
+        newErrors.services = 'Please select at least one service';
+      }
+      if (!formData.companyName.trim()) {
+        newErrors.companyName = 'Company name is required for service providers';
+      }
+    }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (formData.email && !emailRegex.test(formData.email)) {
@@ -113,7 +153,24 @@ const Register = () => {
       console.log('🎯 api.baseURL =', axios.defaults.baseURL);
       console.log('📤 Posting to:', axios.defaults.baseURL + '/auth/register');
 
-      await axios.post('/auth/register', formData, {headers:{ 'Content-Type': 'application/json'}});
+      const registrationData = {
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.email,
+        country: formData.country,
+        phoneNumber: formData.phoneNumber,
+        password: formData.password,
+        userType: formData.userType,
+      };
+
+      // Add service provider specific data
+      if (formData.userType === 'service-provider') {
+        registrationData.services = formData.services;
+        registrationData.companyName = formData.companyName;
+        registrationData.companyDescription = formData.companyDescription;
+      }
+
+      await axios.post('/auth/register', registrationData, {headers:{ 'Content-Type': 'application/json'}});
       
       // Enhanced success feedback - elegant transition instead of popup
       setRegistrationSuccess(true);
@@ -127,17 +184,21 @@ const Register = () => {
         phoneNumber: '',
         password: '',
         repeatPassword: '',
+        userType: 'traveler',
+        services: [],
+        companyName: '',
+        companyDescription: '',
       });
       
-      // Smooth transition before redirect
+      // Smooth transition before redirect to verify email
       setTimeout(() => {
-        navigate('/login');
-      }, 2500);
+        navigate('/verify-email', { state: { email: registrationData.email } });
+      }, 3000);
       
     } catch (error) {
       console.error('Registration failed:', error);
       setErrors({ 
-        general: error.response?.data?.msg || 'Registration failed. Please check your information and try again.' 
+        general: error.response?.data?.msg || error.response?.data?.message || 'Registration failed. Please check your information and try again.' 
       });
     } finally {
       setIsLoading(false);
@@ -162,7 +223,8 @@ const Register = () => {
             </svg>
           </div>
           <h2 className="text-2xl font-bold mb-4">Registration Successful!</h2>
-          <p className="text-white/80">Welcome to IsleKey Holidays! Redirecting to login page...</p>
+          <p className="text-white/80 mb-2">Check your email to verify your account.</p>
+          <p className="text-white/70 text-sm">Redirecting to verification page...</p>
         </div>
         <style>{`
           @keyframes success-pulse {
@@ -210,69 +272,56 @@ const Register = () => {
       `}</style>
 
 
-
-      {/* Dynamic Background Slideshow (matching Login page) */}
-      <div className="absolute inset-0">
-        {backgroundImages.map((image, index) => (
-          <div
-            key={index}
-            className={`absolute inset-0 transition-opacity duration-2000 ${
-              index === currentImage ? 'opacity-100' : 'opacity-0'
-            }`}
-            style={{
-              backgroundImage: `url(${image})`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-              backgroundRepeat: 'no-repeat'
-            }}
-          />
-        ))}
-        {/* Enhanced overlay for better readability */}
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-900/70 via-teal-800/60 to-blue-800/70" />
-        <div className="absolute inset-0 bg-black/20" />
-      </div>
-
       {/* Main Content - Split Screen Layout */}
       <div className="relative z-10 min-h-screen flex">
         {/* Left Side - Branding & Information */}
-        <div className="hidden lg:flex lg:w-1/2 items-center justify-center p-12">
-          <div className="max-w-md text-center text-white">
-            <div className={`mb-8 ${animations.float}`}>
-              <img
-                src="/IsleKey Logo.jpg"
-                alt="IsleKey Holidays"
-                className="h-24 w-auto mx-auto mb-6 rounded-2xl shadow-2xl"
-                onError={(e) => {
-                  e.target.src = "/Logo.png";
-                }}
-              />
+        <div
+          className="hidden lg:flex lg:w-1/2 items-start justify-center mt-3.5  p-12 relative overflow-hidden"
+          style={{
+            backgroundImage: "url('/register2.jpg')",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            
+           
+          }}
+        >
+                    {/* Dark overlay */}
+          <div className="absolute inset-0 bg-teal-500/20 z-10 pointer-events-none backdrop-blur-[1px]"></div>
+          {/* Animated gradient pulse */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/5 z-20 pointer-events-none animate-pulse-slow"></div>
+
+          <div className={`max-w-md text-start mt-24 backdrop-blur-2xl shadow-xl p-8 bg-black/10 border-2 border-white/25 rounded-2xl z-30 text-white fixed ${animations.slideUp}`}>
+            
+            <div className="space-y-4 mb-6">
+              <p className={`text-3xl font-bold tracking-wide relative ${animations.slideUp}`}>
+                Explore <span className="text-yellow-300 drop-shadow-[0_0_10px_rgba(255,228,94,0.6)]">Sri Lanka</span>
+              </p>
+
+              <p className={`text-gray-100 text-lg  leading-relaxed ${animations.slideUp}`}>
+                Experience vibrant culture, exotic wildlife, and breathtaking views with personalized travel plans.
+              </p>
             </div>
-            <h1 className={`text-4xl font-bold mb-6 ${animations.fadeIn}`}>
-              Join IsleKey Holidays
-            </h1>
-            <p className={`text-xl text-blue-100 mb-8 leading-relaxed ${animations.slideUp}`}>
-              Create your account and start planning your dream vacation to the Maldives. 
-              Discover paradise with our exclusive travel packages and personalized service.
-            </p>
+
+      
             <div className={`grid grid-cols-1 gap-4 ${animations.slideUp}`}>
-              <div className="flex items-center space-x-3 text-blue-100">
-                <div className="w-8 h-8 bg-blue-400/30 rounded-lg flex items-center justify-center">
+              <div className="flex items-center space-x-3 text-teal-50 hover:text-yellow-300 font-medium">
+                <div className="w-8 h-8 bg-teal-400/80 rounded-lg flex items-center justify-center">
                   <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                   </svg>
                 </div>
                 <span>Exclusive Maldives Packages</span>
               </div>
-              <div className="flex items-center space-x-3 text-blue-100">
-                <div className="w-8 h-8 bg-blue-400/30 rounded-lg flex items-center justify-center">
+              <div className="flex items-center space-x-3 text-teal-50 hover:text-yellow-300 font-medium">
+                <div className="w-8 h-8 bg-teal-400/80 rounded-lg flex items-center justify-center">
                   <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                   </svg>
                 </div>
                 <span>24/7 Customer Support</span>
               </div>
-              <div className="flex items-center space-x-3 text-blue-100">
-                <div className="w-8 h-8 bg-blue-400/30 rounded-lg flex items-center justify-center">
+              <div className="flex items-center space-x-3 text-teal-50 hover:text-yellow-300 font-medium">
+                <div className="w-8 h-8 bg-teal-400/80 rounded-lg flex items-center justify-center">
                   <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                   </svg>
@@ -286,11 +335,11 @@ const Register = () => {
         {/* Right Side - Registration Form */}
         <div className="w-full lg:w-1/2 flex items-center justify-center p-4 sm:p-8">
           <div className="w-full max-w-md">
-            <div className={`bg-white/10 backdrop-blur-lg rounded-3xl p-8 shadow-2xl border border-white/20 ${animations.slideUp}`}>
+            <div className={`bg-white/10 backdrop-blur-lg  py-8  ${animations.slideUp}`}>
               {/* Form Header */}
-              <div className="text-center mb-8">
-                <h2 className="text-3xl font-bold text-white mb-2">Create Account</h2>
-                <p className="text-blue-100">Join thousands of happy travelers</p>
+              <div className="text-start mb-8">
+                <h2 className="text-3xl font-bold text-black/80 mb-2 tracking-wide">Create Account</h2>
+                <p className="text-teal-200">Join thousands of happy travelers</p>
               </div>
 
               {/* Registration Form */}
@@ -302,12 +351,52 @@ const Register = () => {
                   </div>
                 )}
 
+                {/* User Type Selection */}
+                <div className="space-y-2">
+                  <label className="block text-lg font-medium text-teal-200">
+                    Account Type
+                  </label>
+                  <div className="grid grid-cols-2 gap-3">
+                    <button
+                      type="button"
+                      onClick={() => handleUserTypeChange('traveler')}
+                      className={`py-3 px-4 rounded-xl font-semibold transition-all duration-200 border-2 ${
+                        formData.userType === 'traveler'
+                          ? 'bg-teal-500/20 border-teal-400 text-teal-200'
+                          : 'bg-teal-600/10 border-black/15 text-gray-400 hover:border-teal-400/50'
+                      } flex items-center justify-center space-x-2`}
+                    >
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8m0 8l-6-3m6 3l6-3" />
+                      </svg>
+                      <span>Traveler</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleUserTypeChange('service-provider')}
+                      className={`py-3 px-4 rounded-xl font-semibold transition-all duration-200 border-2 ${
+                        formData.userType === 'service-provider'
+                          ? 'bg-teal-500/20 border-teal-400 text-teal-200'
+                          : 'bg-teal-600/10 border-black/15 text-gray-400 hover:border-teal-400/50'
+                      } flex items-center justify-center space-x-2`}
+                    >
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                      </svg>
+                      <span>Service Provider</span>
+                    </button>
+                  </div>
+                  {errors.userType && (
+                    <p className="text-red-300 text-sm">{errors.userType}</p>
+                  )}
+                </div>
+
                 {/* Name Fields Row */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {/* First Name */}
                   <div className="space-y-2">
-                    <label className="block text-sm font-medium text-blue-100">
-                      First Name *
+                    <label className="block text-lg font-medium text-teal-200">
+                      First Name 
                     </label>
                     <div className="relative">
                       <input
@@ -317,13 +406,13 @@ const Register = () => {
                         onChange={handleChange}
                         onFocus={() => handleFocus('firstName')}
                         onBlur={handleBlur}
-                        className={`w-full px-4 py-3 bg-white/10 border ${
+                        className={`w-full px-4 py-3 bg-teal-600/10 border ${
                           errors.firstName 
                             ? 'border-red-400/50 focus:border-red-400' 
                             : focusedField === 'firstName'
-                              ? 'border-blue-400 focus:border-blue-400'
-                              : 'border-white/20 focus:border-blue-400'
-                        } rounded-xl text-white placeholder-blue-200/60 backdrop-blur-sm transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-blue-400/20`}
+                              ? 'border-teal-400 focus:border-teal-400'
+                              : 'border-black/15 focus:border-teal-400'
+                        } rounded-xl text-black placeholder-gray-400 backdrop-blur-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-teal-400/20`}
                         placeholder="Enter your first name"
                       />
                     </div>
@@ -334,8 +423,8 @@ const Register = () => {
 
                   {/* Last Name */}
                   <div className="space-y-2">
-                    <label className="block text-sm font-medium text-blue-100">
-                      Last Name *
+                    <label className="block text-lg font-medium text-teal-200">
+                      Last Name 
                     </label>
                     <div className="relative">
                       <input
@@ -345,13 +434,13 @@ const Register = () => {
                         onChange={handleChange}
                         onFocus={() => handleFocus('lastName')}
                         onBlur={handleBlur}
-                        className={`w-full px-4 py-3 bg-white/10 border ${
+                        className={`w-full px-4 py-3 bg-teal-600/10 border ${
                           errors.lastName 
                             ? 'border-red-400/50 focus:border-red-400' 
                             : focusedField === 'lastName'
-                              ? 'border-blue-400 focus:border-blue-400'
-                              : 'border-white/20 focus:border-blue-400'
-                        } rounded-xl text-white placeholder-blue-200/60 backdrop-blur-sm transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-blue-400/20`}
+                              ? 'border-teal-400 focus:border-teal-400'
+                              : 'border-black/15 focus:border-teal-400'
+                        } rounded-xl text-black placeholder-gray-400 backdrop-blur-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-teal-400/20`}
                         placeholder="Enter your last name"
                       />
                     </div>
@@ -363,8 +452,8 @@ const Register = () => {
 
                 {/* Email */}
                 <div className="space-y-2">
-                  <label className="block text-sm font-medium text-blue-100">
-                    Email Address *
+                  <label className="block text-lg font-medium text-teal-200">
+                    Email Address 
                   </label>
                   <div className="relative">
                     <input
@@ -375,20 +464,16 @@ const Register = () => {
                       onFocus={() => handleFocus('email')}
                       onBlur={handleBlur}
                       autoComplete="username"
-                      className={`w-full px-4 py-3 bg-white/10 border ${
+                      className={`w-full px-4 py-3 bg-teal-600/10 border ${
                         errors.email 
                           ? 'border-red-400/50 focus:border-red-400' 
                           : focusedField === 'email'
-                            ? 'border-blue-400 focus:border-blue-400'
-                            : 'border-white/20 focus:border-blue-400'
-                      } rounded-xl text-white placeholder-blue-200/60 backdrop-blur-sm transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-blue-400/20`}
+                            ? 'border-teal-400 focus:border-teal-400'
+                            : 'border-black/15 focus:border-teal-400'
+                      } rounded-xl text-black placeholder-gray-400 backdrop-blur-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-teal-400/20`}
                       placeholder="Enter your email address"
                     />
-                    <div className="absolute inset-y-0 right-0 pr-3 flex items-center">
-                      <svg className="h-5 w-5 text-blue-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" />
-                      </svg>
-                    </div>
+
                   </div>
                   {errors.email && (
                     <p className="text-red-300 text-sm">{errors.email}</p>
@@ -399,8 +484,8 @@ const Register = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {/* Country */}
                   <div className="space-y-2">
-                    <label className="block text-sm font-medium text-blue-100">
-                      Country *
+                    <label className="block text-lg font-medium text-teal-200">
+                      Country 
                     </label>
                     <div className="relative">
                       <input
@@ -410,13 +495,13 @@ const Register = () => {
                         onChange={handleChange}
                         onFocus={() => handleFocus('country')}
                         onBlur={handleBlur}
-                        className={`w-full px-4 py-3 bg-white/10 border ${
+                        className={`w-full px-4 py-3 bg-teal-600/10 border ${
                           errors.country 
                             ? 'border-red-400/50 focus:border-red-400' 
                             : focusedField === 'country'
-                              ? 'border-blue-400 focus:border-blue-400'
-                              : 'border-white/20 focus:border-blue-400'
-                        } rounded-xl text-white placeholder-blue-200/60 backdrop-blur-sm transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-blue-400/20`}
+                              ? 'border-teal-400 focus:border-teal-400'
+                              : 'border-black/15 focus:border-teal-400'
+                        } rounded-xl text-black placeholder-gray-400 backdrop-blur-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-teal-400/20`}
                         placeholder="Your country"
                       />
                     </div>
@@ -427,8 +512,8 @@ const Register = () => {
 
                   {/* Phone Number */}
                   <div className="space-y-2">
-                    <label className="block text-sm font-medium text-blue-100">
-                      Phone Number *
+                    <label className="block text-lg font-medium text-teal-200">
+                      Phone Number 
                     </label>
                     <div className="relative">
                       <input
@@ -438,13 +523,13 @@ const Register = () => {
                         onChange={handleChange}
                         onFocus={() => handleFocus('phoneNumber')}
                         onBlur={handleBlur}
-                        className={`w-full px-4 py-3 bg-white/10 border ${
+                        className={`w-full px-4 py-3 bg-teal-600/10 border ${
                           errors.phoneNumber 
                             ? 'border-red-400/50 focus:border-red-400' 
                             : focusedField === 'phoneNumber'
-                              ? 'border-blue-400 focus:border-blue-400'
-                              : 'border-white/20 focus:border-blue-400'
-                        } rounded-xl text-white placeholder-blue-200/60 backdrop-blur-sm transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-blue-400/20`}
+                              ? 'border-teal-400 focus:border-teal-400'
+                              : 'border-black/15 focus:border-teal-400'
+                        } rounded-xl text-black placeholder-gray-400 backdrop-blur-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-teal-400/20`}
                         placeholder="Your phone number"
                       />
                     </div>
@@ -454,10 +539,100 @@ const Register = () => {
                   </div>
                 </div>
 
+                {/* Service Provider Fields - Conditional Rendering */}
+                {formData.userType === 'service-provider' && (
+                  <>
+                    {/* Company Name */}
+                    <div className="space-y-2">
+                      <label className="block text-lg font-medium text-teal-200">
+                        Company/Business Name
+                      </label>
+                      <div className="relative">
+                        <input
+                          type="text"
+                          name="companyName"
+                          value={formData.companyName}
+                          onChange={handleChange}
+                          onFocus={() => handleFocus('companyName')}
+                          onBlur={handleBlur}
+                          className={`w-full px-4 py-3 bg-teal-600/10 border ${
+                            errors.companyName 
+                              ? 'border-red-400/50 focus:border-red-400' 
+                              : focusedField === 'companyName'
+                                ? 'border-teal-400 focus:border-teal-400'
+                                : 'border-black/15 focus:border-teal-400'
+                          } rounded-xl text-black placeholder-gray-400 backdrop-blur-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-teal-400/20`}
+                          placeholder="Enter your company/business name"
+                        />
+                      </div>
+                      {errors.companyName && (
+                        <p className="text-red-300 text-sm">{errors.companyName}</p>
+                      )}
+                    </div>
+
+                    {/* Company Description */}
+                    <div className="space-y-2">
+                      <label className="block text-lg font-medium text-teal-200">
+                        Company Description (Optional)
+                      </label>
+                      <div className="relative">
+                        <textarea
+                          name="companyDescription"
+                          value={formData.companyDescription}
+                          onChange={handleChange}
+                          onFocus={() => handleFocus('companyDescription')}
+                          onBlur={handleBlur}
+                          rows="3"
+                          className={`w-full px-4 py-3 bg-teal-600/10 border ${
+                            focusedField === 'companyDescription'
+                              ? 'border-teal-400 focus:border-teal-400'
+                              : 'border-black/15 focus:border-teal-400'
+                          } rounded-xl text-black placeholder-gray-400 backdrop-blur-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-teal-400/20`}
+                          placeholder="Brief description of your services"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Services Selection */}
+                    <div className="space-y-2">
+                      <label className="block text-lg font-medium text-teal-200">
+                        Select Services Offered
+                      </label>
+                      <div className="space-y-2">
+                        {[
+                          { id: 'tour-packages', label: 'Tour Packages', icon: '🗺️' },
+                          { id: 'excursions', label: 'Excursions (Tourist Activities)', icon: '🎭' },
+                          { id: 'accommodation', label: 'Accommodation (Hotel/Resort/Guest Houses)', icon: '🏨' },
+                          { id: 'transportation', label: 'Transportation (Vehicle + Driver/Guide)', icon: '🚗' }
+                        ].map(service => (
+                          <label key={service.id} className="flex items-center space-x-3 p-3 bg-teal-600/10 border border-black/15 rounded-lg hover:border-teal-400/50 cursor-pointer transition-all duration-200">
+                            <input
+                              type="checkbox"
+                              checked={formData.services.includes(service.id)}
+                              onChange={() => handleServiceToggle(service.id)}
+                              className="w-5 h-5 rounded accent-teal-400 cursor-pointer"
+                            />
+                            <span className="text-lg">{service.icon}</span>
+                            <span className="text-teal-100 font-medium flex-1">{service.label}</span>
+                          </label>
+                        ))}
+                      </div>
+                      {errors.services && (
+                        <p className="text-red-300 text-sm">{errors.services}</p>
+                      )}
+                      <div className="mt-2 p-3 bg-blue-600/10 border border-blue-400/30 rounded-lg">
+                        <p className="text-blue-100 text-sm">
+                          <strong>Note:</strong> Each service you select will require approval from our admin team before you can start offering it.
+                        </p>
+                      </div>
+                    </div>
+                  </>
+                )}
+
                 {/* Password */}
                 <div className="space-y-2">
-                  <label className="block text-sm font-medium text-blue-100">
-                    Password *
+                  <label className="block text-lg font-medium text-teal-200">
+                    Password 
                   </label>
                   <div className="relative">
                     <input
@@ -468,19 +643,19 @@ const Register = () => {
                       onFocus={() => handleFocus('password')}
                       onBlur={handleBlur}
                       autoComplete="new-password"
-                      className={`w-full px-4 py-3 pr-12 bg-white/10 border ${
+                      className={`w-full px-4 py-3 pr-12 bg-teal-600/10 border ${
                         errors.password 
                           ? 'border-red-400/50 focus:border-red-400' 
                           : focusedField === 'password'
-                            ? 'border-blue-400 focus:border-blue-400'
-                            : 'border-white/20 focus:border-blue-400'
-                      } rounded-xl text-white placeholder-blue-200/60 backdrop-blur-sm transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-blue-400/20`}
+                            ? 'border-teal-400 focus:border-teal-400'
+                            : 'border-black/15 focus:border-teal-400'
+                      } rounded-xl text-black placeholder-gray-400 backdrop-blur-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-teal-400/20`}
                       placeholder="Create a strong password"
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute inset-y-0 right-0 pr-3 flex items-center text-blue-300 hover:text-blue-200 transition-colors duration-200"
+                      className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-teal-400 transition-colors duration-200"
                     >
                       {showPassword ? (
                         <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -501,8 +676,8 @@ const Register = () => {
 
                 {/* Repeat Password */}
                 <div className="space-y-2">
-                  <label className="block text-sm font-medium text-blue-100">
-                    Confirm Password *
+                  <label className="block text-lg font-medium text-teal-200">
+                    Confirm Password 
                   </label>
                   <div className="relative">
                     <input
@@ -513,19 +688,19 @@ const Register = () => {
                       onFocus={() => handleFocus('repeatPassword')}
                       onBlur={handleBlur}
                       autoComplete="new-password"
-                      className={`w-full px-4 py-3 pr-12 bg-white/10 border ${
+                      className={`w-full px-4 py-3 pr-12 bg-teal-600/10 border ${
                         errors.repeatPassword 
                           ? 'border-red-400/50 focus:border-red-400' 
                           : focusedField === 'repeatPassword'
-                            ? 'border-blue-400 focus:border-blue-400'
-                            : 'border-white/20 focus:border-blue-400'
-                      } rounded-xl text-white placeholder-blue-200/60 backdrop-blur-sm transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-blue-400/20`}
+                            ? 'border-teal-400 focus:border-teal-400'
+                            : 'border-black/15 focus:border-teal-400'
+                      } rounded-xl text-black placeholder-gray-400 backdrop-blur-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-teal-400/20`}
                       placeholder="Confirm your password"
                     />
                     <button
                       type="button"
                       onClick={() => setShowRepeatPassword(!showRepeatPassword)}
-                      className="absolute inset-y-0 right-0 pr-3 flex items-center text-blue-300 hover:text-blue-200 transition-colors duration-200"
+                      className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-teal-400 transition-colors duration-200"
                     >
                       {showRepeatPassword ? (
                         <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -548,11 +723,11 @@ const Register = () => {
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className={`w-full py-4 px-6 rounded-xl font-medium transition-all duration-200 ${
+                  className={`w-full py-3 px-6 rounded-md font-semibold text-xl transition-all duration-200 ${
                     isLoading
                       ? 'bg-blue-400/50 cursor-not-allowed text-blue-100'
-                      : 'bg-gradient-to-r from-blue-500 to-teal-500 hover:from-blue-600 hover:to-teal-600 text-white shadow-lg hover:shadow-xl transform hover:scale-[1.02] active:scale-[0.98]'
-                  } focus:outline-none focus:ring-4 focus:ring-blue-400/20`}
+                      : 'bg-teal-500 hover:bg-white text-white shadow-lg hover:text-black transform hover:scale-[1.02] active:scale-[0.98]'
+                  } focus:outline-none focus:ring-4 focus:ring-blue-400/20 border-2 hover:border-teal-500`}
                 >
                   {isLoading ? (
                     <div className="flex items-center justify-center space-x-2">
@@ -565,12 +740,12 @@ const Register = () => {
                 </button>
 
                 {/* Login Link */}
-                <div className="text-center pt-4">
-                  <p className="text-blue-100">
+                <div className="text-center ">
+                  <p className="text-teal-200">
                     Already have an account?{' '}
                     <Link 
                       to="/login" 
-                      className="text-blue-300 hover:text-blue-200 font-medium transition-colors duration-200 hover:underline"
+                      className="text-blue-500 hover:text-blue-600 font-semibold transition-colors duration-200 hover:underline"
                     >
                       Sign in here
                     </Link>

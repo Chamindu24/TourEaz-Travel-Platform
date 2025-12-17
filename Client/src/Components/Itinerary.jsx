@@ -156,7 +156,7 @@ const Itinerary = ({selectedNightsKey}) => {
                   transition-all duration-500 ease-out rounded-full cursor-pointer flex-1 group overflow-hidden
                   ${
                     activeTab === tab
-                      ? "bg-gradient-to-r from-[#005E84] to-[#0A435C] text-white shadow-lg shadow-[#005E84]/25 transform scale-[1.02]"
+                      ? "bg-teal-300 text-white shadow-lg shadow-[#005E84]/25 transform scale-[1.02]"
                       : "bg-white text-gray-600 hover:text-[#005E84] hover:bg-gray-50 border border-gray-200 hover:border-[#005E84]/30 hover:shadow-md"
                   }`}
                 onClick={() => setActiveTab(tab)}
@@ -189,7 +189,7 @@ const Itinerary = ({selectedNightsKey}) => {
           <div className="space-y-8">
             {/* Timeline indicator */}
             <div className="relative">
-              <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-gradient-to-b from-[#005E84] via-[#0A435C] to-[#075375] hidden lg:block"></div>
+              <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-teal-500 hidden lg:block"></div>
               
               {itineraryDays.map((dayItem, index) => (
                 <div
@@ -202,7 +202,7 @@ const Itinerary = ({selectedNightsKey}) => {
                   {/* Card container with hover effects */}
                   <div className="lg:ml-16 bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 group-hover:-translate-y-1 overflow-hidden border border-gray-100">
                     {/* Card header with gradient */}
-                    <div className="bg-gradient-to-r from-[#005E84] via-[#0A435C] to-[#075375] text-white p-6">
+                    <div className="bg-emerald-500 text-white p-6">
                       <div className="flex items-center gap-4 flex-wrap">
                         <div className="bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full border border-white/30">
                           <span className="font-bold text-lg md:text-xl">Day {dayItem.day}</span>
@@ -351,13 +351,13 @@ const Itinerary = ({selectedNightsKey}) => {
 
             {/* Package contents section */}
             <div className="text-center mb-12">
-              <h2 className="text-4xl lg:text-5xl font-bold bg-gradient-to-r from-[#005E84] via-[#0A435C] to-[#075375] bg-clip-text text-transparent mb-4">
+              <h2 className="text-4xl lg:text-5xl font-bold bg-teal-200 bg-clip-text text-transparent mb-4">
                 What&apos;s Inside the Package?
               </h2>
               <p className="text-xl text-gray-600 max-w-2xl mx-auto">
                 Discover everything that&apos;s included and excluded in your amazing journey
               </p>
-              <div className="w-32 h-1 bg-gradient-to-r from-[#005E84] to-[#0A435C] rounded-full mx-auto mt-6"></div>
+              <div className="w-32 h-1 bg-teal-300 rounded-full mx-auto mt-6"></div>
             </div>
 
             {/* Inclusions and Exclusions */}
@@ -488,7 +488,7 @@ const Itinerary = ({selectedNightsKey}) => {
               ].map((policy, index) => (
                 <div key={index} className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-500 border border-gray-100 group">
                   <div className="flex items-center gap-4 mb-6">
-                    <div className="w-12 h-12 bg-gradient-to-r from-[#005E84] to-[#0A435C] rounded-full flex items-center justify-center text-white group-hover:scale-110 transition-transform duration-300">
+                    <div className="w-12 h-12 bg-teal-500 rounded-full flex items-center justify-center text-white group-hover:scale-110 transition-transform duration-300">
                       {policy.icon}
                     </div>
                     <h3 className="text-2xl lg:text-3xl font-bold text-gray-900">{policy.title}</h3>

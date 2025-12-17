@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import LandingHeader from "./LandingHeader";
+import { HoverEffect } from "../Components/ui/card-hover-effect";
 
 // Add custom CSS animations
 const animationStyles = `
@@ -125,6 +126,73 @@ const animationStyles = `
     }
   }
 
+  /* --- 1. Keyframes: Transition for the full width of the original content --- */
+  @keyframes marquee {
+      /* Starts at the beginning of the first content set (0) */
+      0% { transform: translateX(0); }
+      /* Moves exactly to the start of the duplicated content, covering 50% of the track */
+      100% { transform: translateX(-50%); } 
+  }
+
+  /* --- 2. Container and Clean Overlays --- */
+    /* Marquee layout is handled via Tailwind utility classes on the elements.
+     Keep only keyframes and a simple hover rule to pause the animation. */
+
+    .marquee-track:hover {
+    animation-play-state: paused;
+    }
+
+  /* Responsive adjustments: make each marquee item behave like a full-width slide on small screens */
+  @media (max-width: 1024px) {
+    .marquee-track {
+      gap: 1rem;
+      padding: 1.5rem 0;
+      animation: marquee 26s linear infinite;
+    }
+    .marquee-item {
+      width: 22rem;
+      min-width: 220px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .marquee-container {
+      /* keep a small internal padding so overlay doesn't cover clickable area */
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+    .marquee-track {
+      gap: 0.75rem;
+      padding: 1rem 0;
+      /* faster animation since items are narrower on mobile */
+      animation: marquee 18s linear infinite;
+    }
+    .marquee-item {
+      /* nearly full viewport card on mobile */
+      width: calc(100% - 10rem);
+      min-width: unset;
+    }
+    .marquee-overlay {
+      /* increase relative coverage using viewport width so edges blend better */
+      width: 28vw;
+      filter: blur(14px);
+    }
+  }
+
+  @media (max-width: 420px) {
+    .marquee-track {
+      gap: 0.5rem;
+      padding: 0.75rem 0;
+      animation: marquee 14s linear infinite;
+    }
+    .marquee-item {
+      width: calc(100% - 5rem);
+    }
+    .marquee-overlay {
+      width: 36vw;
+      filter: blur(12px);
+    }
+  }
   .animate-fade-in-up {
     animation: fadeInUp 0.8s ease-out forwards;
   }
@@ -237,30 +305,187 @@ const animationStyles = `
   }
 `;
 
+// Helper function to style the last word
+const renderTitleWithStyledLastWord = (title) => {
+  const words = title.trim().split(' ');
+  if (words.length <= 1) return title;
+  
+  const lastWord = words.pop();
+  const restOfTitle = words.join(' ');
+  
+  return (
+    <>
+      {restOfTitle}{' '}
+      <span className="relative inline-block text-yellow-300 blur-[0.6px] drop-shadow-[0_0_10px_rgba(253,224,71,0.5)]">
+        {lastWord}
+      </span>
+    </>
+  );
+};
+
 const Home = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+  const [mobileIndex, setMobileIndex] = useState(0);
+  const touchStartX = React.useRef(null);
+  const touchDeltaX = React.useRef(0);
+  // autoplay for mobile carousel
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const mq = window.matchMedia("(max-width: 767px)");
+    let interval = null;
+    if (mq.matches && !isPaused) {
+      interval = setInterval(() => {
+        setMobileIndex((prev) => (prev + 1) % servicesData.length);
+      }, 4000);
+    }
+    return () => {
+      if (interval) clearInterval(interval);
+    };
+  }, [isPaused]);
 
   // Modern hero slides with better imagery
   const heroSlides = [
     {
-      image: "/travel-services/mike-swigunski-k9Zeq6EH_bk-unsplash.jpg",
+      image: "/travel-services/srilanka1.jpg",
       title: "Experience Paradise",
       subtitle: "Where luxury meets nature in perfect harmony",
       badge: "Premium Resorts",
     },
     {
-      image: "/travel-services/husen-siraaj-fsNMGdyQTUY-unsplash.jpg",
+      image: "/travel-services/srilanka3.jpg",
       title: "Your Dream Escape",
       subtitle: "Curated experiences for every traveler",
       badge: "Exclusive Villas",
     },
     {
-      image: "/travel-services/roberto-nickson-HQMyV8a_4_4-unsplash.jpg",
-      title: "Discover the Maldives",
+      image: "/travel-services/srilanka6.jpg",
+      title: "Discover the Srilanka",
       subtitle: "Unforgettable moments await",
       badge: "Island Adventures",
     },
+    {
+      image: "/travel-services/srilanka7.jpg", // new image path
+      title: "Adventure Awaits",
+      subtitle: "Explore hidden gems and local treasures",
+      badge: "Guided Tours",
+    },
   ];
+
+const servicesData = [
+      {
+        title: "Tour Packages",
+        subtitle: "Curated Experiences",
+        description:
+          "Discover the best tour packages tailored to your preferences with expert guides and unforgettable adventures",
+        icon: (
+          <svg
+            className="w-10 h-10 text-white"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-1.447-.894L15 4m0 13V4m0 0L9 7"
+            />
+          </svg>
+        ),
+        gradient: "from-[#005E84] via-[#075375] to-[#0A435C]",
+        link: "/tours",
+        features: [
+          "Custom Itineraries",
+          "Expert Guides",
+          "All-Inclusive Options",
+        ],
+      },
+      {
+        title: "Hotels & Resorts",
+        subtitle: "Luxury Accommodations",
+        description:
+          "Premium hotels and resorts offering world-class comfort and exceptional hospitality for your perfect stay",
+        icon: (
+          <svg
+            className="w-10 h-10 text-white"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+            />
+          </svg>
+        ),
+        gradient: "from-purple-500 via-pink-500 to-rose-500",
+        link: "/search",
+        features: [
+          "Luxury Resorts",
+          "Beachfront Villas",
+          "Budget-Friendly Options",
+        ],
+      },
+      {
+        title: "Activities",
+        subtitle: "Adventure Awaits",
+        description:
+          "Exciting water sports, diving, island tours and cultural experiences to make your vacation unforgettable",
+        icon: (
+          <svg
+            className="w-10 h-10 text-white"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+        ),
+        gradient: "from-green-500 via-emerald-500 to-teal-500",
+        link: "/activities",
+        features: [
+          "Water Sports",
+          "Diving & Snorkeling",
+          "Island Excursions",
+        ],
+      },
+      {
+        title: "Transportation",
+        subtitle: "Seamless Travel",
+        description:
+          "Reliable and comfortable transportation services including airport transfers and island-hopping",
+        icon: (
+          <svg
+            className="w-10 h-10 text-white"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"
+            />
+          </svg>
+        ),
+        gradient: "from-orange-500 via-red-500 to-pink-500",
+        link: "/transportations",
+        features: [
+          "Airport Transfers",
+          "Private Charters",
+          "Inter-Island Travel",
+        ],
+      },
+  ]
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -274,12 +499,12 @@ const Home = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#E7E9E5] via-[#B7C5C7] to-[#E7E9E5]">
+    <div className="min-h-screen bg-white landing-hero-content">
       <style>{animationStyles}</style>
       <LandingHeader />
 
       {/* Modern Hero Section */}
-      <div className="relative h-screen overflow-hidden">
+      <div className="relative h-screen overflow-hidden -mt-20">
         {heroSlides.map((slide, index) => (
           <div
             key={index}
@@ -297,13 +522,13 @@ const Home = () => {
             />
             <div className="absolute inset-0 flex flex-col items-center justify-center px-4 text-center">
               <div className="max-w-4xl mx-auto">
-                <div className="inline-block bg-white/10 backdrop-blur-sm rounded-full px-6 py-2 mb-6 border border-white/20 animate-fade-in-up animate-delay-1 animate-glow">
-                  <span className="text-white font-medium text-sm">
+                <div className="inline-block bg-white/80 backdrop-blur-sm rounded-full px-6 py-2 mb-6 border border-white/20 animate-fade-in-up animate-delay-1 animate-glow">
+                  <span className="text-black/80 font-medium text-sm blur-[0.6px] drop-shadow-[0_0_10px_rgba(253,224,71,0.2)]">
                     {slide.badge}
                   </span>
                 </div>
                 <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-white mb-6 tracking-tight leading-tight animate-fade-in-up animate-delay-2">
-                  {slide.title}
+                  {renderTitleWithStyledLastWord(slide.title)}
                 </h1>
                 <p className="text-xl md:text-2xl text-white/90 mb-12 max-w-2xl mx-auto font-light animate-fade-in-up animate-delay-3">
                   {slide.subtitle}
@@ -311,7 +536,7 @@ const Home = () => {
                 <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in-up animate-delay-4">
                   <Link
                     to="/explore"
-                    className="group bg-[#E7E9E5] text-[#075375] font-bold py-4 px-8 rounded-full shadow-2xl hover:shadow-3xl transition-all transform hover:scale-105 hover:bg-[#B7C5C7] shine-effect"
+                    className="group bg-[#E7E9E5] text-[#075375] font-bold py-4 px-8 rounded-xl shadow-2xl hover:shadow-3xl transition-all transform hover:scale-105 hover:bg-[#B7C5C7] shine-effect"
                     onClick={scrollToTop}
                   >
                     <span className="flex items-center">
@@ -333,7 +558,7 @@ const Home = () => {
                   </Link>
                   <Link
                     to="/travel-services"
-                    className="group border-2 border-[#E7E9E5] text-[#E7E9E5] font-bold py-4 px-8 rounded-full hover:bg-[#E7E9E5] hover:text-[#075375] transition-all transform hover:scale-105 animate-glow shine-effect"
+                    className="group border-2 border-[#E7E9E5] text-[#E7E9E5] font-bold py-4 px-8 rounded-xl hover:bg-[#E7E9E5] hover:text-[#075375] transition-all transform hover:scale-105 animate-glow shine-effect"
                     onClick={scrollToTop}
                   >
                     Explore Services
@@ -361,64 +586,82 @@ const Home = () => {
       </div>
 
       {/* About Section */}
-      <section className="py-24 bg-[#E7E9E5] relative overflow-hidden">
+      <section className="py-20  bg-white relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div className="space-y-8">
-              <div className="inline-flex items-center px-4 py-2 bg-[#005E84]/20 text-[#075375] rounded-full text-sm font-medium animate-fade-in-left shine-effect">
-                <span className="w-2 h-2 bg-[#075375] rounded-full mr-2 animate-pulse"></span>
-                About Us
+              <div className="inline-flex items-center px-4 py-1 bg-white text-[#005E84] rounded-full text-sm font-semibold tracking-widest uppercase mb-8 border-2 border-[#0A435C] relative overflow-hidden group cursor-pointer">
+                <span className="w-2 h-2 bg-[#0A435C] rounded-full mr-2 "></span>
+                Get Started
+                <span className="absolute top-0 left-0 w-full h-full border-1 border-[#0A435C] rounded-full "></span>
               </div>
-              <h2 className="text-4xl md:text-5xl font-bold text-[#075375] animate-fade-in-left animate-delay-1">
-                Your Gateway to <span className="text-[#0A435C]">Paradise</span>
+              <h2 className="text-4xl md:text-5xl font-bold text-black animate-fade-in-left animate-delay-1">
+                Your Gateway to <span className="text-teal-500">Paradise</span>
               </h2>
-              <p className="text-xl text-[#0A435C] leading-relaxed animate-fade-in-left animate-delay-2">
+              <p className="text-xl text-teal-200 leading-relaxed animate-fade-in-left animate-delay-2">
                 We specialize in creating unforgettable experiences in the
                 Maldives. From luxury resorts to exclusive villas, we bring your
                 dream vacation to life.
               </p>
-              <div className="grid grid-cols-2 gap-6 animate-fade-in-left animate-delay-3">
-                <div className="text-center p-4 bg-white/50 backdrop-blur-sm rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-1">
-                  <div className="text-3xl font-bold text-[#005E84] mb-2">
-                    500+
-                  </div>
-                  <div className="text-[#0A435C]">Happy Guests</div>
+              <div className="grid grid-cols-2 gap-6">
+                <div className="p-6 bg-white rounded-2xl shadow-xl hover:shadow-2xl 
+                    hover:-translate-y-2 hover:rotate-1 transition duration-500 text-center">
+                  <div className="text-4xl font-extrabold text-[#005E84]">500+</div>
+                  <p className="text-[#0A435C]">Happy Guests</p>
                 </div>
-                <div className="text-center p-4 bg-white/50 backdrop-blur-sm rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-1">
-                  <div className="text-3xl font-bold text-[#005E84] mb-2">
-                    50+
-                  </div>
-                  <div className="text-[#0A435C]">Premium Resorts</div>
+
+                <div className="p-6 bg-white rounded-2xl shadow-xl hover:shadow-2xl 
+                    hover:-translate-y-2 hover:-rotate-1 transition duration-500 text-center">
+                  <div className="text-4xl font-extrabold text-[#005E84]">50+</div>
+                  <p className="text-[#0A435C]">Premium Resorts</p>
                 </div>
               </div>
             </div>
             <div className="relative animate-fade-in-right animate-delay-2">
               <div className="relative z-10 rounded-3xl overflow-hidden shadow-2xl transform hover:scale-105 transition-all duration-700 shine-effect">
-                <div className="absolute inset-0 bg-gradient-to-r from-[#005E84]/10 via-transparent to-[#005E84]/10 animate-shimmer"></div>
+
+                
+                <div className="absolute inset-0 flex items-end justify-center z-20 mb-16">
+                  <div className="backdrop-blur-md bg-black/10 border border-white/50
+                      shadow-lg drop-shadow-2xl rounded-2xl px-10 py-5
+                      flex flex-col items-center animate-fade-in-up">
+                    <p className="text-white  text-lg font-semibold tracking-wide">
+                     Where Dreams Meet the Ocean
+                    </p>
+                    <span className="text-white/80 text-sm tracking-widest">Sri Lanka</span>
+                  </div>
+                </div>
+
+                <div className="absolute inset-0 bg-gradient-to-r from-teal-500/10 via-transparent to-[#005E84]/10 animate-shimmer"></div>
+                
                 <img
-                  src="/travel-services/mike-swigunski-k9Zeq6EH_bk-unsplash.jpg"
-                  alt="Luxury Maldives Resort"
-                  className="w-full h-96 object-cover"
+                  src="/travel-services/travel5.jpg"
+                  alt="Mirissa Srilanka"
+                  className="w-full h-96 object-cover shadow-2xl"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
               </div>
-              <div className="absolute -bottom-6 -right-6 w-24 h-24 bg-gradient-to-br from-[#005E84] to-[#0A435C] rounded-2xl shadow-lg animate-pulse-slow animate-glow"></div>
-              <div className="absolute -top-6 -left-6 w-16 h-16 bg-gradient-to-br from-[#0A435C] to-[#005E84] rounded-full opacity-70 animate-bounce-slow"></div>
+
+              <div className="absolute -bottom-6 -right-6 w-24 h-24 bg-gradient-to-br from-teal-200 to-teal-300 rounded-2xl shadow-lg animate-pulse-slow animate-glow"></div>
+              <div className="absolute -top-6 -left-6 w-16 h-16 bg-gradient-to-br from-teal-300 to-teal-200 rounded-full opacity-70 animate-bounce-slow"></div>
             </div>
+
           </div>
         </div>
       </section>
 
       {/* Property Types Section */}
-      <section className="py-24 bg-gradient-to-br from-[#B7C5C7] to-[#E7E9E5] relative overflow-hidden">
+      <section className="py-14 bg-white relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="text-center mb-16">
-            <div className="inline-flex items-center px-4 py-2 bg-[#005E84]/20 text-[#075375] rounded-full text-sm font-medium mb-6 animate-fade-in-up">
-              <span className="w-2 h-2 bg-[#075375] rounded-full mr-2"></span>
-              Property Types
-            </div>
-            <h2 className="text-4xl md:text-5xl font-bold text-[#075375] mb-6 animate-fade-in-up animate-delay-1">
-              Choose Your <span className="text-[#0A435C]">Perfect Stay</span>
+              <div className="inline-flex items-center px-4 py-1 bg-white text-[#005E84] rounded-full text-sm font-semibold tracking-widest uppercase mb-8 border-2 border-[#0A435C] relative overflow-hidden group cursor-pointer">
+                <span className="w-2 h-2 bg-[#0A435C] rounded-full mr-2 "></span>
+                  Property Types
+                <span className="absolute top-0 left-0 w-full h-full border-1 border-[#0A435C] rounded-full "></span>
+              </div>
+            <h2 className="text-4xl md:text-5xl font-bold text-black mb-6 animate-fade-in-up animate-delay-1">
+              Choose Your <span className="text-teal-500">Perfect Stay</span>
             </h2>
             <p className="text-xl text-[#0A435C] max-w-3xl mx-auto animate-fade-in-up animate-delay-2">
               From overwater bungalows to beachfront villas, find your ideal
@@ -426,7 +669,7 @@ const Home = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <HoverEffect className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
               {
                 title: "Overwater Villas",
@@ -495,17 +738,17 @@ const Home = () => {
                 ],
               },
             ].map((property, index) => (
-              <div
+              <div 
                 key={index}
-                className="group bg-gradient-to-br from-[#E7E9E5] to-white rounded-3xl p-8 shadow-xl hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-500 border border-[#B7C5C7]/50 overflow-hidden animate-fade-in-up shine-effect"
+                className="group relative p-8 rounded-3xl border border-teal-400/40 hover:border-teal-400 hover:bg-white/10 hover:shadow-[0_0_18px_rgba(20,184,166,0.7)] transition-all duration-300 hover:animate-pulse shadow-xl hover:-translate-y-2"
                 style={{ animationDelay: `${(index + 3) * 0.2}s` }}
               >
-                <div className="absolute inset-0 bg-gradient-to-br from-[#005E84]/5 to-[#0A435C]/5 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <div className="absolute inset-0 bg-gradient-to-br from-[#005E84]/5 to-[#0A435C]/5 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 <div className="relative">
-                  <div className="bg-gradient-to-br from-[#005E84] to-[#0A435C] rounded-2xl p-4 w-16 h-16 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 animate-glow">
+                  <div className="bg-teal-500 rounded-2xl p-4 w-16 h-16 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 animate-glow">
                     {property.icon}
                   </div>
-                  <h3 className="text-2xl font-bold text-[#075375] mb-4 group-hover:text-[#005E84] transition-colors">
+                  <h3 className="text-2xl font-bold text-black mb-4 group-hover:text-teal-200 transition-colors">
                     {property.title}
                   </h3>
                   <p className="text-[#0A435C] leading-relaxed mb-6">
@@ -525,280 +768,280 @@ const Home = () => {
                 </div>
               </div>
             ))}
-          </div>
+          </HoverEffect>
         </div>
       </section>
 
       {/* Services Navigation Section */}
-      <section className="py-24 bg-gradient-to-br from-[#B7C5C7] to-[#E7E9E5] relative overflow-hidden">
+      <section className="py-20 bg-white relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="text-center mb-16">
-            <div className="inline-flex items-center px-4 py-2 bg-[#005E84]/20 text-[#075375] rounded-full text-sm font-medium mb-6 animate-fade-in-up">
-              <span className="w-2 h-2 bg-[#075375] rounded-full mr-2"></span>
-              Our Services
-            </div>
-            <h2 className="text-4xl md:text-5xl font-bold text-[#075375] mb-6 animate-fade-in-up animate-delay-1">
-              Discover Our <span className="text-[#0A435C]">Expertise</span>
+              <div className="inline-flex items-center px-4 py-1 bg-white text-[#005E84] rounded-full text-sm font-semibold tracking-widest uppercase mb-8 border-2 border-[#0A435C] relative overflow-hidden group cursor-pointer">
+                <span className="w-2 h-2 bg-[#0A435C] rounded-full mr-2 "></span>
+                  Our Services
+                <span className="absolute top-0 left-0 w-full h-full border-1 border-[#0A435C] rounded-full "></span>
+              </div>
+            <h2 className="text-4xl md:text-5xl font-bold text-black mb-6 animate-fade-in-up animate-delay-1">
+              Discover Our <span className="text-teal-500">Expertise</span>
             </h2>
             <p className="text-xl text-[#0A435C] max-w-3xl mx-auto animate-fade-in-up animate-delay-2">
               Comprehensive solutions tailored to your Maldives journey
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {[
-              {
-                title: "Hulhumeedhoo Island",
-                subtitle: "Island of Everything",
-                description:
-                  "Discover Hulhumeedhoo, the eastern jewel of Addu Atoll, where history, culture, and natural beauty meet",
-                icon: (
-                  <svg
-                    className="w-10 h-10 text-white"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"
-                    />
-                  </svg>
-                ),
-                gradient: "from-[#005E84] via-[#075375] to-[#0A435C]",
-                link: "/hulhumeedhoo",
-                features: [
-                  "Wedding Packages",
-                  "Investment Opportunities",
-                  "Authentic Experiences",
-                ],
-              },
-              {
-                title: "Travel Services",
-                subtitle: "Luxury Travel Planning",
-                description:
-                  "Comprehensive travel planning and concierge services for your perfect Maldives experience",
-                icon: (
-                  <svg
-                    className="w-10 h-10 text-white"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-1.447-.894L15 4m0 13V4m0 0L9 7"
-                    />
-                  </svg>
-                ),
-                gradient: "from-[#005E84] via-[#075375] to-[#0A435C]",
-                link: "/travel-services",
-                features: [
-                  "Resort Bookings",
-                  "Concierge Services",
-                  "Activity Planning",
-                ],
-              },
-              {
-                title: "Real Estate",
-                subtitle: "Property Investment",
-                description:
-                  "Expert guidance for real estate investment and development opportunities in the Maldives",
-                icon: (
-                  <svg
-                    className="w-10 h-10 text-white"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
-                    />
-                  </svg>
-                ),
-                gradient: "from-green-500 via-emerald-500 to-teal-500",
-                link: "/real-estate",
-                features: [
-                  "Property Consultation",
-                  "Investment Guidance",
-                  "Development Support",
-                ],
-              },
-              {
-                title: "Investment Support",
-                subtitle: "Business Development",
-                description:
-                  "Complete foreign investment support and business setup services for the Maldives market",
-                icon: (
-                  <svg
-                    className="w-10 h-10 text-white"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
-                    />
-                  </svg>
-                ),
-                gradient: "from-purple-500 via-pink-500 to-rose-500",
-                link: "/investment-support",
-                features: [
-                  "Business Setup",
-                  "Regulatory Support",
-                  "Partnership Network",
-                ],
-              },
-              {
-                title: "Brand Representation",
-                subtitle: "Market Entry",
-                description:
-                  "Official distribution and representation services for international brands in the Maldives",
-                icon: (
-                  <svg
-                    className="w-10 h-10 text-white"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zM21 5a2 2 0 00-2-2h-4a2 2 0 00-2 2v12a4 4 0 004 4h4a2 2 0 002-2V5z"
-                    />
-                  </svg>
-                ),
-                gradient: "from-orange-500 via-red-500 to-pink-500",
-                link: "/brand-representation",
-                features: [
-                  "Market Entry",
-                  "Distribution Network",
-                  "Brand Promotion",
-                ],
-              },
-            ].map((service, index) => (
-              <Link
-                key={index}
-                to={service.link}
-                className="group relative bg-gradient-to-br from-white to-[#E7E9E5] rounded-3xl p-8 shadow-xl hover:shadow-2xl transform hover:-translate-y-3 transition-all duration-500 border border-[#B7C5C7]/30 overflow-hidden animate-fade-in-up shine-effect"
-                style={{ animationDelay: `${(index + 3) * 0.2}s` }}
-                onClick={scrollToTop}
+          <div className="mt-6 relative overflow-hidden">
+            {/* Desktop / Tablet marquee: hidden on small screens */}
+            <div className="hidden md:block">
+              <div
+                className="relative overflow-hidden"
+                style={{ width: "100vw", left: "50%", marginLeft: "-50vw" }}
               >
+                {/* Left / right overlays (Tailwind utilities) */}
                 <div
-                  className={`absolute inset-0 bg-gradient-to-br ${service.gradient} rounded-3xl opacity-0 group-hover:opacity-5 transition-opacity duration-500`}
-                ></div>
-                <div className="relative">
-                  <div className="flex items-start justify-between mb-6">
+                  aria-hidden="true"
+                  className="absolute inset-y-0 left-0 w-[20vw] max-w-[420px] min-w-[96px] pointer-events-none z-30 opacity-95 blur-2xl bg-gradient-to-r from-white to-transparent"
+                />
+                <div
+                  aria-hidden="true"
+                  className="absolute inset-y-0 right-0 w-[20vw] max-w-[420px] min-w-[96px] pointer-events-none z-30 opacity-95 blur-2xl bg-gradient-to-l from-white to-transparent"
+                />
+
+                <div
+                  className="marquee-track flex gap-5 py-8 items-stretch flex-nowrap whitespace-nowrap"
+                  style={{ animation: "marquee 30s linear infinite", animationPlayState: isPaused ? "paused" : "running" }}
+                >
+                  {servicesData.concat(servicesData).map((service, index) => (
                     <div
-                      className={`bg-gradient-to-br ${service.gradient} rounded-2xl p-4 w-20 h-20 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 animate-glow`}
+                      key={index}
+                      className="inline-flex flex-none w-[calc(100%-3rem)] sm:w-[14rem] md:w-[20rem] lg:w-[28rem] min-w-0 sm:min-w-[140px] md:min-w-[200px] lg:min-w-[280px]"
                     >
-                      {service.icon}
-                    </div>
-                    <div className="text-right">
-                      <div className="inline-flex items-center px-3 py-1 bg-[#B7C5C7] text-[#075375] rounded-full text-xs font-medium group-hover:bg-gradient-to-r group-hover:from-[#005E84] group-hover:to-[#0A435C] group-hover:text-white transition-all duration-300">
-                        {service.subtitle}
-                      </div>
-                    </div>
-                  </div>
-
-                  <h3 className="text-2xl font-bold text-[#075375] mb-4 group-hover:text-[#005E84] transition-colors">
-                    {service.title}
-                  </h3>
-
-                  <p className="text-[#0A435C] leading-relaxed mb-6 group-hover:text-[#005E84] transition-colors">
-                    {service.description}
-                  </p>
-
-                  <div className="space-y-2 mb-6">
-                    {service.features.map((feature, idx) => (
-                      <div
-                        key={idx}
-                        className="flex items-center text-sm text-[#075375] transform transition-transform group-hover:translate-x-1"
-                        style={{ transitionDelay: `${idx * 50}ms` }}
+                      <Link
+                        to={service.link}
+                        className="group relative w-full h-full bg-gradient-to-br from-white to-white/20 rounded-3xl p-4 sm:p-6 md:p-8 shadow-xl hover:shadow-2xl transform hover:-translate-y-3 transition-all duration-500 border border-[#B7C5C7]/30 overflow-hidden animate-fade-in-up shine-effect"
+                        style={{ animationDelay: `${(index % servicesData.length + 3) * 0.2}s` }}
+                        onClick={scrollToTop}
+                        onMouseEnter={() => setIsPaused(true)}
+                        onMouseLeave={() => setIsPaused(false)}
+                        onFocus={() => setIsPaused(true)}
+                        onBlur={() => setIsPaused(false)}
+                        onTouchStart={() => setIsPaused(true)}
+                        onTouchEnd={() => setIsPaused(false)}
                       >
-                        <div className="w-1.5 h-1.5 bg-[#005E84] rounded-full mr-3 animate-pulse-slow"></div>
-                        {feature}
-                      </div>
-                    ))}
-                  </div>
+                        <div
+                          className={`absolute inset-0 bg-gradient-to-br ${service.gradient} rounded-3xl opacity-0 group-hover:opacity-5 transition-opacity duration-500`}
+                        ></div>
+                        <div className="relative">
+                          <div className="flex items-start justify-between mb-6">
+                            <div
+                              className={`bg-gradient-to-br ${service.gradient} rounded-2xl p-3 w-16 h-16 md:p-4 md:w-20 md:h-20 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 animate-glow`}
+                            >
+                              {service.icon}
+                            </div>
+                            <div className="text-right">
+                              <div className="items-center px-3 py-1 bg-white text-black ring-1 ring-teal-400 hover:bg-teal-500 hover:text-white rounded-full text-xs font-medium transition-all duration-300 hidden md:inline-flex">
+                                {service.subtitle}
+                              </div>
+                            </div>
+                          </div>
 
-                  <div className="flex items-center text-[#005E84] font-semibold group-hover:translate-x-2 transition-transform">
-                    Explore Service
-                    <svg
-                      className="w-4 h-4 ml-2 group-hover:animate-bounce-slow"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M9 5l7 7-7 7"
-                      />
-                    </svg>
-                  </div>
+                          <h3 className="text-xl md:text-2xl font-bold text-teal-200 mb-4 group-hover:text-[#005E84] transition-colors">
+                            {service.title}
+                          </h3>
+
+                          <p className="text-sm md:text-base text-[#0A435C] leading-relaxed mb-6 group-hover:text-[#005E84] transition-colors break-words whitespace-normal">
+                            {service.description}
+                          </p>
+
+                          <div className="space-y-2 mb-6">
+                            {service.features.map((feature, idx) => (
+                              <div
+                                key={idx}
+                                className="flex items-center text-sm text-[#075375] transform transition-transform group-hover:translate-x-1"
+                                style={{ transitionDelay: `${idx * 50}ms` }}
+                              >
+                                <div className="w-1.5 h-1.5 bg-[#005E84] rounded-full mr-3 animate-pulse-slow"></div>
+                                {feature}
+                              </div>
+                            ))}
+                          </div>
+
+                          <div className="flex justify-center items-center text-[#005E84] font-semibold group-hover:translate-x-2 transition-transform">
+                            Explore Service
+                            <svg
+                              className="w-4 h-4 ml-2 group-hover:animate-bounce-slow"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M9 5l7 7-7 7"
+                              />
+                            </svg>
+                          </div>
+                        </div>
+                      </Link>
+                    </div>
+                  ))}
                 </div>
-              </Link>
-            ))}
+              </div>
+            </div>
+
+            {/* Mobile carousel: show one card per screen, allow swipe and arrow controls */}
+            <div className="block md:hidden">
+              <div className="relative">
+                <div
+                  className="overflow-hidden"
+                  onTouchStart={(e) => {
+                    touchStartX.current = e.touches[0].clientX;
+                    touchDeltaX.current = 0;
+                  }}
+                  onTouchMove={(e) => {
+                    if (touchStartX.current == null) return;
+                    touchDeltaX.current = e.touches[0].clientX - touchStartX.current;
+                  }}
+                  onTouchEnd={() => {
+                    const threshold = 40; // px
+                    if (touchDeltaX.current > threshold) {
+                      setMobileIndex((prev) => Math.max(prev - 1, 0));
+                    } else if (touchDeltaX.current < -threshold) {
+                      setMobileIndex((prev) => Math.min(prev + 1, servicesData.length - 1));
+                    }
+                    touchStartX.current = null;
+                    touchDeltaX.current = 0;
+                  }}
+                >
+                  <div
+                    className="flex transition-transform duration-500"
+                    style={{ transform: `translateX(-${mobileIndex * 100}%)` }}
+                  >
+                      {servicesData.map((service, index) => (
+                        <div key={index} className="flex-none w-full px-4">
+                          <div className="w-full">
+                            <Link
+                              to={service.link}
+                              className="group flex items-center justify-center mb-6 relative w-full h-full bg-gradient-to-br from-white to-white/20 rounded-3xl p-0 shadow-xl hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 border border-[#B7C5C7]/30 overflow-hidden"
+                              onClick={scrollToTop}
+                              onFocus={() => setIsPaused(true)}
+                              onBlur={() => setIsPaused(false)}
+                              onTouchStart={() => setIsPaused(true)}
+                              onTouchEnd={() => setIsPaused(false)}
+                            >
+                              <div className={`absolute inset-0 bg-gradient-to-br ${service.gradient} rounded-3xl opacity-0 group-hover:opacity-5 transition-opacity duration-500`}></div>
+                              <div className="relative w-full h-full aspect-square flex flex-col overflow-hidden">
+                                <div className="p-3 sm:p-4 flex-1 overflow-auto">
+                                  <div className="flex justify-center mb-3">
+                                    <div className={`bg-gradient-to-br ${service.gradient} rounded-2xl p-3 w-16 h-16 flex items-center justify-center`}>{service.icon}</div>
+                                  </div>
+                                  <h3 className="text-lg font-bold text-teal-200 mb-4 flex items-center justify-center ">{service.title}</h3>
+                                  <p className="text-sm text-[#0A435C] mb-2">{service.description}</p>
+                                  <ul className="space-y-2 mb-2">
+                                    {service.features.map((feature, idx) => (
+                                      <li key={idx} className="flex items-center text-sm text-[#075375]"><div className="w-1.5 h-1.5 bg-[#005E84] rounded-full mr-3"></div>{feature}</li>
+                                    ))}
+                                  </ul>
+                                </div>
+                                <div className=" pb-8 border-t border-white/10 bg-white/5">
+                                  <div className="flex justify-center items-center text-[#005E84] font-semibold">Explore Service</div>
+                                </div>
+                              </div>
+                            </Link>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                </div>
+
+                {/* Prev / Next buttons */}
+                <button
+                  aria-label="Previous"
+                  className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/90 text-black rounded-full w-9 h-9 flex items-center justify-center shadow-lg"
+                  onClick={() => setMobileIndex((i) => Math.max(i - 1, 0))}
+                >
+                  ‹
+                </button>
+                <button
+                  aria-label="Next"
+                  className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/90 text-black rounded-full w-9 h-9 flex items-center justify-center shadow-lg"
+                  onClick={() => setMobileIndex((i) => Math.min(i + 1, servicesData.length - 1))}
+                >
+                  ›
+                </button>
+
+                {/* Dots */}
+                <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex space-x-2">
+                  {servicesData.map((_, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => setMobileIndex(idx)}
+                      className={`w-2 h-2 rounded-full ${idx === mobileIndex ? 'bg-[#075375]' : 'bg-white/60'}`}
+                      aria-label={`Go to slide ${idx + 1}`}
+                    />
+                  ))}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
       {/* Call to Action Section */}
-      <section className="py-24 bg-gradient-to-br from-[#005E84] via-[#075375] to-[#0A435C] relative overflow-hidden animate-gradient-flow">
+      <section 
+        className="py-24  relative overflow-hidden animate-gradient-flow"
+        style={{
+          backgroundImage: "url('/travel-services/travel2.jpg')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+      >
         <div className="absolute inset-0 bg-black/10"></div>
-        <div className="absolute inset-0 bg-gradient-to-r from-[#005E84]/50 to-[#0A435C]/50"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-[#005E84]/30 to-[#0A435C]/30"></div>
 
         {/* Animated particles */}
         <div
-          className="absolute top-20 left-20 w-32 h-32 bg-white/5 rounded-full animate-float"
+          className="absolute top-20 left-20 w-32 h-32 bg-white/15 rounded-full animate-float"
           style={{ animationDelay: "0s" }}
         ></div>
         <div
-          className="absolute top-40 right-40 w-20 h-20 bg-white/5 rounded-full animate-float"
+          className="absolute top-40 right-40 w-20 h-20 bg-white/15 rounded-full animate-float"
           style={{ animationDelay: "0.5s" }}
         ></div>
         <div
-          className="absolute bottom-20 left-1/3 w-24 h-24 bg-white/5 rounded-full animate-float"
+          className="absolute bottom-20 left-1/3 w-24 h-24 bg-white/15 rounded-full animate-float"
           style={{ animationDelay: "1s" }}
         ></div>
         <div
-          className="absolute top-1/3 right-1/4 w-16 h-16 bg-white/5 rounded-full animate-float"
+          className="absolute top-1/3 right-1/4 w-16 h-16 bg-white/15 rounded-full animate-float"
           style={{ animationDelay: "1.5s" }}
         ></div>
 
         {/* Shimmering overlay */}
-        <div className="absolute inset-0 animate-shimmer opacity-30"></div>
+        <div className="absolute inset-0 animate-shimmer opacity-40"></div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
           <div className="max-w-4xl mx-auto">
-            <div className="inline-flex items-center px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-sm font-medium mb-8 border border-white/20 animate-fade-in-up animate-glow">
-              <span className="w-2 h-2 bg-white rounded-full mr-2 animate-pulse-slow"></span>
+            <div className="inline-flex items-center px-4 py-1 bg-white text-[#005E84] rounded-full text-sm font-semibold tracking-widest uppercase mb-8 border-2 border-[#0A435C] relative overflow-hidden group cursor-pointer">
+              <span className="w-2 h-2 bg-[#0A435C] rounded-full mr-2 "></span>
               Get Started
+              <span className="absolute top-0 left-0 w-full h-full border-1 border-[#0A435C] rounded-full "></span>
             </div>
-            <h2 className="text-4xl md:text-6xl font-black text-white mb-8 leading-tight animate-fade-in-up animate-delay-1">
-              Ready to Experience{" "}
-              <span className="text-yellow-300">Paradise?</span>
-            </h2>
+              <h2 className="text-4xl md:text-6xl font-black text-white mb-8 leading-tight animate-fade-in-up animate-delay-1">
+                <span className="relative inline-block">
+                  Ready to Experience
+                  <span className="absolute left-0 -bottom-1 w-full h-1 bg-yellow-300" style={{ clipPath: "polygon(0 50%, 10% 0%, 20% 50%, 30% 0%, 40% 50%, 50% 0%, 60% 50%, 70% 0%, 80% 50%, 90% 0%, 100% 50%)" }}></span>
+                </span>{" "}
+                <span className="text-yellow-300">Paradise?</span>
+              </h2>
+
             <p className="text-xl md:text-2xl text-white/90 mb-12 max-w-3xl mx-auto font-light animate-fade-in-up animate-delay-2">
-              Start planning your dream Maldives vacation today
+              Start planning your dream <span className="text-yellow-300 font-semibold tracking-wider">Sri Lanka</span>  vacation today
             </p>
             <div className="flex flex-col sm:flex-row gap-6 justify-center items-center animate-fade-in-up animate-delay-3">
               <Link
                 to="/travel-services"
-                className="group bg-[#E7E9E5] text-[#075375] font-bold py-5 px-10 rounded-full shadow-2xl hover:shadow-3xl transition-all transform hover:scale-105 hover:bg-[#B7C5C7] shine-effect animate-glow"
+                className="group bg-teal-300 text-white font-bold py-2 px-10 rounded-lg shadow-2xl hover:shadow-3xl transition-all transform hover:scale-105 hover:bg-transparent/20 hover:text-white hover:border-white border-2 shine-effect "
                 onClick={scrollToTop}
               >
                 <span className="flex items-center">
@@ -820,7 +1063,7 @@ const Home = () => {
               </Link>
               <Link
                 to="/contact"
-                className="group border-2 border-white text-white font-bold py-5 px-10 rounded-full hover:bg-[#E7E9E5] hover:text-[#075375] transition-all transform hover:scale-105 shine-effect"
+                className="group border-2 border-white text-white font-bold py-2 px-10 rounded-lg hover:bg-[#E7E9E5] hover:text-black  transition-all transform hover:scale-105 shine-effect"
                 onClick={scrollToTop}
               >
                 Contact Us

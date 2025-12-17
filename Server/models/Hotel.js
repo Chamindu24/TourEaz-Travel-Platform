@@ -12,6 +12,10 @@ const ReviewSchema = new Schema({
 
 const HotelSchema = new Schema(
   {
+    serviceProvider: {
+      type: Schema.Types.ObjectId,
+      ref: 'ServiceProvider'
+    },
     name: { type: String, required: true },
     location: { type: String, required: true },
     starRating: { type: Number, min: 0, max: 5 },

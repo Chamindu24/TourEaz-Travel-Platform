@@ -240,29 +240,29 @@ const Tours = () => {
 
   return (
     <div className="min-h-screen bg-gray-100">
-      <main className="px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-10 max-w-[1400px] mx-auto">
-        {/* Header */}
+
+      {/* Header */}
         <motion.header
-          className="bg-cover bg-bottom h-32 sm:h-40 lg:h-60 shadow-lg rounded-2xl overflow-hidden"
+          className="bg-cover bg-center mt-2 h-32 sm:h-40 lg:h-80 shadow-lg   overflow-hidden"
           style={{
             backgroundImage:
-              "linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/travel-services/husen-siraaj-fsNMGdyQTUY-unsplash.jpg')",
+              "linear-gradient(to bottom,  rgba(0, 94, 132, 0.65),rgba(0, 0, 0, 0.55)), url('/travel-services/tours.jpg')",
           }}
           initial={{ opacity: 0, y: -50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          <div className="flex flex-col items-center justify-center h-full text-white text-center px-4">
+          <div className="flex flex-col items-start justify-center h-full text-white  pl-10 sm:pl-10 lg:pl-28">
             <motion.h1 
-              className="text-lg sm:text-xl lg:text-3xl font-extrabold drop-shadow-md"
+              className="text-lg sm:text-xl md:text-3xl lg:text-6xl font-extrabold drop-shadow-md"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2, duration: 0.6 }}
             >
-              Maldives Tour Packages
+              Sri Lanka Tour Packages
             </motion.h1>
             <motion.p 
-              className="text-xs sm:text-sm mt-2 drop-shadow-md max-w-md px-4"
+              className="text-xs sm:text-sm md:text-lg lg:text-xl mt-2 drop-shadow-md max-w-lg"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4, duration: 0.6 }}
@@ -271,16 +271,18 @@ const Tours = () => {
             </motion.p>
           </div>
         </motion.header>
+      <main className="px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-10 max-w-[1400px] mx-auto">
+        
 
         {/* Enhanced Filtering Section */}
         <motion.div 
-          className="mt-6 mb-8 bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden"
+          className="-mt-5 sm:-mt-16 md:-mt-4 lg:-mt-20 z-10 mb-8 bg-white rounded-2xl shadow-lg border border-gray-100/50 overflow-hidden"
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3, duration: 0.6 }}
         >
           {/* Filter Header */}
-          <div className="bg-gradient-to-r from-[#005E84] to-[#0A435C] px-6 py-4">
+          <div className="bg-gradient-to-r from-teal-300 to-teal-400 px-6 py-4 rounded-t-2xl rounded-b-none">
             <h2 className="text-white font-semibold text-lg flex items-center gap-2">
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.207A1 1 0 013 6.5V4z" />
@@ -312,7 +314,7 @@ const Tours = () => {
                     onChange={e => setSearchQuery(e.target.value)}
                     onFocus={() => { if (suggestions.length > 0) setShowSuggestions(true); }}
                     onBlur={() => setTimeout(() => setShowSuggestions(false), 150)}
-                    className="w-full pl-4 pr-10 py-3 border-2 border-gray-200 focus:border-[#005E84] focus:ring-2 focus:ring-[#005E84]/10 rounded-xl transition-all duration-200 outline-none text-sm placeholder-gray-400 bg-gray-50 focus:bg-white"
+                    className="w-full pl-4 pr-10 py-3 border-2 border-gray-200  focus:ring-2 focus:ring-teal-500/50 rounded-xl transition-all duration-200 outline-none text-sm placeholder-gray-400 bg-gray-50 focus:bg-white"
                     autoComplete="off"
                   />
                   <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
@@ -364,7 +366,7 @@ const Tours = () => {
                   placeholder="Country/City"
                   value={destination}
                   onChange={e => setDestination(e.target.value)}
-                  className="w-full px-4 py-3 border-2 border-gray-200 focus:border-[#005E84] focus:ring-2 focus:ring-[#005E84]/10 rounded-xl transition-all duration-200 outline-none text-sm bg-gray-50 focus:bg-white"
+                  className="w-full px-4 py-3 border-2 border-gray-200  focus:ring-2 focus:ring-teal-500/50 rounded-xl transition-all duration-200 outline-none text-sm bg-gray-50 focus:bg-white"
                 />
               </div>
 
@@ -385,7 +387,7 @@ const Tours = () => {
                   max="30"
                   value={nights}
                   onChange={e => setNights(e.target.value)}
-                  className="w-full px-4 py-3 border-2 border-gray-200 focus:border-[#005E84] focus:ring-2 focus:ring-[#005E84]/10 rounded-xl transition-all duration-200 outline-none text-sm bg-gray-50 focus:bg-white"
+                  className="w-full px-4 py-3 border-2 border-gray-200  focus:ring-2 focus:ring-teal-500/50 rounded-xl transition-all duration-200 outline-none text-sm bg-gray-50 focus:bg-white"
                   placeholder="7"
                 />
               </div>
@@ -404,7 +406,7 @@ const Tours = () => {
                   id="market"
                   value={market}
                   onChange={e => setMarket(e.target.value)}
-                  className="w-full px-4 py-3 border-2 border-gray-200 focus:border-[#005E84] focus:ring-2 focus:ring-[#005E84]/10 rounded-xl transition-all duration-200 outline-none text-sm bg-gray-50 focus:bg-white"
+                  className="w-full px-4 py-3 border-2 border-gray-200  focus:ring-2 focus:ring-teal-500/50 rounded-xl transition-all duration-200 outline-none text-sm bg-gray-50 focus:bg-white"
                 >
                   <option value="">All Markets</option>
                   {Object.entries(marketMapping).map(([key, value]) => (
@@ -417,7 +419,7 @@ const Tours = () => {
               <div className="lg:col-span-2 flex flex-col sm:flex-row gap-2 w-full">
                 <button
                   type="submit"
-                  className="flex-1 bg-gradient-to-r from-[#005E84] to-[#0A435C] text-white px-4 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl hover:from-[#075375] hover:to-[#0d4a60] transition-all duration-200 flex items-center justify-center gap-2 text-sm min-w-0"
+                  className="flex-1 bg-teal-500 text-white px-4 py-2 rounded-md font-semibold shadow-lg hover:shadow-xl hover:bg-white hover:text-black border-2 hover:border-teal-500 transition-all duration-200 flex items-center justify-center gap-2 text-sm min-w-0"
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -427,7 +429,7 @@ const Tours = () => {
                 <button
                   type="button"
                   onClick={handleResetFilters}
-                  className="flex-1 bg-white text-gray-600 px-4 py-3 rounded-xl font-semibold shadow-md hover:shadow-lg border-2 border-gray-200 hover:border-gray-300 hover:bg-gray-50 transition-all duration-200 flex items-center justify-center gap-2 text-sm min-w-0"
+                  className="flex-1 bg-white text-black px-4 py-2 rounded-md font-semibold shadow-md hover:shadow-lg border-2 border-teal-500 hover:text-white hover:bg-teal-500 transition-all duration-200 flex items-center justify-center gap-2 text-sm min-w-0"
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
@@ -455,7 +457,7 @@ const Tours = () => {
                   min="0"
                   value={minPrice}
                   onChange={e => setMinPrice(e.target.value)}
-                  className="w-full px-4 py-3 border-2 border-gray-200 focus:border-[#005E84] focus:ring-2 focus:ring-[#005E84]/10 rounded-xl transition-all duration-200 outline-none text-sm bg-gray-50 focus:bg-white"
+                  className="w-full px-4 py-3 border-2 border-gray-200  focus:ring-2 focus:ring-teal-500/50 rounded-xl transition-all duration-200 outline-none text-sm bg-gray-50 focus:bg-white"
                   placeholder="0"
                 />
               </div>
@@ -476,7 +478,7 @@ const Tours = () => {
                   min="0"
                   value={maxPrice}
                   onChange={e => setMaxPrice(e.target.value)}
-                  className="w-full px-4 py-3 border-2 border-gray-200 focus:border-[#005E84] focus:ring-2 focus:ring-[#005E84]/10 rounded-xl transition-all duration-200 outline-none text-sm bg-gray-50 focus:bg-white"
+                  className="w-full px-4 py-3 border-2 border-gray-200  focus:ring-2 focus:ring-teal-500/50 rounded-xl transition-all duration-200 outline-none text-sm bg-gray-50 focus:bg-white"
                   placeholder="10000"
                 />
               </div>
@@ -604,33 +606,33 @@ const Tours = () => {
               {tours.map((tour, index) => (
                 <motion.div
                   key={tour._id}
-                  variants={{
+                  /*variants={{
                     hidden: { opacity: 0, y: 50 },
                     visible: { opacity: 1, y: 0 }
                   }}
                   transition={{ duration: 0.5 }}
-                  whileHover={{ y: -8 }}
+                  whileHover={{ y: -8 }}*/
                   className="group cursor-pointer"
                   onClick={() => handleViewDetails(tour._id)}
                 >
-                  <div className="rounded-3xl bg-white shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl border border-gray-100">
+                  <div className="rounded-lg bg-white shadow-xl overflow-hidden transition-all duration-300 hover:shadow-lg border border-gray-100">
                     <div className="relative h-64 sm:h-72">
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent z-10" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent z-10" />
                       <motion.img
                         src={tour.tour_image || 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=800'}
                         alt={tour.title}
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                        whileHover={{ scale: 1.05 }}
+                        className="w-full h-full object-cover "
+                        
                       />
                       
                       {/* Duration Badge */}
                       <motion.div 
-                        className="absolute top-3 right-3 z-20"
+                        className="absolute top-0 left-0 z-20"
                         initial={{ scale: 0 }}
                         animate={{ scale: 1 }}
                         transition={{ delay: 0.6, type: "spring" }}
                       >
-                        <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-[#005E84]/90 text-white backdrop-blur-sm">
+                        <span className="inline-flex items-center px-3 py-1  text-sm font-medium bg-teal-300 text-white backdrop-blur-sm">
                           <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                           </svg>
@@ -639,9 +641,20 @@ const Tours = () => {
                             : 'Multi-Day'}
                         </span>
                       </motion.div>
+                      
+                      {/* Duration Info */}
+                      {/*tour.nights && typeof tour.nights === 'object' && Object.keys(tour.nights).length > 0 && (
+                        <div className="flex items-center mb-3 text-gray-500 text-sm">
+                          <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                          </svg>
+                          {Object.keys(tour.nights)[0]} Days / {Object.keys(tour.nights)[0]} Nights
+                        </div>
+                      )*/}
+                      <div className="absolute bottom-0 left-0 right-0 h-full bg-black/0 group-hover:bg-black/35 transition-all duration-300 z-[15]"></div>
 
                       {/* Bottom Overlay Content */}
-                      <div className="absolute bottom-0 left-0 right-0 p-4 z-20">
+                      <div className="absolute bottom-0 left-0 right-0 p-4 z-20 transform transition-all duration-300 hover:scale-105  group-hover:translate-x-4">
                         <motion.h4 
                           className="font-bold text-xl text-white line-clamp-2 mb-2"
                           initial={{ opacity: 0, y: 20 }}
@@ -676,43 +689,49 @@ const Tours = () => {
                         {tour.short_description || tour.description || 'Experience the beauty of this amazing destination with our carefully crafted tour package.'}
                       </p>
                       
-                      {/* Duration Info */}
-                      {tour.nights && typeof tour.nights === 'object' && Object.keys(tour.nights).length > 0 && (
-                        <div className="flex items-center mb-3 text-gray-500 text-sm">
-                          <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                          </svg>
-                          {Object.keys(tour.nights)[0]} Days / {Object.keys(tour.nights)[0]} Nights
-                        </div>
-                      )}
+                      
 
                       {/* Price and Action */}
                       <div className="flex items-center justify-between pt-3 border-t border-gray-100">
                         <div className="flex flex-col">
-                          <div className="flex items-center mb-1">
-                            <span className="text-xl font-bold text-[#005E84]">
-                              {selectedCurrency} {tour.price && !isNaN(tour.price) ? convertPrice(tour.price) : '0.00'}
-                            </span>
-                            <span className="text-sm text-gray-500 ml-1">/person</span>
-                          </div>
-                          {tour.oldPrice && !isNaN(tour.oldPrice) && (
-                            <div className="flex items-center space-x-2">
-                              <span className="text-sm text-gray-400 line-through">
-                                {selectedCurrency} {convertPrice(tour.oldPrice)}
+                          <div className="mb-2">
+                            <div className="flex items-baseline">
+                              <span className="text-2xl font-bold text-gray-900 tracking-tight">
+                                {selectedCurrency} {tour.price && !isNaN(tour.price) ? convertPrice(tour.price) : '0.00'}
                               </span>
-                              <span className="text-xs bg-[#005E84] text-white px-2 py-1 rounded-full font-medium">
-                                SAVE {selectedCurrency} {convertPrice(tour.oldPrice - tour.price)}
-                              </span>
+                              <span className="text-sm text-gray-700 ml-2">/ person</span>
                             </div>
-                          )}
+                            {tour.oldPrice && !isNaN(tour.oldPrice) && (
+                              <div className="flex items-center mt-1">
+                                <span className="text-sm text-black mr-2 relative">
+                                  {selectedCurrency} {convertPrice(tour.oldPrice)}
+                                  <span className="absolute left-0 top-1/2 w-full h-[1px] bg-red-600 transform -translate-y-1/2"></span>
+                                </span>
+
+
+                                <div className="relative inline-flex items-center px-2 py-1 rounded-full bg-yellow-400/20
+                                40 text-black ">
+                                  <span className="absolute inset-0 bg-yellow-400/30 blur-[4px] rounded-full"></span>
+                                  <svg className="w-3 h-3 mr-1 relative" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/>
+                                  </svg>
+                                  <span className="text-[11px] font-semibold relative">
+                                    SAVE {selectedCurrency} {convertPrice(tour.oldPrice - tour.price)}
+                                  </span>
+                                </div>
+                              </div>
+
+                            )}
+                          </div>
+                          
                         </div>
                         
                         <motion.div 
-                          className="bg-[#005E84] hover:bg-[#0A435C] rounded-full px-4 py-2 transition-colors duration-300 flex items-center"
+                          className="bg-teal-500 text-white hover:bg-white hover:text-black border-2 hover:border-teal-500 rounded-md px-4 py-2 transition-colors duration-300 flex items-center"
                           whileHover={{ scale: 1.05 }}
                           whileTap={{ scale: 0.95 }}
                         >
-                          <span className="text-white font-medium text-sm">View Details</span>
+                          <span className=" font-medium text-sm">View Details</span>
                         </motion.div>
                       </div>
                     </motion.div>
