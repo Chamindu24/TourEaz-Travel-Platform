@@ -148,29 +148,28 @@ const Activities = () => {
 
   return (
     <div className="min-h-screen bg-gray-100">
-      <main className="px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-10 max-w-[1400px] mx-auto">
-        {/* Header */}
+              {/* Header */}
         <motion.header
-          className="bg-cover bg-center h-32 sm:h-40 lg:h-60 shadow-lg rounded-2xl overflow-hidden"
+          className="bg-cover bg-center mt-2 h-32 sm:h-40 lg:h-80 shadow-lg   overflow-hidden"
           style={{
             backgroundImage:
-              "linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/travel-services/cmophoto-net-EmVKKf3wUZQ-unsplash.jpg')",
+              "linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/travel-services/activity2.jpg')",
           }}
           initial={{ opacity: 0, y: -50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          <div className="flex flex-col items-center justify-center h-full text-white text-center px-4">
+          <div className="flex flex-col items-start justify-center h-full text-white  pl-10 sm:pl-10 lg:pl-28">
             <motion.h1 
-              className="text-lg sm:text-xl lg:text-3xl font-extrabold drop-shadow-md"
+              className="text-lg sm:text-xl md:text-3xl lg:text-5xl font-extrabold drop-shadow-md"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2, duration: 0.6 }}
             >
-              Maldives Activities & Experiences
+              Sri Lanka Activities & Experiences
             </motion.h1>
             <motion.p 
-              className="text-xs sm:text-sm mt-2 drop-shadow-md max-w-md px-4"
+              className="text-xs sm:text-sm md:text-lg lg:text-xl mt-2 drop-shadow-md max-w-lg"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4, duration: 0.6 }}
@@ -179,16 +178,18 @@ const Activities = () => {
             </motion.p>
           </div>
         </motion.header>
+      <main className="px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-10 max-w-[1400px] mx-auto">
+
 
         {/* Enhanced Filtering Section */}
         <motion.div 
-          className="mt-6 mb-8 bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden"
+          className="-mt-5 sm:-mt-16 md:-mt-4 lg:-mt-24 z-10 mb-8 bg-white rounded-2xl shadow-lg border border-gray-100/50 overflow-hidden"
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3, duration: 0.6 }}
         >
           {/* Filter Header */}
-          <div className="bg-gradient-to-r from-[#005E84] to-[#0A435C] px-6 py-4">
+          <div className="bg-gradient-to-r from-teal-300 to-teal-400 px-6 py-4 rounded-t-2xl rounded-b-none">
             <h2 className="text-white font-semibold text-lg flex items-center gap-2">
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.207A1 1 0 013 6.5V4z" />
@@ -220,7 +221,7 @@ const Activities = () => {
                     onChange={e => setSearchQuery(e.target.value)}
                     onFocus={() => { if (suggestions.length > 0) setShowSuggestions(true); }}
                     onBlur={() => setTimeout(() => setShowSuggestions(false), 150)}
-                    className="w-full pl-4 pr-10 py-3 border-2 border-gray-200 focus:border-[#005E84] focus:ring-2 focus:ring-[#005E84]/10 rounded-xl transition-all duration-200 outline-none text-sm placeholder-gray-400 bg-gray-50 focus:bg-white"
+                    className="w-full pl-4 pr-10 py-3 border-2 border-gray-200  focus:ring-2 focus:ring-teal-500/50 rounded-xl transition-all duration-200 outline-none text-sm placeholder-gray-400 bg-gray-50 focus:bg-white"
                     autoComplete="off"
                   />
                   <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
@@ -269,7 +270,7 @@ const Activities = () => {
                   id="activity-type"
                   value={activityType}
                   onChange={e => setActivityType(e.target.value)}
-                  className="w-full px-4 py-3 border-2 border-gray-200 focus:border-[#005E84] focus:ring-2 focus:ring-[#005E84]/10 rounded-xl transition-all duration-200 outline-none text-sm bg-gray-50 focus:bg-white"
+                  className="w-full px-4 py-3 border-2 border-gray-200  focus:ring-2 focus:ring-teal-500/50 rounded-xl transition-all duration-200 outline-none text-sm bg-gray-50 focus:bg-white"
                 >
                   <option value="">All Categories</option>
                   <option value="cruises">🚢 Cruises</option>
@@ -300,7 +301,7 @@ const Activities = () => {
                   max="20"
                   value={guests}
                   onChange={e => setGuests(e.target.value)}
-                  className="w-full px-4 py-3 border-2 border-gray-200 focus:border-[#005E84] focus:ring-2 focus:ring-[#005E84]/10 rounded-xl transition-all duration-200 outline-none text-sm bg-gray-50 focus:bg-white"
+                  className="w-full px-4 py-3 border-2 border-gray-200  focus:ring-2 focus:ring-teal-500/50 rounded-xl transition-all duration-200 outline-none text-sm bg-gray-50 focus:bg-white"
                   placeholder="1"
                 />
               </div>
@@ -309,7 +310,7 @@ const Activities = () => {
               <div className="lg:col-span-2 flex flex-col sm:flex-row gap-2 w-full">
                 <button
                   type="submit"
-                  className="flex-1 bg-gradient-to-r from-[#005E84] to-[#0A435C] text-white px-4 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl hover:from-[#075375] hover:to-[#0d4a60] transition-all duration-200 flex items-center justify-center gap-2 text-sm min-w-0"
+                  className="flex-1 bg-teal-500 text-white px-4 py-2 rounded-md font-semibold shadow-lg hover:shadow-xl hover:bg-white hover:text-black border-2 hover:border-teal-500 transition-all duration-200 flex items-center justify-center gap-2 text-sm min-w-0"
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -319,7 +320,7 @@ const Activities = () => {
                 <button
                   type="button"
                   onClick={handleResetFilters}
-                  className="flex-1 bg-white text-gray-600 px-4 py-3 rounded-xl font-semibold shadow-md hover:shadow-lg border-2 border-gray-200 hover:border-gray-300 hover:bg-gray-50 transition-all duration-200 flex items-center justify-center gap-2 text-sm min-w-0"
+                  className="flex-1 bg-white text-black border-2 border-teal-500 px-4 py-2 rounded-md font-semibold  hover:text-white hover:bg-teal-500 transition-all duration-200 flex items-center justify-center gap-2 text-sm min-w-0"
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
@@ -423,12 +424,12 @@ const Activities = () => {
               {activities.map(activity => (
                 <motion.div
                   key={activity._id}
-                  variants={{
+                  /*variants={{
                     hidden: { opacity: 0, y: 50 },
                     visible: { opacity: 1, y: 0 }
                   }}
                   transition={{ duration: 0.5 }}
-                  whileHover={{ y: -8 }}
+                  whileHover={{ y: -8 }}*/
                   className="cursor-pointer"
                 >
                   <ActivityCard

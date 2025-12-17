@@ -5,6 +5,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { Box, Card, CardContent, Grid, Typography } from '@mui/material';
 import { countries } from '../assets/nationalities';
 import { motion } from 'framer-motion';
+import MagicButton from './ui/MagicButton';
 
 const SearchForm = ({
   searchParams,
@@ -48,16 +49,16 @@ const SearchForm = ({
       transition={{ delay: 0.3, duration: 0.6 }}
     >
       {/* Enhanced Filtering Section */}
-      <div className="mt-3 mb-4 bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden"> {/* reduced vertical margin */}
+      <div className="-mt-5 sm:-mt-16 md:-mt-4 lg:-mt-16 z-10 mb-8 bg-white rounded-2xl shadow-lg border border-gray-100/50 overflow-hidden"> {/* reduced vertical margin */}
         {/* Filter Header */}
-        <div className="bg-gradient-to-r from-[#005E84] to-[#0A435C] px-6 py-4 rounded-t-3xl rounded-b-none">
+        <div className="bg-gradient-to-r from-teal-300 to-teal-400 px-6 py-4 rounded-t-2xl rounded-b-none">
           <h2 className="text-white font-semibold text-lg flex items-center gap-2">
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.207A1 1 0 013 6.5V4z" />
             </svg>
             Find Your Perfect Hotel or Resort
           </h2>
-          <p className="text-blue-100 text-sm mt-1">Search and filter hotels and resorts to match your travel preferences</p>
+          <p className="text-gray-100 text-sm mt-1">Search and filter hotels and resorts to match your travel preferences</p>
         </div>
         <Card elevation={0} sx={{
           borderTopLeftRadius: 0,
@@ -84,7 +85,7 @@ const SearchForm = ({
               <div className="relative destination-dropdown">
                 <input
                   type="text"
-                  className="w-full h-10 sm:h-12 pl-3 pr-10 text-sm sm:text-base text-gray-700 bg-gray-50 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-lapis_lazuli focus:border-lapis_lazuli"
+                  className="w-full h-10 sm:h-12 pl-3 pr-10 text-sm sm:text-base text-gray-700 bg-gray-50 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500/50 focus:border-teal-500/50"
                   placeholder="Enter hotel or resort name"
                   value={destinationSearch}
                   onChange={e => {
@@ -173,7 +174,7 @@ const SearchForm = ({
                     }
                     readOnly
                     placeholder="Select check-in date"
-                    className="w-full pl-9 sm:pl-10 pr-3 sm:pr-4 py-2 sm:py-3 bg-transparent text-gray-700 focus:outline-none focus:ring-2 focus:ring-lapis_lazuli rounded-lg cursor-pointer text-xs sm:text-base"
+                    className="w-full pl-9 sm:pl-10 pr-3 sm:pr-4 py-2 sm:py-3 bg-transparent text-gray-700 focus:outline-none focus:ring-2 focus:ring-teal-500/50 rounded-lg cursor-pointer text-xs sm:text-base"
                   />
                 </div>
                 <DatePicker
@@ -245,7 +246,7 @@ const SearchForm = ({
                     }
                     readOnly
                     placeholder="Select check-out date"
-                    className="w-full pl-9 sm:pl-10 pr-3 sm:pr-4 py-2 sm:py-3 bg-transparent text-gray-700 focus:outline-none focus:ring-2 focus:ring-lapis_lazuli rounded-lg cursor-pointer text-xs sm:text-base"
+                    className="w-full pl-9 sm:pl-10 pr-3 sm:pr-4 py-2 sm:py-3 bg-transparent text-gray-700 focus:outline-none focus:ring-2 focus:ring-teal-500/50 rounded-lg cursor-pointer text-xs sm:text-base"
                   />
                 </div>
               </div>
@@ -376,7 +377,7 @@ const SearchForm = ({
               <div className="relative nationality-dropdown">
                 <input
                   type="text"
-                  className="w-full h-12 pl-3 pr-10 text-gray-700 bg-gray-50 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-lapis_lazuli focus:border-lapis_lazuli"
+                  className="w-full h-12 pl-3 pr-10 text-gray-700 bg-gray-50 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500/50 focus:border-teal-500/50"
                   placeholder="Search country..."
                   value={countrySearch}
                   onChange={e => {
@@ -412,7 +413,7 @@ const SearchForm = ({
                       .map(c => (
                         <div
                           key={c.name}
-                          className="px-4 py-2 hover:bg-ash_gray cursor-pointer"
+                          className="px-4 py-2 hover:bg-teal-800/50 cursor-pointer"
                           onClick={() => {
                             setSelectedCountry(c);
                             setCountrySearch(c.flag + ' ' + c.name);
@@ -439,11 +440,11 @@ const SearchForm = ({
                 </span>
               </label>
               <select
-                className="w-full h-10 sm:h-12 pl-3 pr-10 text-sm sm:text-base text-gray-700 bg-gray-50 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-lapis_lazuli focus:border-lapis_lazuli"
+                className="w-full h-10 sm:h-12 pl-3 pr-10 text-sm sm:text-base text-gray-700 bg-gray-50  border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500/50 focus:border-teal-500/50"
                 value={searchParams.mealPlan}
                 onChange={e => handleInputChange('mealPlan', e.target.value)}
               >
-                <option value="">All Meal Plans</option>
+                <option value="" >All Meal Plans</option>
                 <option value="Full Board">Full Board</option>
                 <option value="Half Board">Half Board</option>
                 <option value="All-Inclusive">All-Inclusive</option>
@@ -541,7 +542,7 @@ const SearchForm = ({
                     {searchParams.childrenAges.map((age, i) => (
                       <select
                         key={i}
-                        className="w-full h-10 sm:h-12 pl-3 pr-10 text-sm text-gray-700 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-lapis_lazuli focus:border-lapis_lazuli"
+                        className="w-full h-10 sm:h-12 pl-3 pr-10 text-sm text-gray-700 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500/50 focus:border-teal-500/50"
                         value={age}
                         onChange={e => handleChildAgeChange(i, e.target.value)}
                       >
@@ -576,22 +577,31 @@ const SearchForm = ({
               {showFilters ? 'Hide Filters' : 'Show Filters'}
             </button>
             <div className="flex flex-col sm:flex-row gap-2">
-              <button
-                onClick={handleReset}
-                className="w-full sm:w-auto px-3 sm:px-4 py-2 text-sm font-medium text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
-              >
-                Reset
-              </button>
-              <button
+
+              {/* Search Resorts Button */}
+              <MagicButton
+                text={
+                  <span className="flex items-center gap-2">
+                    <svg className="w-4 h-4 text-white hover:text-black " fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <circle cx="11" cy="11" r="8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                      <line x1="21" y1="21" x2="16.65" y2="16.65" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                    Search Resorts
+                  </span>
+                }
                 onClick={handleSearch}
-                className="w-full sm:w-auto px-3 sm:px-4 py-2 text-sm font-medium text-white bg-lapis_lazuli rounded-lg shadow-sm hover:bg-indigo_dye transition-colors flex items-center gap-2 justify-center"
-              >
-                <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <circle cx="11" cy="11" r="8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                  <line x1="21" y1="21" x2="16.65" y2="16.65" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-                Search Resorts
-              </button>
+                className="w-full sm:w-auto px-3 sm:px-4 py-2 text-sm font-medium 
+                          bg-teal-500 text-white rounded-md hover:bg-white hover:text-black border-2 hover:border-teal-500 shadow-sm"
+              />
+              
+              <MagicButton
+                text="Reset"
+                onClick={handleReset}
+                className="w-full sm:w-auto px-3 sm:px-4 py-2 text-sm font-medium 
+                          bg-white text-black border-2 border-teal-500 rounded-lg hover:bg-teal-500 hover:text-white"
+              />
+
+              
             </div>
           </Box>
 
@@ -618,7 +628,7 @@ const SearchForm = ({
                   </label>
                   <div className="h-2 bg-ash_gray rounded-full w-full">
                     <div
-                      className="h-2 bg-lapis_lazuli rounded-full"
+                      className="h-2 bg-teal-500 rounded-full"
                       style={calculatePriceRangeStyles()}
                     />
                   </div>
@@ -626,7 +636,7 @@ const SearchForm = ({
                     <div className="w-full">
                       <input
                         type="number"
-                        className="w-full h-10 sm:h-12 px-3 text-sm sm:text-base text-gray-700 bg-gray-50 border border-gray-300 rounded-lg"
+                        className="w-full h-10 sm:h-12 px-3 text-sm sm:text-base text-gray-700 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500/50 focus:border-teal-500/50 "
                         value={searchParams.priceRange[0]}
                         onChange={e => {
                           const value = parseInt(e.target.value) || globalPriceRange[0];
@@ -640,7 +650,7 @@ const SearchForm = ({
                     <div className="w-full">
                       <input
                         type="number"
-                        className="w-full h-10 sm:h-12 px-3 text-sm sm:text-base text-gray-700 bg-gray-50 border border-gray-300 rounded-lg"
+                        className="w-full h-10 sm:h-12 px-3 text-sm sm:text-base text-gray-700 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500/50 focus:border-teal-500/50 "
                         value={searchParams.priceRange[1]}
                         onChange={e => {
                           const value = parseInt(e.target.value) || globalPriceRange[1];
@@ -658,7 +668,7 @@ const SearchForm = ({
                 <Grid item xs={12} md={4}>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Sort By</label>
                   <select
-                    className="w-full h-10 sm:h-12 pl-3 pr-10 text-sm sm:text-base text-gray-700 bg-gray-50 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-lapis_lazuli focus:border-lapis_lazuli"
+                    className="w-full h-10 sm:h-12 pl-3 pr-10 text-sm sm:text-base text-gray-700 bg-gray-50 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500/50 focus:border-teal-500/50"
                     value={searchParams.sortBy}
                     onChange={e => handleInputChange('sortBy', e.target.value)}
                   >

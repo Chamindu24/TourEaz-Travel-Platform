@@ -4,22 +4,28 @@ function extractGoogleMapSrc(iframeString) {
   return match ? match[1] : iframeString;
 }
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { Formik, Form, Field, ErrorMessage, FieldArray } from 'formik';
 import * as Yup from 'yup';
 import AdminLayout from '../../Components/AdminLayout';
 import axios from 'axios';
 import { FaTrash } from "react-icons/fa";
 
-const ActivityForm = () => {
-  const { id } = useParams();
+const ActivityForm = ({ isStandalone = false, activityId = null, onSuccess = null }) => {
+  const { id: paramId } = useParams();
+  const id = activityId || paramId; // Use prop if provided, otherwise use URL param
   const navigate = useNavigate();
+  const location = useLocation();
   const [activity, setActivity] = useState(null);
   const [loading, setLoading] = useState(id ? true : false);
   const [images, setImages] = useState([]);
   const [galleryImages, setGalleryImages] = useState([]);
   const [uploading, setUploading] = useState(false);  const [error, setError] = useState(null);
   const isNew = !id;
+  
+  // Determine if we're in service provider context or admin context
+  const isServiceProvider = location.pathname.includes('/service-provider') || isStandalone;
+  const backPath = isServiceProvider ? '/service-provider/dashboard' : '/admin/activities';
 
   useEffect(() => {
     // Fetch activity data if editing
@@ -307,8 +313,12 @@ const ActivityForm = () => {
       }
 
       if (response.data.success) {
-        // Redirect back to activities list after save
-        navigate('/admin/activities');
+        // Call onSuccess callback if provided, otherwise navigate
+        if (onSuccess) {
+          onSuccess();
+        } else {
+          navigate(backPath);
+        }
       } else {
         throw new Error(response.data.error || 'Failed to save activity');
       }
@@ -334,7 +344,7 @@ const ActivityForm = () => {
           </div>
         </div>
         <button
-          onClick={() => navigate('/admin/activities')}
+          onClick={() => navigate(backPath)}
           className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none"
         >
           Back to Activities
@@ -343,8 +353,9 @@ const ActivityForm = () => {
     );
   }
 
-  return (
-    <AdminLayout>
+  // Form content component
+  const formContent = (
+    <>
       <div className="pb-5 border-b border-gray-200 mb-6">
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-bold text-gray-800">
@@ -352,7 +363,7 @@ const ActivityForm = () => {
           </h1>
           <button
             type="button"
-            onClick={() => navigate('/admin/activities')}
+            onClick={() => navigate(backPath)}
             className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
           >
             Cancel
@@ -844,6 +855,17 @@ const ActivityForm = () => {
           </Formik>
         </div>
       )}
+    </>
+  );
+  
+  // Return with or without AdminLayout wrapper
+  if (isServiceProvider || isStandalone) {
+    return formContent;
+  }
+  
+  return (
+    <AdminLayout>
+      {formContent}
     </AdminLayout>
   );
 };

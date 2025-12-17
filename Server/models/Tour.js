@@ -1,6 +1,10 @@
 const mongoose = require('mongoose');
 
 const tourSchema = new mongoose.Schema({
+  serviceProvider: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'ServiceProvider'
+  },
   title: { type: String, required: true },
   price: { type: Number, required: true },
   person_count: { type: Number, required: true },

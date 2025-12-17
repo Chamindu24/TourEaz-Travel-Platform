@@ -22,6 +22,7 @@ import {
   MenuItem,
   CircularProgress,
   Alert,
+  Chip,
   useTheme,
   useMediaQuery,
 } from '@mui/material';
@@ -37,6 +38,8 @@ import {
   Person as PersonIcon,
   TourOutlined,
   LocalActivity as LocalActivityIcon,
+  DirectionsCar as TransportIcon,
+  CheckCircle as ApprovalIcon,
 } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 
@@ -47,8 +50,11 @@ import DiscountManagement from './DiscountManagement';
 import TourManagement from './TourManagement';
 import ContactManagement from './ContactManagement';
 import TourBookingManagement from './TourBookingManagement';
+import TransportationManagement from './TransportationManagement';
+import AdminApprovalManagement from './admin/AdminApprovalManagement';
 
 const drawerWidth = 240;
+const collapsedWidth = 80;
 
 export default function AdminPanel() {
   const [section, setSection] = useState('dashboard');
@@ -61,7 +67,8 @@ export default function AdminPanel() {
     contacts: 0, 
     activities: 0, 
     activityBookings: 0,
-    tourInquiries: 0 
+    tourInquiries: 0,
+    transportations: 0
   });
   const [recentBookings, setRecentBookings] = useState([]);
   const [recentMessages, setRecentMessages] = useState([]);
@@ -69,6 +76,8 @@ export default function AdminPanel() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [sidebarHovered, setSidebarHovered] = useState(false);
+  const [pendingApprovalsCount, setPendingApprovalsCount] = useState(0);
   const navigate = useNavigate();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
@@ -78,7 +87,7 @@ export default function AdminPanel() {
       try {
         setLoading(true);
         setError(null);
-        const [u, h, b, t, c, a, ab, tb] = await Promise.all([
+        const [u, h, b, t, c, a, ab, tb, tr, cap] = await Promise.all([
           axios.get('/users', { withCredentials: true }),
           axios.get('/hotels', { withCredentials: true }),
           axios.get('/bookings', { withCredentials: true }),
@@ -86,7 +95,9 @@ export default function AdminPanel() {
           axios.get('/contacts', { withCredentials: true }),
           axios.get('/activities', { withCredentials: true }),
           axios.get('/activity-bookings', { withCredentials: true }).catch(() => ({ data: { data: [] } })),
-          axios.get('/tour-bookings', { withCredentials: true })
+          axios.get('/tour-bookings', { withCredentials: true }),
+          axios.get('/transportations', { withCredentials: true }).catch(() => ({ data: [] })),
+          axios.get('/category-approvals/admin/pending', { withCredentials: true }).catch(() => ({ data: [] }))
         ]);
         setStats({ 
           users: u.data.length, 
@@ -96,11 +107,13 @@ export default function AdminPanel() {
           contacts: c.data.length,
           activities: a.data.success ? a.data.data.length : 0,
           activityBookings: ab.data.success ? ab.data.data.length : 0,
-          tourInquiries: tb.data.length
+          tourInquiries: tb.data.length,
+          transportations: tr.data.length || 0
         });
         setRecentBookings(b.data.slice(0, 5));
         setRecentMessages(c.data.slice(0, 5));
         setRecentTourInquiries(tb.data.slice(0, 5));
+        setPendingApprovalsCount(Array.isArray(cap.data) ? cap.data.length : 0);
       } catch (err) {
         console.error('Error fetching admin data:', err);
         setError('Failed to load admin dashboard data. Please try refreshing the page.');
@@ -117,7 +130,7 @@ export default function AdminPanel() {
   const openProfileMenu = (e) => setAnchorEl(e.currentTarget);
   const closeProfileMenu = () => setAnchorEl(null);
   const goTo = (path) => { navigate(path); closeProfileMenu(); };
-  const handleLogout = () => axios.post('/api/auth/logout', {}, { withCredentials: true }).finally(() => goTo('/login'));
+  const handleLogout = () => axios.post('/auth/logout', {}, { withCredentials: true }).finally(() => goTo('/login'));
   const handleDrawerToggle = () => setMobileOpen(!mobileOpen);
 
   const handleNavigation = (item) => {
@@ -137,6 +150,8 @@ export default function AdminPanel() {
     { id: 'hotels', text: 'Hotel Management', icon: <HotelIcon /> },
     { id: 'rooms', text: 'Room Management', icon: <RoomIcon /> },
     { id: 'activities', text: 'Activity Management', icon: <LocalActivityIcon />, path: '/admin/activities' },
+    { id: 'approvals', text: 'Approval Requests', icon: <ApprovalIcon />, path: '/admin/approvals' },
+    { id: 'transportations', text: 'Transportation Management', icon: <TransportIcon /> },
     { id: 'bookings', text: 'Booking Oversight', icon: <BookingIcon /> },
     { id: 'discounts', text: 'Discount Management', icon: <DiscountIcon /> },
     { id: 'tours', text: 'Tour Management', icon: <TourOutlined/> },
@@ -163,6 +178,7 @@ export default function AdminPanel() {
               { title: 'Bookings', value: stats.bookings, color: '#ff9800' },
               { title: 'Tours', value: stats.tours, color: '#2196f3' },
               { title: 'Activities', value: stats.activities, color: '#9c27b0' },
+              { title: 'Transportations', value: stats.transportations, color: '#00bcd4' },
               { title: 'Activity Bookings', value: stats.activityBookings, color: '#4caf50' },
               { title: 'Tour Bookings', value: stats.tourInquiries, color: '#ff5722' },
               { title: 'Messages', value: stats.contacts, color: '#607d8b' }]
@@ -235,6 +251,8 @@ export default function AdminPanel() {
       case 'bookings': return <BookingManagement />;
       case 'discounts': return <DiscountManagement />;
       case 'tours': return <TourManagement />;
+      case 'approvals': return <AdminApprovalManagement />;
+      case 'transportations': return <TransportationManagement />;
       case 'contacts': return <ContactManagement />;
       default: return <Dashboard />;
     }
@@ -261,9 +279,10 @@ export default function AdminPanel() {
       <AppBar 
         position="fixed" 
         sx={{ 
-          width: { md: `calc(100% - ${drawerWidth}px)` }, 
-          ml: { md: `${drawerWidth}px` }, 
-          bgcolor:'#1976d2' 
+          width: { xs: '100%', md: sidebarHovered ? `calc(100% - ${drawerWidth}px)` : `calc(100% - ${collapsedWidth}px)` }, 
+          ml: { xs: 0, md: sidebarHovered ? `${drawerWidth}px` : `${collapsedWidth}px` }, 
+          bgcolor:'#00ad9c',
+          transition: 'margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1), width 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
         }}
       >
         <Toolbar>
@@ -318,37 +337,75 @@ export default function AdminPanel() {
             <ListItem button key={item.id} onClick={() => handleNavigation(item)}
               sx={{ '&:hover':{ bgcolor:'#374151' }, bgcolor: section===item.id?'#374151':'transparent' }}>
               <ListItemIcon sx={{ color:'white' }}>{item.icon}</ListItemIcon>
-              <ListItemText primary={item.text} />
+              <ListItemText
+                primary={
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <span>{item.text}</span>
+                    {item.id === 'approvals' && pendingApprovalsCount > 0 && (
+                      <Chip size="small" color="warning" label={pendingApprovalsCount} />
+                    )}
+                  </Box>
+                }
+              />
             </ListItem>
           ))}
         </List>
       </Drawer>
 
-      {/* Desktop drawer */}
-      <Drawer 
-        variant="permanent" 
+      {/* Desktop drawer - Expandable on hover */}
+      <Box
+        onMouseEnter={() => setSidebarHovered(true)}
+        onMouseLeave={() => setSidebarHovered(false)}
         sx={{
           display: { xs: 'none', md: 'block' },
-          '& .MuiDrawer-paper':{ 
-            width:drawerWidth, 
-            boxSizing:'border-box', 
-            bgcolor:'#1e293b', 
-            color:'white' 
-          } 
+          position: 'fixed',
+          height: '100vh',
+          width: sidebarHovered ? drawerWidth : collapsedWidth,
+          bgcolor: '#1e293b',
+          color: 'white',
+          transition: 'width 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+          overflow: 'hidden',
+          zIndex: 1200,
+          boxShadow: '2px 0 8px rgba(0, 0, 0, 0.15)'
         }}
       >
         <Toolbar />
         <Divider sx={{ bgcolor:'#374151' }} />
-        <List>
+        <List sx={{ p: 0 }}>
           {menuItems.map((item) => (
-            <ListItem button key={item.id} onClick={() => handleNavigation(item)}
-              sx={{ '&:hover':{ bgcolor:'#374151' }, bgcolor: section===item.id?'#374151':'transparent' }}>
-              <ListItemIcon sx={{ color:'white' }}>{item.icon}</ListItemIcon>
-              <ListItemText primary={item.text} />
+            <ListItem 
+              button 
+              key={item.id} 
+              onClick={() => handleNavigation(item)}
+              sx={{ 
+                '&:hover':{ bgcolor:'#374151' }, 
+                bgcolor: section===item.id?'#374151':'transparent',
+                justifyContent: sidebarHovered ? 'flex-start' : 'center',
+                px: sidebarHovered ? 2 : 1,
+                py: 1.5,
+                transition: 'all 0.3s ease',
+                minHeight: '56px'
+              }}
+              title={!sidebarHovered ? item.text : ''}
+            >
+              <ListItemIcon sx={{ color:'white', minWidth: sidebarHovered ? 'auto' : '40px', mr: sidebarHovered ? 1.5 : 0, transition: 'all 0.3s ease' }}>{item.icon}</ListItemIcon>
+              {sidebarHovered && (
+                <ListItemText
+                  primary={
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, whiteSpace: 'nowrap' }}>
+                      <span>{item.text}</span>
+                      {item.id === 'approvals' && pendingApprovalsCount > 0 && (
+                        <Chip size="small" color="warning" label={pendingApprovalsCount} />
+                      )}
+                    </Box>
+                  }
+                  sx={{ transition: 'opacity 0.3s ease' }}
+                />
+              )}
             </ListItem>
           ))}
         </List>
-      </Drawer>
+      </Box>
 
       <Box 
         component="main" 
@@ -356,9 +413,10 @@ export default function AdminPanel() {
           flexGrow:1, 
           p:3, 
           mt:'64px', 
-          ml: { xs: 0, md: `${drawerWidth}px` }, 
-          width: { xs: '100%', md: `calc(100% - ${drawerWidth}px)` },
-          overflow: 'hidden' // Prevent horizontal scroll
+          ml: { xs: 0, md: sidebarHovered ? `${drawerWidth}px` : `${collapsedWidth}px` }, 
+          width: { xs: '100%', md: sidebarHovered ? `calc(100% - ${drawerWidth}px)` : `calc(100% - ${collapsedWidth}px)` },
+          overflow: 'hidden',
+          transition: 'margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1), width 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
         }}
       >
         <Box sx={{ width: '100%', maxWidth: 'none' }}>{renderSection()}</Box>

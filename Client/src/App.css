@@ -88,3 +88,43 @@
 .read-the-docs {
   color: #888;
 }
+
+/* Slide-in animations for components (used by ContactForm) */
+@keyframes slideInLeft {
+  from {
+    transform: translateX(-24px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(24px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Utility classes */
+.slide-in-left {
+  animation: slideInLeft 600ms cubic-bezier(.22,.9,.32,1) both;
+}
+.slide-in-right {
+  animation: slideInRight 600ms cubic-bezier(.22,.9,.32,1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .slide-in-left,
+  .slide-in-right {
+    animation: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+}

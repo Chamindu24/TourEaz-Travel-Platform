@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import {
   Typography, Paper, Button, Box, CircularProgress, Snackbar, Alert
@@ -18,8 +18,10 @@ import RoomFormDialog from './components/RoomFormDialog';
 // Hooks
 import { useRoomForm } from './hooks/useRoomForm';
 import { useImageUpload } from './hooks/useImageUpload';
+import { AuthContext } from '../../context/AuthContext';
 
 const RoomManagement = () => {
+  const { user } = useContext(AuthContext);
   const [hotels, setHotels] = useState([]);
   const [rooms, setRooms] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -62,9 +64,16 @@ const RoomManagement = () => {
       try {
         setLoading(true);
         setError(null);
+        // Role-based endpoints
+        const hotelsEndpoint =
+          user?.role === 'admin' ? '/hotels' : '/hotels/my-hotels';
+
+        const roomsEndpoint =
+          user?.role === 'admin' ? '/rooms' : '/rooms/my-rooms';
+
         const [hRes, rRes] = await Promise.all([
-          axios.get('/hotels', { withCredentials: true }),
-          axios.get('/rooms', { withCredentials: true })
+          axios.get(hotelsEndpoint, { withCredentials: true }),
+          axios.get(roomsEndpoint, { withCredentials: true })
         ]);
         setHotels(hRes.data);
         setRooms(rRes.data);

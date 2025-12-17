@@ -293,7 +293,7 @@ const TourBooking = ({ sidebarOpen }) => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#E7E9E5] to-[#B7C5C7]">
+    <div className="min-h-screen bg-gray-50">
       <div className={`transition-all duration-300 ${sidebarOpen ? 'md:ml-64' : 'md:ml-20'} ml-0`}>
         <div className="container mx-auto px-6 py-8 max-w-4xl">
           
@@ -312,7 +312,7 @@ const TourBooking = ({ sidebarOpen }) => {
                   <div
                     key={index}
                     className={`flex-1 h-0.5 mx-2 ${
-                      activeStep > index ? 'bg-[#005E84]' : 'bg-gray-200'
+                      activeStep > index ? 'bg-teal-300' : 'bg-gray-200'
                     }`}
                   />
                 ))}
@@ -324,7 +324,7 @@ const TourBooking = ({ sidebarOpen }) => {
                   <div key={step} className="flex flex-col items-center flex-1 z-10">
                     <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-semibold mb-2 border-2 ${
                       activeStep >= index 
-                        ? 'bg-[#005E84] text-white border-[#005E84]' 
+                        ? 'bg-teal-500 text-white border-teal-300' 
                         : activeStep === index - 1 
                           ? 'bg-white text-[#005E84] border-[#005E84]' 
                           : 'bg-gray-200 text-gray-600 border-gray-200'

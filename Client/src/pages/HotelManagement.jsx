@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';import axios from 'axios';
+import React, { useState, useEffect, useContext } from 'react';import axios from 'axios';
 import UploadProgress from '../Components/UploadProgress';
 import {
   Typography,
@@ -36,6 +36,8 @@ import {
   Close as CloseIcon,
   ErrorOutline as ErrorIcon,
 } from '@mui/icons-material';
+import { AuthContext } from '../context/AuthContext';
+
 
 // Generic upload for array fields (gallery)
 const handleImageUpload = async (e, key, formData, setFormData, setSnackbar, setUploadProgress, setUploadStatuses) => {
@@ -215,6 +217,7 @@ const handleDiningMenuUpload = async (e, index, formData, setFormData, setSnackb
 };
 
 const HotelManagement = () => {
+  const { user } = useContext(AuthContext);
   const [hotels, setHotels] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -246,7 +249,11 @@ const HotelManagement = () => {
   useEffect(() => {
     (async () => {
       try {
-        const { data } = await axios.get('/hotels', { withCredentials: true });
+        const endpoint = user?.role === 'admin' 
+          ? '/hotels' 
+          : '/hotels/my-hotels';
+        
+        const { data } = await axios.get(endpoint, { withCredentials: true });
         setHotels(data);
       } catch (err) {
         console.error(err);
@@ -359,10 +366,44 @@ const HotelManagement = () => {
 
   return (
     <Paper sx={{ p: 3 }}>
-      <Typography variant="h5" gutterBottom>Resort Management</Typography>
-      <Button variant="contained" startIcon={<AddIcon />} onClick={() => openDialog(null)} sx={{ mb: 2 }}>
-        Add Hotel
-      </Button>
+      <Paper sx={{ p: 3 }}>
+        <Typography
+          variant="h5"
+          align="center"
+          gutterBottom
+          sx={{ fontWeight: 600 }}
+        >
+          Resort Management
+        </Typography>
+
+        <Box display="flex" justifyContent="flex-end">
+          <Button
+            onClick={() => openDialog(null)}
+            startIcon={<AddIcon />}
+            sx={{
+              px: 2,
+              py: 1,
+              borderRadius: '6px',
+              backgroundColor: '#14b8a6', // teal-500
+              color: 'white',
+              textTransform: 'none',
+              fontWeight: 500,
+              '&:hover': {
+                backgroundColor: 'white',
+                color: 'black',
+                border: '1px solid #14b8a6'
+              },
+              '&:focus': {
+                outline: 'none',
+                boxShadow: '0 0 0 2px #14b8a6'
+              }
+            }}
+          >
+            Add Hotel
+          </Button>
+        </Box>
+      </Paper>
+
 
       <TableContainer component={Paper}>
         <Table>

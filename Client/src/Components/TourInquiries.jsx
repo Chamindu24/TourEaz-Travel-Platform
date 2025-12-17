@@ -350,7 +350,8 @@ const TourInquiries = () => {
   return (
     <div>
       <Button
-        type="primary"
+        
+        className="inline-flex items-center px-4 py-2  border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-teal-500 hover:bg-white hover:text-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 border-2 hover:border-teal-500 duration-300"
         onClick={fetchInquiries}
         disabled={loading}
         style={{ marginBottom: '20px' }}

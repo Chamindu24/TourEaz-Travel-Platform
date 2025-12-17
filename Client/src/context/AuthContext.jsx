@@ -2,7 +2,6 @@
 import React, { createContext, useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { hasAuthCookies } from '../utils/authUtils';
 
 export const AuthContext = createContext();
 
@@ -133,18 +132,13 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // Initial auth check - only check if there might be an existing session
+  // Initial auth check - always check for existing session on mount
+  // Note: httpOnly cookies cannot be read by JavaScript, so we must always attempt the check
   useEffect(() => {
     (async () => {
       try {
-        // Check if there's any indication of an existing session
-        // Only make the auth check if there's a reasonable chance the user is logged in
-        if (hasAuthCookies()) {
-          await checkAuthStatus();
-        } else {
-          // No auth cookie found, user is likely not logged in
-          setUser(null);
-        }
+        // Always check auth status on mount since httpOnly cookies are not readable by JS
+        await checkAuthStatus();
       } catch (err) {
         setUser(null);
       } finally {

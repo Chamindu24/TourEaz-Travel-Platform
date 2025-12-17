@@ -2,6 +2,8 @@ import React, { useState, useEffect, useContext, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import MagicButton from "../Components/ui/MagicButton";
+import { useNavigate } from 'react-router-dom';
+
 
 const palette = {
   platinum: "#E7E9E5",
@@ -20,6 +22,7 @@ const LandingHeader = () => {
   const { user, loading, logout } = useContext(AuthContext);
   const location = useLocation();
   const accountRef = useRef(null);
+  const navigate = useNavigate();
   // Close account dropdown on outside click
   useEffect(() => {
     if (!accountDropdown) return;
@@ -69,6 +72,8 @@ const LandingHeader = () => {
       location.pathname.startsWith("/hotels")
     );
   };
+
+
 
   // Helper to check if we're in a services section
   const isInServicesSection = () => {
@@ -153,153 +158,7 @@ const LandingHeader = () => {
               )}
             </Link>
 
-            <div
-              className="relative"
-              onMouseEnter={() => {
-                if (servicesDropdownTimeout.current) {
-                  clearTimeout(servicesDropdownTimeout.current);
-                  servicesDropdownTimeout.current = null;
-                }
-                setServicesDropdown(true);
-              }}
-              onMouseLeave={() => {
-                servicesDropdownTimeout.current = setTimeout(() => {
-                  setServicesDropdown(false);
-                }, 150);
-              }}
-            >
-              <button
-                className={`relative px-4 py-3 font-medium transition-all duration-300 rounded-lg  group flex items-center ${
-                  isInServicesSection()
-                    ? "text-[#005E84] font-semibold"
-                    : "text-[#0A435C] hover:text-[#005E84]"
-                }`}
-                type="button"
-              >
-                <span className="relative z-10">Our Services</span>
-                <svg
-                  className={`ml-2 h-4 w-4 transition-transform duration-300 ${servicesDropdown ? 'rotate-180' : ''}`}
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M19 9l-7 7-7-7"
-                  />
-                </svg>
-                
-              </button>
-              {servicesDropdown && (
-                <div
-                  className="absolute left-0 mt-3 w-64 bg-white backdrop-blur-lg rounded-md  shadow-3xl border border-[#005E84]/20 overflow-hidden animate-slideUp"
-                  style={{
-                    animation: 'slideUp 0.3s ease-out'
-                  }}
-                  onMouseEnter={() => {
-                    if (servicesDropdownTimeout.current) {
-                      clearTimeout(servicesDropdownTimeout.current);
-                      servicesDropdownTimeout.current = null;
-                    }
-                    setServicesDropdown(true);
-                  }}
-                  onMouseLeave={() => {
-                    servicesDropdownTimeout.current = setTimeout(() => {
-                      setServicesDropdown(false);
-                    }, 150);
-                    }}
-                  >
-                    <div className="py-2">
-                    <Link
-                      to="/travel-services"
-                      className={`block px-4 py-3 text-sm font-medium transition-all duration-200 hover:bg-gradient-to-r hover:from-[#CFFAFE] hover:to-white hover:text-[#0d9488]  ${
-                      isActive("/travel-services")
-                        ? "bg-gradient-to-r from-[#CFFAFE] to-white text-[#0d9488] border-[#0d9488]"
-                        : ""
-                      }`}
-                      onClick={scrollToTop}
-                    >
-                      <div className="flex items-center space-x-3">
-                      
-                      <span>Travel Services</span>
-                      </div>
-                    </Link>
-                    <Link
-                      to="/real-estate"
-                      className={`block px-4 py-3 text-sm font-medium transition-all duration-200 hover:bg-gradient-to-r hover:from-[#CFFAFE] hover:to-white hover:text-[#0d9488]  ${
-                      isActive("/real-estate")
-                        ? "bg-gradient-to-r from-[#CFFAFE] to-white text-[#0d9488] border-[#0d9488]"
-                        : ""
-                      }`}
-                      onClick={scrollToTop}
-                    >
-                      <div className="flex items-center space-x-3">
-                      
-                      <span>Real Estate</span>
-                      </div>
-                    </Link>
-                    <Link
-                      to="/investment-support"
-                      className={`block px-4 py-3 text-sm font-medium transition-all duration-200 hover:bg-gradient-to-r hover:from-[#CFFAFE] hover:to-white hover:text-[#0d9488]  ${
-                      isActive("/investment-support")
-                        ? "bg-gradient-to-r from-[#CFFAFE] to-white text-[#0d9488] border-[#0d9488]"
-                        : ""
-                      }`}
-                      onClick={scrollToTop}
-                    >
-                      <div className="flex items-center space-x-3">
-                      
-                      <span>Investment Support</span>
-                      </div>
-                    </Link>
-                    <Link
-                      to="/brand-representation"
-                      className={`block px-4 py-3 text-sm font-medium transition-all duration-200 hover:bg-gradient-to-r hover:from-[#CFFAFE] hover:to-white hover:text-[#0d9488]  ${
-                      isActive("/brand-representation")
-                        ? "bg-gradient-to-r from-[#CFFAFE] to-white text-[#0d9488] border-[#0d9488]"
-                        : ""
-                      }`}
-                      onClick={scrollToTop}
-                    >
-                      <div className="flex items-center space-x-3">
-                      
-                      <span>Brand Representation</span>
-                      </div>
-                    </Link>
-                    <Link
-                      to="/hulhumeedhoo"
-                      className={`block px-4 py-3 text-sm font-medium transition-all duration-200 hover:bg-gradient-to-r hover:from-[#CFFAFE] hover:to-white hover:text-[#0d9488]  ${
-                      isActive("/hulhumeedhoo")
-                        ? "bg-gradient-to-r from-[#CFFAFE] to-white text-[#0d9488] border-[#0d9488]"
-                        : ""
-                      }`}
-                      onClick={scrollToTop}
-                    >
-                      <div className="flex items-center space-x-3">
-                      
-                      <span>Hulhumeedhoo Island</span>
-                      </div>
-                    </Link>
-                    <Link
-                      to="/token-program"
-                      className={`block px-4 py-3 text-sm font-medium transition-all duration-200 hover:bg-gradient-to-r hover:from-[#CFFAFE] hover:to-white hover:text-[#0d9488]  ${
-                      isActive("/token-program")
-                        ? "bg-gradient-to-r from-[#CFFAFE] to-white text-[#0d9488] border-[#0d9488]"
-                        : ""
-                      }`}
-                      onClick={scrollToTop}
-                    >
-                      <div className="flex items-center space-x-3">
-                      
-                      <span>Token Program</span>
-                      </div>
-                    </Link>
-                    </div>
-                  </div>
-                  )}
-                </div>
+
                 <Link
                   to="/search"
                   onClick={scrollToTop}
@@ -382,6 +241,35 @@ const LandingHeader = () => {
                   Activities
                   </span>
                   {isActive("/activities") && (
+                  <span
+                    className="absolute bottom-1 left-1/2 transform -translate-x-1/2 h-0.5 w-8 bg-gradient-to-r from-[#0d9488] to-[#14b8a6]"
+                  />
+                  )}
+                </Link>
+                <Link
+                  to="/transportations"
+                  onClick={scrollToTop}
+                  className={`relative overflow-hidden px-4 py-2 font-medium group ${
+                  isActive("/transportations")
+                    ? "text-[#0d9488] font-semibold"
+                    : "text-[#0A435C] hover:text-[#0d9488]"
+                  }`}
+                >
+                  <span
+                  className={`block transition-all duration-300 ${
+                    isActive("/transportations")
+                    ? "text-[#0d9488]"
+                    : "text-[#0A435C] group-hover:-translate-y-full group-hover:opacity-0"
+                  }`}
+                  >
+                  Transportations
+                  </span>
+                  <span
+                  className="absolute inset-0 flex items-center justify-center text-[#0d9488] translate-y-full opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100"
+                  >
+                  Transportations
+                  </span>
+                  {isActive("/transportations") && (
                   <span
                     className="absolute bottom-1 left-1/2 transform -translate-x-1/2 h-0.5 w-8 bg-gradient-to-r from-[#0d9488] to-[#14b8a6]"
                   />
@@ -492,6 +380,18 @@ const LandingHeader = () => {
                         </svg>
                         <span>My Account</span>
                       </Link>
+                      {/* Service Provider Dashboard Button */}
+                      {user?.userType === 'service-provider' && (
+                        <button
+                          onClick={() => navigate('/service-provider/dashboard')}
+                          className="flex items-center space-x-2 px-4 py-3 text-sm font-medium hover:bg-gradient-to-r hover:from-[#E1F5FE] hover:to-white hover:text-[#005E84] transition-all duration-200 transform hover:translate-x-1"
+                        >
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z" />
+                          </svg>
+                          <span >My Dashboard</span>
+                        </button>
+                      )}
                       <button
                         className="flex items-center space-x-3 w-full text-left px-4 py-3 text-sm font-medium text-red-600 hover:bg-red-50 transition-all duration-200 transform hover:translate-x-1"
                         onClick={handleSignOut}
@@ -721,6 +621,20 @@ const LandingHeader = () => {
               }}
             >
               Activities
+            </Link>
+            <Link
+              to="/transportations"
+              className={`px-4 py-3 rounded-xl font-medium transition-all duration-300 hover:bg-gradient-to-r hover:from-[#E1F5FE] hover:to-white hover:shadow-md transform hover:translate-x-1 min-h-[44px] flex items-center ${
+                isActive("/transportations")
+                  ? "bg-gradient-to-r from-[#E1F5FE] to-white text-[#005E84] font-semibold shadow-md"
+                  : "text-[#0A435C] hover:text-[#005E84]"
+              }`}
+              onClick={() => {
+                scrollToTop();
+                setIsMenuOpen(false);
+              }}
+            >
+              Transportations
             </Link>
             <Link
               to="/contact"

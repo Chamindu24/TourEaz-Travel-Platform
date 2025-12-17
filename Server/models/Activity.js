@@ -1,6 +1,10 @@
 const mongoose = require('mongoose');
 
 const ActivitySchema = new mongoose.Schema({
+  serviceProvider: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'ServiceProvider'
+  },
   title: {
     type: String,
     required: [true, 'Please add a title'],

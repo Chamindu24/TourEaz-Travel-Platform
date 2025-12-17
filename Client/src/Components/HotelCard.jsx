@@ -4,15 +4,12 @@ import { motion } from 'framer-motion';
 
 const HotelCard = ({ hotel, onClick, isFavorite, onFavoriteToggle, availbleNoOfRooms }) => (
   <motion.div
-    className="rounded-3xl bg-white shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl cursor-pointer border border-gray-100"
+    className="group  rounded-lg bg-white shadow-xl overflow-hidden transition-all duration-300 hover:shadow-lg cursor-pointer border border-gray-100"
     onClick={onClick}
-    whileHover={{ y: -8 }}
-    initial={{ opacity: 0, y: 50 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ duration: 0.5 }}
+
   >
     <div className="relative h-56 sm:h-64">
-      <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent z-10" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/70  to-transparent z-10" />
       <motion.img
         src={hotel.gallery[0]}
         alt={hotel.name}
@@ -31,7 +28,28 @@ const HotelCard = ({ hotel, onClick, isFavorite, onFavoriteToggle, availbleNoOfR
           </span>
         </motion.div>
       )}
-      <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-4 z-20">
+
+        {/* Available Rooms badge */}
+        {availbleNoOfRooms !== undefined && (
+          <motion.div
+            className="absolute top-0 sm:top-0 left-0 sm:left-0 z-20 "
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ delay: 0.2, type: "spring" }}
+          >
+          <span className="inline-flex items-center px-2 sm:px-3 py-1 
+                            text-xs sm:text-sm font-medium text-white
+                            bg-teal-300  shadow-2xl ring-1  
+                            shadow-[#005E84]/30 drop-shadow-2xl">
+            {availbleNoOfRooms} {availbleNoOfRooms === 1 ? 'Room' : 'Rooms'} Available
+          </span>
+
+          </motion.div>
+        )}
+
+      <div className="absolute bottom-0 left-0 right-0 h-full bg-black/0 group-hover:bg-black/35 transition-all duration-300 z-[15]"></div>
+      <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-4 z-20 transform transition-all duration-300 hover:scale-105  group-hover:translate-x-4 ">
+
         <motion.h4 
           className="font-bold text-lg sm:text-xl text-white line-clamp-1 mb-2"
           initial={{ opacity: 0, y: 20 }}
@@ -65,40 +83,45 @@ const HotelCard = ({ hotel, onClick, isFavorite, onFavoriteToggle, availbleNoOfR
         {hotel.description}
       </p>
       
-      {/* Available Rooms */}
-      {availbleNoOfRooms !== undefined && (
-        <div className="mx-auto relative mb-2 sm:mb-3 bg-[#005E84] text-white w-fit px-2 sm:px-3 py-1 text-xs sm:text-sm font-medium rounded-full z-20">
-          {availbleNoOfRooms} {availbleNoOfRooms === 1 ? 'Room' : 'Rooms'} Available
-        </div>
-      )}
+
       
       {/* Star Rating and Action */}
-      <div className="flex items-center justify-between pt-2 sm:pt-3 border-t border-gray-100">
+      <div className="flex items-center justify-between pt-2 px-2 sm:pt-3 sm:px-3 border-t border-gray-100">
         <div className="flex items-center mb-1">
           {[1, 2, 3, 4, 5].map(star => (
             <svg
               key={star}
-              className="h-3 sm:h-4 w-3 sm:w-4 mr-0.5"
+              className="h-3 sm:h-4 w-3 sm:w-4 mr-0.5 drop-shadow-[0_0_4px_rgba(255,183,0,0.9)]"
               viewBox="0 0 24 24"
-              fill={star <= (hotel.starRating || 0) ? "#005E84" : "#E0E0E0"}
+              fill={star <= (hotel.starRating || 0) ? "url(#goldGradient)" : "#E6E6E6"}
             >
+              <defs>
+                <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="#FFD700" />
+                  <stop offset="100%" stopColor="#FFA500" />
+                </linearGradient>
+              </defs>
+
               <polygon
                 points="12,2 15,9 22,9.3 17,14 18.5,21 12,17.5 5.5,21 7,14 2,9.3 9,9"
-                stroke="#0A435C"
+                stroke="#B8860B"
+                strokeWidth="1"
                 strokeLinejoin="round"
-                strokeWidth="1.2"
               />
             </svg>
           ))}
-          <span className="text-xs sm:text-sm text-gray-500 ml-1">({hotel.starRating || 0})</span>
+          <span className="text-xs sm:text-sm text-gray-600 ml-1">
+            ({hotel.starRating || 0})
+          </span>
         </div>
+
         
         <motion.div 
-          className="bg-[#005E84] hover:bg-[#0A435C] rounded-full px-3 sm:px-4 py-2 transition-colors duration-300 flex items-center"
+          className="bg-teal-500 hover:bg-white border-2 text-white  hover:text-black hover:border-teal-500  rounded-md px-3 sm:px-4 py-2 transition-colors duration-300 flex items-center"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >
-          <span className="text-white font-medium text-xs sm:text-sm">View Details</span>
+          <span className=" font-medium text-xs sm:text-sm">View Details</span>
         </motion.div>
       </div>
     </motion.div>

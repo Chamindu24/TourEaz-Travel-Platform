@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Footer from '../Components/Footer';
 import MagicButton from '../Components/ui/MagicButton';
+import { motion } from 'framer-motion';
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -35,19 +36,23 @@ const Contact = () => {
         if (section) {
           const rect = section.getBoundingClientRect();
           const isInViewport = rect.top <= window.innerHeight * 0.75;
-          
+
+          // only ever set visibility to true once (don't hide again)
           setIsVisible(prev => ({
             ...prev,
-            [key]: isInViewport
+            [key]: prev[key] || isInViewport
           }));
         }
       }
     };
 
+    // On mount, show header and both contact panels immediately (no scroll required)
     setTimeout(() => {
       setIsVisible(prev => ({
         ...prev,
-        header: true
+        header: true,
+        contactForm: true,
+        contactInfo: true
       }));
     }, 100);
 
@@ -120,33 +125,47 @@ const Contact = () => {
   return (
     <div className="bg-gray-50 min-h-screen">
             {/* Header */}
-            <header
+            <motion.header
               id="contact-header"
-                className={`bg-cover bg-center h-56 sm:h-64 md:h-80 shadow-lg pt-12 sm:pt-16 pb-20 sm:pb-28 md:pb-32 font-sans ${
+                className={`bg-cover bg-center mt-2 h-32 sm:h-40 lg:h-80 shadow-lg   overflow-hidden ${
                   isVisible.header ? 'opacity-100' : 'opacity-0'
                 }`}
               style={{
                 backgroundImage:
                   "linear-gradient(to bottom, rgba(10, 67, 92, 0.5), rgba(10, 67, 92, 0.5)), url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1920')",
               }}
+              initial={{ opacity: 0, y: -50 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
             >
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex flex-col items-start justify-center h-full text-white  pl-10 sm:pl-10 lg:pl-28">
               <div className="lg:w-2/3">
-              <h1 className="text-4xl md:text-5xl font-extrabold text-white tracking-tight">
-              Get Started with TourEaz Today!
-            </h1>
-              <p className="mt-4 text-sm md:text-base lg:text-xl   text-gray-200">
-              Fill out the form below to connect directly with our dedicated team, or explore our contact channels.
-            </p>
+                <motion.h1 
+                  className="text-lg sm:text-xl md:text-3xl lg:text-5xl font-extrabold drop-shadow-md"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2, duration: 0.6 }}
+                >
+                    Get Started with TourEaz Today!
+                </motion.h1>
+                <motion.p
+                  className="text-xs sm:text-sm md:text-lg lg:text-xl mt-2 drop-shadow-md max-w-lg"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.4, duration: 0.6 }}
+
+                >
+                    Fill out the form below to connect directly with our dedicated team, or explore our contact channels.
+                </motion.p>
             </div>
             </div>
-          </header>
-      <main className="px-4 md:px-8 py-6 md:py-10 max-w-3xl -mt-24 md:-mt-40 md:max-w-7xl mx-auto">
-           <div className="flex flex-col lg:flex-row gap-4 md:gap-10 mt-4 md:mt-10">
+          </motion.header>
+      <main className="px-4 md:px-8 py-6 md:py-10 max-w-3xl -mt-12 sm:-mt-16 md:-mt-24 lg:-mt-36 z-10 md:max-w-7xl mx-auto">
+            <div className="flex flex-col lg:flex-row gap-4 md:gap-10 mt-4 md:mt-10">
           {/* Contact Form */}
             <div 
               id="contact-form" 
-              className={`lg:w-2/3  `}
+              className={`lg:w-2/3 transform transition-all duration-700 ${isVisible.contactForm ? 'slide-in-left opacity-100' : 'opacity-0 -translate-x-6'}`}
             >
               <div className="bg-gray-100 rounded-lg shadow-lg border-t-4 border-teal-700  p-4 md:p-8 border ">
                 <h2 className="text-xl md:text-2xl font-bold text-dark_teal_blue mb-4 md:mb-6 flex justify-center">Send us a Message</h2>
@@ -283,7 +302,7 @@ const Contact = () => {
 
             <div 
               id="contact-info" 
-              className={`lg:w-1/3 `}
+              className={`lg:w-1/3 transform transition-all duration-700 ${isVisible.contactInfo ? 'slide-in-right opacity-100' : 'opacity-0 translate-x-6'}`}
             >
               <div className="bg-gray-100 rounded-lg shadow-lg p-8  border-t-4 border-teal-700 border ">
                 <h2 className="text-2xl font-bold text-dark_teal_blue mb-6 flex justify-center ">Contact Information</h2>

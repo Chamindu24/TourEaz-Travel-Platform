@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { FaTrash } from "react-icons/fa";
+import { AuthContext } from "../context/AuthContext";
 
 const marketMapping = {
   1: "Indian Market",
@@ -20,6 +21,7 @@ const foodCategoryMapping = {
 };
 
 const AllTours = () => {
+  const { user } = useContext(AuthContext);
   const [tours, setTours] = useState([]);
   const [editTour, setEditTour] = useState(null);
 
@@ -74,8 +76,12 @@ const AllTours = () => {
   useEffect(() => {
     const fetchTours = async () => {
       try {
-        const response = await axios.get("/tours");
-        setTours(response.data);
+        const endpoint = user?.role === 'admin' 
+          ? '/tours' 
+          : '/tours/my-tours';
+        
+        const { data } = await axios.get(endpoint, { withCredentials: true });
+        setTours(data);
       } catch (error) {
         console.error("Error fetching tours:", error);
       }
@@ -710,13 +716,15 @@ const AllTours = () => {
   };
 
   return (
-    <div className="bg-white min-h-screen p-0">
-      <h1 className="text-5xl font-bold text-center mb-8">All Tours (Admin Panel)</h1>
+    <div className="bg-white min-h-screen p-0 ">
+      <h1 className="text-5xl font-bold text-center mb-8">
+        {user?.role === 'admin' ? 'All Tours (Admin Panel)' : 'My Tours'}
+      </h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
         {tours.map((tour) => (
           <div
           key={tour._id}
-          className="bg-white rounded-lg shadow-lg overflow-hidden transition transform hover:scale-105"
+          className="bg-white border-2 border-black/15 rounded-lg shadow-lg overflow-hidden transition duration-300 transform hover:scale-105"
         >
           <img
             src={tour.tour_image}

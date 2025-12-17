@@ -4,9 +4,53 @@ const router = express.Router();
 const Hotel = require('../models/Hotel');
 const auth = require('../middleware/auth');
 
+// Get service provider's hotels (optimized for dashboard)
+router.get('/my-hotels', auth, async (req, res) => {
+  try {
+    const ServiceProvider = require('../models/ServiceProvider');
+    const User = require('../models/User');
+    
+    // Get service provider profile
+    const user = await User.findById(req.user.userId);
+    if (!user || !user.serviceProvider) {
+      return res.status(404).json({ msg: 'Service provider not found' });
+    }
+    
+    const serviceProvider = await ServiceProvider.findOne({ user: req.user.userId });
+    if (!serviceProvider) {
+      return res.status(404).json({ msg: 'Service provider profile not found' });
+    }
+    
+    // Get hotels with limited fields for dashboard
+    const hotels = await Hotel.find({ serviceProvider: serviceProvider._id })
+    
+    res.json(hotels);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ msg: 'Server error' });
+  }
+});
+
 // Create a new hotel (admin only – add role check in production)
 router.post('/', auth, async (req, res) => {
   try {
+    const ServiceProvider = require('../models/ServiceProvider');
+    const User = require('../models/User');
+    
+    // Get user and their service provider profile
+    const user = await User.findById(req.user.userId);
+    if (!user) {
+      return res.status(404).json({ msg: 'User not found' });
+    }
+    
+    // For service providers, automatically assign their profile
+    if (user.serviceProvider) {
+      const serviceProvider = await ServiceProvider.findOne({ user: req.user.userId });
+      if (serviceProvider) {
+        req.body.serviceProvider = serviceProvider._id;
+      }
+    }
+    
     const hotel = new Hotel(req.body);
     await hotel.save();
     res.status(201).json(hotel);

@@ -11,6 +11,9 @@ import ProtectedRoute from "./Components/ProtectedRoute";
 const Home = lazy(() => import("./Landing/Home"));
 const Login = lazy(() => import("./Landing/Login"));
 const Register = lazy(() => import("./Landing/Register"));
+const EmailVerificationPage = lazy(() => import("./Landing/EmailVerificationPage"));
+const ForgotPasswordPage = lazy(() => import("./Landing/ForgotPasswordPage"));
+const ResetPasswordPage = lazy(() => import("./Landing/ResetPasswordPage"));
 const Account = lazy(() => import("./pages/Account"));
 const Search = lazy(() => import("./pages/Search"));
 const BookingRequest = lazy(() => import("./pages/BookingRequest"));
@@ -31,19 +34,18 @@ const TourBooking = lazy(() => import("./pages/TourBooking"));
 const InquiryPage = lazy(() => import("./pages/InquiryPage"));
 const RoomInquiry = lazy(() => import("./pages/RoomInquiry"));
 const Activities = lazy(() => import("./pages/Activities"));
-const TravelServices = lazy(() => import("./pages/TravelServices"));
-const RealEstate = lazy(() => import("./pages/RealEstate"));
-const InvestmentSupport = lazy(() => import("./pages/InvestmentSupport"));
-const BrandRepresentation = lazy(() => import("./pages/BrandRepresentation"));
 const AboutUs = lazy(() => import("./pages/AboutUs"));
-const Hulhumeedhoo = lazy(() => import("./pages/Hulhumeedhoo"));
-const TokenProgram = lazy(() => import("./pages/TokenProgram"));
 const ActivityDetail = lazy(() => import("./pages/ActivityDetail"));
+const Transportations = lazy(() => import("./pages/Transportations"));
+const TransportationDetail = lazy(() => import("./pages/TransportationDetail"));
 const ActivityForm = lazy(() => import("./pages/admin/ActivityForm"));
 const AdminActivityDetail = lazy(() => import("./pages/admin/ActivityDetail"));
 const AdminActivityView = lazy(() => import("./pages/admin/AdminActivityView"));
 const AdminActivities = lazy(() => import("./pages/admin/Activities"));
 const ActivityBookings = lazy(() => import("./pages/admin/ActivityBookings"));
+const MyApprovalRequests = lazy(() => import("./pages/MyApprovalRequests"));
+const AdminApprovalManagement = lazy(() => import("./pages/admin/AdminApprovalManagement"));
+const ServiceProviderDashboard = lazy(() => import("./pages/ServiceProviderDashboard"));
 
 // point axios at your API & send cookies by default
 // Use environment variable if available, otherwise fallback based on mode
@@ -94,7 +96,7 @@ export default function App() {
             element={
               <>
                 <Login />
-                <Footer />
+                
               </>
             }
           />
@@ -103,7 +105,39 @@ export default function App() {
             element={
               <>
                 <Register />
-                <Footer />
+               
+              </>
+            }
+          />
+          <Route
+            path="/verify-email"
+            element={
+              <>
+                <EmailVerificationPage />
+              </>
+            }
+          />
+          <Route
+            path="/forgot-password"
+            element={
+              <>
+                <ForgotPasswordPage />
+              </>
+            }
+          />
+          <Route
+            path="/reset-password"
+            element={
+              <>
+                <ResetPasswordPage />
+              </>
+            }
+          />
+          <Route
+            path="/reset-password/:token"
+            element={
+              <>
+                <ResetPasswordPage />
               </>
             }
           />
@@ -298,6 +332,26 @@ export default function App() {
             }
           />
 
+          {/* transportation */}
+          <Route
+            path="/transportations"
+            element={
+              <>
+                <Transportations />
+                <Footer />
+              </>
+            }
+          />
+          <Route
+            path="/transportations/:id"
+            element={
+              <>
+                <TransportationDetail />
+                <Footer />
+              </>
+            }
+          />
+
           {/* user profile - AUTHENTICATION RE-ENABLED */}
           <Route
             path="/profile"
@@ -366,44 +420,35 @@ export default function App() {
               </ProtectedRoute>
             }
           />
+          <Route
+            path="/admin/approvals"
+            element={
+              <ProtectedRoute requireAdmin={true}>
+                <AdminApprovalManagement />
+              </ProtectedRoute>
+            }
+          />
 
-          {/* static informational pages */}
+          {/* Service Provider Routes */}
           <Route
-            path="/travel-services"
+            path="/service-provider/dashboard"
             element={
-              <>
-                <TravelServices />
+              <ProtectedRoute>
+                <ServiceProviderDashboard />
                 <Footer />
-              </>
+              </ProtectedRoute>
             }
           />
           <Route
-            path="/real-estate"
+            path="/service-provider/approvals"
             element={
-              <>
-                <RealEstate />
+              <ProtectedRoute>
+                <MyApprovalRequests />
                 <Footer />
-              </>
+              </ProtectedRoute>
             }
           />
-          <Route
-            path="/investment-support"
-            element={
-              <>
-                <InvestmentSupport />
-                <Footer />
-              </>
-            }
-          />
-          <Route
-            path="/brand-representation"
-            element={
-              <>
-                <BrandRepresentation />
-                <Footer />
-              </>
-            }
-          />
+          
           <Route
             path="/about-us"
             element={
@@ -413,24 +458,8 @@ export default function App() {
               </>
             }
           />
-          <Route
-            path="/hulhumeedhoo"
-            element={
-              <>
-                <Hulhumeedhoo />
-                <Footer />
-              </>
-            }
-          />
-          <Route
-            path="/token-program"
-            element={
-              <>
-                <TokenProgram />
-                <Footer />
-              </>
-            }
-          />
+          
+          
 
           {/* catch‑all */}
           <Route path="*" element={<Home />} />

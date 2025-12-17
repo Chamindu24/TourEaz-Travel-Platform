@@ -43,7 +43,7 @@ app.use(fileUpload({
 // DB connect — only once, no reconnections
 const MONGO_URI = process.env.MONGO_URI;
 mongoose.connect(MONGO_URI,{
-  dbName: 'tourism-website',
+  dbName: 'toureaz',
 })
 .then(() => console.log("MongoDB connected"))
 .catch((err) => console.error("MongoDB connection error:", err));
@@ -72,6 +72,10 @@ app.use('/api/activities', require('./routes/activity.routes'));
 app.use('/api/activity-bookings', require('./routes/activityBookingRoutes'));
 app.use('/api/upload', require('./routes/uploadRoutes'));
 app.use('/api/tour-bookings', require('./routes/tourBookingRoutes'));
+app.use('/api/service-providers', require('./routes/serviceProviderRoutes'));
+app.use('/api/category-approvals', require('./routes/categoryApprovalRoutes'));
+app.use('/api/transportations', require('./routes/transportationRoutes'));
+app.use('/api/drivers', require('./routes/driverRoutes'));
 
 app.listen(process.env.PORT || 5001, () => {
   console.log(`Server running on port ${process.env.PORT || 5001}`);

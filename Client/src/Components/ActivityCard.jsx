@@ -4,15 +4,15 @@ import { motion } from 'framer-motion';
 
 const ActivityCard = ({ activity, onClick }) => (
   <motion.div
-    className="rounded-3xl bg-white shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl cursor-pointer border border-gray-100"
+    className="group rounded-md bg-white shadow-xl overflow-hidden transition-all duration-300 hover:shadow-lg cursor-pointer border border-gray-100"
     onClick={onClick}
-    whileHover={{ y: -8 }}
+    /*whileHover={{ y: -8 }}
     initial={{ opacity: 0, y: 50 }}
     animate={{ opacity: 1, y: 0 }}
-    transition={{ duration: 0.5 }}
+    transition={{ duration: 0.5 }}*/
   >
     <div className="relative h-56 sm:h-64">
-      <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent z-10" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/55 to-transparent z-10" />
       <motion.img
         src={activity.image}
         alt={activity.title}
@@ -23,12 +23,12 @@ const ActivityCard = ({ activity, onClick }) => (
       {/* Featured Badge */}
       {activity.featured && (
         <motion.div 
-          className="absolute top-2 sm:top-3 left-2 sm:left-3 z-20"
+          className="absolute top-0 sm:top-0 left-0 sm:left-0 z-20"
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
           transition={{ delay: 0.3, type: "spring" }}
         >
-          <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-[#005E84]/90 text-white backdrop-blur-sm">
+          <span className="inline-flex items-center px-3 py-1  text-sm font-medium bg-teal-500 text-white backdrop-blur-sm">
             Featured
           </span>
         </motion.div>
@@ -60,9 +60,10 @@ const ActivityCard = ({ activity, onClick }) => (
           </span>
         </motion.div>
       )}
-      
+      <div className="absolute bottom-0 left-0 right-0 h-full bg-black/0 group-hover:bg-black/35  transition-all duration-300 z-[15]"></div>
+
       {/* Bottom Overlay Content */}
-      <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-4 z-20">
+      <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-4 z-20 transform transition-all duration-300 hover:scale-105  group-hover:translate-x-4">
         <motion.h4 
           className="font-bold text-lg sm:text-xl text-white line-clamp-1 mb-2"
           initial={{ opacity: 0, y: 20 }}
@@ -92,26 +93,26 @@ const ActivityCard = ({ activity, onClick }) => (
       animate={{ opacity: 1 }}
       transition={{ delay: 0.7, duration: 0.5 }}
     >
-      {/* Description */}
-      <p className="text-gray-600 text-xs sm:text-sm mb-3 sm:mb-4 line-clamp-2">
+    <div className="flex items-start justify-between">
+      <p className="text-gray-600 text-xs sm:text-sm line-clamp-2 pr-3">
         {activity.shortDescription || activity.description}
       </p>
-      
-      {/* Duration Info */}
+
       {activity.duration && (
-        <div className="flex items-center mb-2 sm:mb-3 text-gray-500 text-xs sm:text-sm">
-          <svg className="h-3 sm:h-4 w-3 sm:w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <span className="flex items-center gap-1.5 bg-gray-100 text-gray-700 px-2 py-1 rounded-md text-xs sm:text-sm whitespace-nowrap">
+          <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
           {activity.duration}
-        </div>
+        </span>
       )}
+    </div>
 
       {/* Price and Action */}
-      <div className="flex items-center justify-between pt-2 sm:pt-3 border-t border-gray-100">
+      <div className="flex items-center justify-between pt-1 sm:pt-2 border-t border-gray-100">
         <div className="flex flex-col">
           <div className="flex items-center mb-1">
-            <span className="text-lg sm:text-xl font-bold text-[#005E84]">
+            <span className="text-xl sm:text-2xl font-bold text-black">
               ${activity.price?.toFixed(2) || '0.00'}
             </span>
             <span className="text-xs sm:text-sm text-gray-500 ml-1">/person</span>
@@ -119,11 +120,11 @@ const ActivityCard = ({ activity, onClick }) => (
         </div>
         
         <motion.div 
-          className="bg-[#005E84] hover:bg-[#0A435C] rounded-full px-3 sm:px-4 py-2 transition-colors duration-300 flex items-center"
+          className="bg-teal-500 hover:bg-white text-white hover:text-black border-2 hover:border-teal-500 rounded-md px-3 sm:px-4 py-2 transition-colors duration-300 flex items-center"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >
-          <span className="text-white font-medium text-xs sm:text-sm">View Details</span>
+          <span className=" font-medium text-xs sm:text-sm">View Details</span>
         </motion.div>
       </div>
     </motion.div>

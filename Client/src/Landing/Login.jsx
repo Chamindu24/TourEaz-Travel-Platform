@@ -3,6 +3,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import { AuthContext } from '../context/AuthContext';
+import { motion } from 'framer-motion';
 
 const palette = {
   platinum: "#E7E9E5",
@@ -120,12 +121,19 @@ const Login = ({ setIsAuthenticated }) => {
       try {
         const userResponse = await axios.get('/users/me');
         setUser(userResponse.data);
+        const loggedInRole = userResponse?.data?.role;
         
         // Smooth transition before redirect
         setTimeout(() => {
           // Handle post-login redirect
           const bookingIntent = location.state?.bookingIntent;
           const from = location.state?.from;
+
+          // If admin, go straight to admin dashboard
+          if (loggedInRole === 'admin') {
+            navigate('/admin');
+            return;
+          }
 
           if (bookingIntent) {
             // Redirect to the booking page with the saved data
@@ -175,8 +183,27 @@ const Login = ({ setIsAuthenticated }) => {
     } catch (err) {
       console.error('Login error:', err);
       
-      // Handle pending status
-      if (err.response?.status === 403 && err.response?.data?.status === 'pending') {
+      // Handle email verification required
+      if (err.response?.status === 401 && err.response?.data?.needsVerification) {
+        setErrors({ 
+          general: 'Please verify your email to log in. Check your email for the verification link.' 
+        });
+        // Optionally show resend verification option
+        Swal.fire({
+          icon: 'warning',
+          title: 'Email Verification Required',
+          text: 'Your email is not verified yet. Would you like to request a new verification email?',
+          showCancelButton: true,
+          confirmButtonText: 'Resend Email',
+          cancelButtonText: 'Go to Verification',
+        }).then((result) => {
+          if (result.isConfirmed) {
+            navigate('/verify-email', { state: { email: formData.email } });
+          } else {
+            navigate('/verify-email');
+          }
+        });
+      } else if (err.response?.status === 403 && err.response?.data?.status === 'pending') {
         setErrors({ 
           general: 'Your account is pending approval. You will be notified once approved.' 
         });
@@ -191,7 +218,7 @@ const Login = ({ setIsAuthenticated }) => {
   };
 
   return (
-    <div className="min-h-screen relative overflow-hidden">
+    <div className="min-h-screen relative  overflow-hidden">
       {/* Enhanced Custom CSS Animations (matching Register page) */}
       <style>{`
         @keyframes fadeIn {
@@ -227,126 +254,182 @@ const Login = ({ setIsAuthenticated }) => {
 
 
 
-      {/* Dynamic Background Slideshow (matching Register page) */}
-      <div className="absolute inset-0">
-        {backgroundImages.map((image, index) => (
-          <div
-            key={index}
-            className={`absolute inset-0 transition-opacity duration-2000 ${
-              index === currentImage ? 'opacity-100' : 'opacity-0'
-            }`}
-            style={{
-              backgroundImage: `url(${image})`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-              backgroundRepeat: 'no-repeat'
-            }}
-          />
-        ))}
-        {/* Enhanced overlay for better readability */}
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-900/70 via-teal-800/60 to-blue-800/70" />
-        <div className="absolute inset-0 bg-black/20" />
-      </div>
+
 
       {/* Login Success Overlay */}
       {loginSuccess && (
-        <div className="fixed inset-0 bg-gradient-to-br from-blue-600 to-teal-600 flex items-center justify-center z-50">
-          <div className="text-white text-center">
-            <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-white/20 flex items-center justify-center animate-[success-pulse_1s_ease-in-out]">
-              <svg className="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-              </svg>
-            </div>
-            <h2 className="text-2xl font-bold mb-4">Welcome Back!</h2>
-            <p className="text-white/80">Redirecting to your dashboard...</p>
-          </div>
+        <div className="fixed inset-0 z-50 flex items-center justify-center
+                        bg-gradient-to-br from-teal-400 to-teal-200">
+            <h2
+              className="text-white font-bold tracking-widest text-4xl bsm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl animate-[trackingReveal_1s_ease-out_forwards]
+              "
+            >
+              TourEaz
+            </h2>
+          <style>{`
+            @keyframes trackingReveal {
+              0% {
+                letter-spacing: 1.5rem;
+                opacity: 0;
+              }
+              100% {
+                letter-spacing: 0.2em;
+                opacity: 1;
+              }
+            }
+          `}</style>
         </div>
+
       )}
 
       {/* Main Content - Split Screen Layout */}
       <div className="relative z-10 min-h-screen flex">
         {/* Left Side - Branding & Information */}
-        <div className="hidden lg:flex lg:w-1/2 items-center justify-center p-12">
-          <div className="max-w-md text-center text-white">
-            <div className={`mb-8 ${animations.float}`}>
-              <img
-                src="/IsleKey Logo.jpg"
-                alt="IsleKey Holidays"
-                className="h-24 w-auto mx-auto mb-6 rounded-2xl shadow-2xl"
-                onError={(e) => {
-                  e.target.src = "/Logo.png";
-                }}
-              />
-            </div>
-            <h1 className={`text-4xl font-bold mb-6 ${animations.fadeIn}`}>
-              Welcome Back
+        <div
+          className="hidden lg:flex lg:w-1/2 items-start justify-center mt-3.5  p-12 relative overflow-hidden"
+          style={{
+            backgroundImage: "url('/login3.jpg')",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+
+          }}
+        >
+          {/* Dark overlay */}
+          <div className="absolute inset-0 bg-teal-500/30 z-10 pointer-events-none backdrop-blur-[1px]"></div>
+          {/* Animated gradient pulse */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/5 z-20 pointer-events-none animate-pulse-slow"></div>
+
+          {/* Floating clouds */}
+          <motion.div
+            className="absolute top-20 left-[-100px] w-40 opacity-70 z-15"
+            animate={{ x: [0, 600, -100] }}
+            transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
+          >
+            <svg viewBox="0 0 640 512" fill="white" className="w-full h-full">
+              <path d="M144 480C64.5 480 0 415.5 0 336c0-62.8 40.2-116.2 96.2-135.9c-.1-2.7-.2-5.4-.2-8.1c0-88.4 71.6-160 160-160c59.3 0 111 32.2 138.7 80.2C409.9 102 428.3 96 448 96c53 0 96 43 96 96c0 12.2-2.3 23.8-6.4 34.6C596 238.4 640 290.1 640 352c0 70.7-57.3 128-128 128H144z"/>
+            </svg>
+          </motion.div>
+          <motion.div
+            className="absolute top-40 left-[-150px] w-56 opacity-50 z-15"
+            animate={{ x: [0, 700, -200] }}
+            transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
+          >
+            <svg viewBox="0 0 640 512" fill="white" className="w-full h-full">
+              <path d="M144 480C64.5 480 0 415.5 0 336c0-62.8 40.2-116.2 96.2-135.9c-.1-2.7-.2-5.4-.2-8.1c0-88.4 71.6-160 160-160c59.3 0 111 32.2 138.7 80.2C409.9 102 428.3 96 448 96c53 0 96 43 96 96c0 12.2-2.3 23.8-6.4 34.6C596 238.4 640 290.1 640 352c0 70.7-57.3 128-128 128H144z"/>
+            </svg>
+          </motion.div>
+
+          {/* Flying airplane */}
+          <motion.div
+            className="absolute top-10 mt-10 left-[-50px] z-30"
+            animate={{ x: [0, 700, -100], rotate: [0, 15, -10] }}
+            transition={{ duration: 24, repeat: Infinity, ease: "linear" }}
+          >
+            <svg viewBox="0 0 576 512" fill="white" className="w-14 h-14">
+              <path d="M482.3 192c34.2 0 93.7 29 93.7 64c0 36-59.5 64-93.7 64l-116.6 0L265.2 495.9c-5.7 10-16.3 16.1-27.8 16.1l-56.2 0c-10.6 0-18.3-10.2-15.4-20.4l49-171.6L112 320 68.8 377.6c-3 4-7.8 6.4-12.8 6.4l-42 0c-7.8 0-14-6.3-14-14c0-1.3 .2-2.6 .5-3.9L32 256 .5 145.9c-.4-1.3-.5-2.6-.5-3.9c0-7.8 6.3-14 14-14l42 0c5 0 9.8 2.4 12.8 6.4L112 192l102.9 0-49-171.6C162.9 10.2 170.6 0 181.2 0l56.2 0c11.5 0 22.1 6.2 27.8 16.1L365.7 192l116.6 0z"/>
+            </svg>
+          </motion.div>
+
+          {/* Sparkles for magic feel */}
+          {Array.from({ length: 5 }).map((_, i) => (
+            <motion.div
+              key={i}
+              className={`absolute w-2 h-2 bg-yellow-300 rounded-full z-30`}
+              style={{
+                top: `${Math.random() * 80}%`,
+                left: `${Math.random() * 80}%`,
+              }}
+              animate={{ y: [0, -15, 0], opacity: [0.2, 0.8, 0.2] }}
+              transition={{
+                duration: 2 + Math.random() * 2,
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: i,
+              }}
+            />
+          ))}
+
+          {/* Main Content */}
+          <div className={`max-w-md text-start mt-24 bg-black/5 p-8 backdrop-blur-[6px] border-2 border-white/20 rounded-2xl shadow-2xl fixed z-40 space-y-4 ${animations.slideUp} `}>
+            <h1 className={`text-3xl font-bold text-white tracking-tight drop-shadow-lg ${animations.fadeIn}`}>
+              Embark on Your <span className="text-yellow-300 drop-shadow-[0_0_10px_rgba(255,228,94,0.9)]">Sri Lankan </span>Adventure
             </h1>
-            <p className={`text-xl text-blue-100 mb-8 leading-relaxed ${animations.slideUp}`}>
-              Sign in to your travel agent portal and continue creating amazing experiences 
-              for your clients in the beautiful Maldives.
+
+            <p className={`text-lg text-gray-100 leading-relaxed mt-2 ${animations.slideUp}`}>
+              Log in to uncover secret destinations, experience local culture, and make every trip unforgettable.
             </p>
-            
-            {/* Enhanced Booking Intent Message */}
+
+
+            {/* Booking Intent Card */}
             {location.state?.bookingIntent && (
-              <div className={`mb-8 p-4 rounded-xl bg-blue-400/20 border border-blue-300/30 ${animations.fadeIn}`}>
-                <div className="flex items-start space-x-3">
-                  <div className="flex-shrink-0">
-                    <svg className="w-5 h-5 mt-0.5 text-blue-200" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
-                    </svg>
-                  </div>
+              <motion.div
+                className={`mb-6 p-5 rounded-2xl bg-gradient-to-r from-blue-500/30 to-teal-400/20 border border-blue-300/40 shadow-lg`}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8 }}
+              >
+                <div className="flex items-start space-x-4">
+                  <svg
+                    className="w-6 h-6 mt-0.5 text-blue-100"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
                   <div className="text-left">
-                    <p className="font-semibold text-sm text-blue-200">
-                      Complete Your Booking
-                    </p>
-                    <p className="text-sm mt-1 text-blue-100">
-                      Please login to continue with your{' '}
+                    <p className="font-semibold text-sm text-blue-200">Complete Your Booking</p>
+                    <p className="text-sm mt-1 text-blue-50">
+                      Login to continue with your{' '}
                       {location.state.bookingIntent.type === 'hotel' && 'hotel reservation'}
                       {location.state.bookingIntent.type === 'activity' && 'activity booking'}
                       {location.state.bookingIntent.type === 'tour' && 'tour inquiry'}
                     </p>
                   </div>
                 </div>
-              </div>
+              </motion.div>
             )}
-            
-            <div className={`grid grid-cols-1 gap-4 ${animations.slideUp}`}>
-              <div className="flex items-center space-x-3 text-blue-100">
-                <div className="w-8 h-8 bg-blue-400/30 rounded-lg flex items-center justify-center">
-                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                  </svg>
-                </div>
-                <span>Exclusive Access to Properties</span>
-              </div>
-              <div className="flex items-center space-x-3 text-blue-100">
-                <div className="w-8 h-8 bg-blue-400/30 rounded-lg flex items-center justify-center">
-                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                  </svg>
-                </div>
-                <span>Real-time Booking Management</span>
-              </div>
-              <div className="flex items-center space-x-3 text-blue-100">
-                <div className="w-8 h-8 bg-blue-400/30 rounded-lg flex items-center justify-center">
-                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                  </svg>
-                </div>
-                <span>Dedicated Partner Support</span>
-              </div>
+
+            {/* Features */}
+            <div className={`grid grid-cols-1 gap-4`}>
+              {[
+                "Unlock Hidden Gems",
+                "Real-time Booking Control",
+                "24/7 Partner Support",
+              ].map((feature, idx) => (
+                <motion.div
+                  key={idx}
+                  className="flex items-center space-x-3 text-teal-50 hover:text-yellow-300 transition-colors duration-300"
+                  whileHover={{ scale: 1.05 }}
+                >
+                  <div className="w-8 h-8 bg-teal-400/80 rounded-lg flex items-center justify-center shadow-md">
+                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                      <path
+                        fillRule="evenodd"
+                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  </div>
+                  <span className="font-medium">{feature}</span>
+                </motion.div>
+              ))}
             </div>
           </div>
         </div>
 
+
         {/* Right Side - Login Form */}
-        <div className="w-full lg:w-1/2 flex items-center justify-center p-4 sm:p-8">
+        <div className="w-full lg:w-1/2  flex items-center justify-center -mt-20 p-4 sm:p-8">
           <div className="w-full max-w-md">
-            <div className={`bg-white/10 backdrop-blur-lg rounded-3xl p-8 shadow-2xl border border-white/20 ${animations.slideUp}`}>
+            <div className={`bg-white/50 backdrop-blur-lg rounded-md  p-8   ${animations.slideUp}`}>
               {/* Form Header */}
-              <div className="text-center mb-8">
-                <h2 className="text-3xl font-bold text-white mb-2">Welcome Back</h2>
-                <p className="text-blue-100">Sign in to your travel agent portal</p>
+              <div className="text-start mb-8">
+                <h2 className="text-3xl font-bold text-black/80 mb-2 tracking-wide">Welcome Back</h2>
+                <p className="text-teal-200">Sign in to your travel agent portal</p>
               </div>
 
               {/* Enhanced Error Display */}
@@ -360,8 +443,8 @@ const Login = ({ setIsAuthenticated }) => {
               <form onSubmit={handleSubmit} className="space-y-6">
                 {/* Email */}
                 <div className="space-y-2">
-                  <label className="block text-sm font-medium text-blue-100">
-                    Email Address *
+                  <label className="block text-lg font-medium text-teal-200">
+                    Email Address 
                   </label>
                   <div className="relative">
                     <input
@@ -372,20 +455,16 @@ const Login = ({ setIsAuthenticated }) => {
                       onFocus={() => handleFocus('email')}
                       onBlur={handleBlur}
                       autoComplete="username"
-                      className={`w-full px-4 py-3 bg-white/10 border ${
+                      className={`w-full px-4 py-3 bg-teal-600/10 border ${
                         errors.email 
                           ? 'border-red-400/50 focus:border-red-400' 
                           : focusedField === 'email'
-                            ? 'border-blue-400 focus:border-blue-400'
-                            : 'border-white/20 focus:border-blue-400'
-                      } rounded-xl text-white placeholder-blue-200/60 backdrop-blur-sm transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-blue-400/20`}
+                            ? 'border-teal-400 focus:border-teal-400'
+                            : 'border-black/15 focus:border-teal-400'
+                      } rounded-lg text-black placeholder-gray-400 backdrop-blur-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-teal-400/20`}
                       placeholder="Enter your email address"
                     />
-                    <div className="absolute inset-y-0 right-0 pr-3 flex items-center">
-                      <svg className="h-5 w-5 text-blue-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" />
-                      </svg>
-                    </div>
+
                   </div>
                   {errors.email && (
                     <p className="text-red-300 text-sm">{errors.email}</p>
@@ -394,8 +473,8 @@ const Login = ({ setIsAuthenticated }) => {
 
                 {/* Password */}
                 <div className="space-y-2">
-                  <label className="block text-sm font-medium text-blue-100">
-                    Password *
+                  <label className="block text-lg font-medium text-teal-200">
+                    Password 
                   </label>
                   <div className="relative">
                     <input
@@ -406,19 +485,19 @@ const Login = ({ setIsAuthenticated }) => {
                       onFocus={() => handleFocus('password')}
                       onBlur={handleBlur}
                       autoComplete="current-password"
-                      className={`w-full px-4 py-3 pr-12 bg-white/10 border ${
+                      className={`w-full px-4 py-3 pr-12 bg-teal-600/10 border ${
                         errors.password 
                           ? 'border-red-400/50 focus:border-red-400' 
                           : focusedField === 'password'
-                            ? 'border-blue-400 focus:border-blue-400'
-                            : 'border-white/20 focus:border-blue-400'
-                      } rounded-xl text-white placeholder-blue-200/60 backdrop-blur-sm transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-blue-400/20`}
+                            ? 'border-teal-400 focus:border-teal-400'
+                            : 'border-black/15 focus:border-teal-400'
+                      } rounded-lg text-black placeholder-gray-400 backdrop-blur-sm transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-teal-400/20`}
                       placeholder="Enter your password"
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute inset-y-0 right-0 pr-3 flex items-center text-blue-300 hover:text-blue-200 transition-colors duration-200"
+                      className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 transition-colors duration-200"
                     >
                       {showPassword ? (
                         <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -446,16 +525,16 @@ const Login = ({ setIsAuthenticated }) => {
                       type="checkbox"
                       checked={formData.rememberMe}
                       onChange={handleChange}
-                      className="h-4 w-4 text-blue-400 focus:ring-blue-400 border-white/30 rounded bg-white/10"
+                      className="h-4 w-4 text-teal-400 focus:ring-teal-400 border-white/30 rounded bg-white/10"
                     />
-                    <label htmlFor="remember-me" className="ml-2 block text-sm text-blue-100">
+                    <label htmlFor="remember-me" className="ml-2 block text-sm text-teal-200">
                       Remember me
                     </label>
                   </div>
                   <div className="text-sm">
-                    <a href="#" className="text-blue-300 hover:text-blue-200 transition-colors duration-200">
+                    <Link to="/forgot-password" className="text-blue-600 hover:text-blue-700 font-semibold transition-colors duration-200">
                       Forgot password?
-                    </a>
+                    </Link>
                   </div>
                 </div>
 
@@ -463,11 +542,11 @@ const Login = ({ setIsAuthenticated }) => {
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className={`w-full py-4 px-6 rounded-xl font-medium transition-all duration-200 ${
+                  className={`w-full  py-3 px-6 tracking-wide rounded-md font-semibold text-xl transition-all duration-200 ${
                     isLoading
                       ? 'bg-blue-400/50 cursor-not-allowed text-blue-100'
-                      : 'bg-gradient-to-r from-blue-500 to-teal-500 hover:from-blue-600 hover:to-teal-600 text-white shadow-lg hover:shadow-xl transform hover:scale-[1.02] active:scale-[0.98]'
-                  } focus:outline-none focus:ring-4 focus:ring-blue-400/20`}
+                      : 'bg-teal-500 hover:bg-white text-white shadow-lg hover:text-black transform hover:scale-[1.02] active:scale-[0.98]'
+                  } focus:outline-none focus:ring-4 focus:ring-blue-400/20 border-2 hover:border-teal-500`}
                 >
                   {isLoading ? (
                     <div className="flex items-center justify-center space-x-2">
@@ -480,12 +559,12 @@ const Login = ({ setIsAuthenticated }) => {
                 </button>
 
                 {/* Register Link */}
-                <div className="text-center pt-4">
-                  <p className="text-blue-100">
+                <div className="text-center ">
+                  <p className="text-teal-200">
                     Don't have an account?{' '}
                     <Link 
                       to="/register" 
-                      className="text-blue-300 hover:text-blue-200 font-medium transition-colors duration-200 hover:underline"
+                      className="text-blue-500 hover:text-blue-600 font-medium transition-colors duration-200 hover:underline"
                     >
                       Create account here
                     </Link>

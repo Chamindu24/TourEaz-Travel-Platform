@@ -45,9 +45,9 @@ const Search = () => {
     calculatePriceRangeStyles,
   } = useHotelSearch(location);
 
-  if (loading) {
+ /* if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-platinum via-ash_gray to-platinum flex justify-center items-center">
+      <div className="min-h-screen bg-white flex justify-center items-center">
         <div
           className="animate-spin rounded-full h-16 w-16 border-4 border-lapis_lazuli-500 border-t-indigo_dye-500 border-b-ash_gray-500 border-r-platinum-500 bg-platinum-500 shadow-lg"
           style={{
@@ -60,14 +60,15 @@ const Search = () => {
         ></div>
       </div>
     );
-  }
+  }*/
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-gray-50">
       <div>
-        <main className="px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-10 max-w-[1400px] mx-auto">
+        <SearchBanner />
+        <main className="px-4 sm:px-6 lg:px-8 pb-4 sm:pb-6 lg:pb-10 max-w-[1400px] mx-auto">
           {/* Banner */}
-          <SearchBanner />
+          
 
           {/* Search Form */}
           <SearchForm

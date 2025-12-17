@@ -23,6 +23,7 @@ const transportationSchema = new mongoose.Schema({
 
 const roomSchema = new mongoose.Schema({
   hotel: { type: mongoose.Schema.Types.ObjectId, ref: 'Hotel', required: true },
+  serviceProvider: { type: mongoose.Schema.Types.ObjectId, ref: 'ServiceProvider', required: true },
   roomName: { type: String, required: true },
   roomType: { type: String, required: true },
   description: { type: String },
