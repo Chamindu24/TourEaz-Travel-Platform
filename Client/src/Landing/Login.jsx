@@ -434,7 +434,7 @@ const Login = ({ setIsAuthenticated }) => {
 
               {/* Enhanced Error Display */}
               {errors.general && (
-                <div className="mb-6 bg-red-500/20 border border-red-400/30 text-red-100 px-4 py-3 rounded-xl backdrop-blur-sm">
+                <div className="mb-6 bg-red-400/15 border border-red-500 text-red-600 px-4 py-3 rounded-xl backdrop-blur-sm">
                   {errors.general}
                 </div>
               )}
@@ -544,13 +544,13 @@ const Login = ({ setIsAuthenticated }) => {
                   disabled={isLoading}
                   className={`w-full  py-3 px-6 tracking-wide rounded-md font-semibold text-xl transition-all duration-200 ${
                     isLoading
-                      ? 'bg-blue-400/50 cursor-not-allowed text-blue-100'
+                      ? 'bg-teal-300 cursor-not-allowed text-teal-900'
                       : 'bg-teal-500 hover:bg-white text-white shadow-lg hover:text-black transform hover:scale-[1.02] active:scale-[0.98]'
                   } focus:outline-none focus:ring-4 focus:ring-blue-400/20 border-2 hover:border-teal-500`}
                 >
                   {isLoading ? (
                     <div className="flex items-center justify-center space-x-2">
-                      <div className="w-5 h-5 border-2 border-blue-200 border-t-transparent rounded-full animate-spin"></div>
+                      <div className="w-5 h-5 border-2 border-teal-500 border-t-transparent rounded-full animate-spin"></div>
                       <span>Signing you in...</span>
                     </div>
                   ) : (

@@ -3,6 +3,20 @@ function extractGoogleMapSrc(iframeString) {
   const match = iframeString.match(/src=["']([^"']+)["']/);
   return match ? match[1] : iframeString;
 }
+
+// Normalize server upload responses that may return either `{url, public_id}`
+// or `{success: true, data: { url, isPlaceholder, isFallback }}`
+const normalizeUploadResponse = (response) => {
+  const data = response?.data || {};
+  const payload = data.data || {};
+
+  const url = payload.url || data.url;
+  const isPlaceholder = payload.isPlaceholder ?? data.isPlaceholder;
+  const isFallback = payload.isFallback ?? data.isFallback;
+  const success = data.success !== undefined ? data.success : Boolean(url);
+
+  return { success, url, isPlaceholder, isFallback, error: data.error };
+};
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { Formik, Form, Field, ErrorMessage, FieldArray } from 'formik';
@@ -124,26 +138,26 @@ const ActivityForm = ({ isStandalone = false, activityId = null, onSuccess = nul
       }
       
       console.log('Upload response:', response.data);
+
+      const result = normalizeUploadResponse(response);
+      if (!result.success || !result.url) {
+        throw new Error(result.error || 'Upload failed with unknown error');
+      }
+
+      const newImage = {
+        id: Date.now(),
+        url: result.url,
+        isUploaded: true,
+        isPlaceholder: result.isPlaceholder,
+        isFallback: result.isFallback
+      };
       
-      if (response.data.success) {
-        const newImage = {
-          id: Date.now(),
-          url: response.data.data.url,
-          isUploaded: true,
-          // Store these for debugging purposes
-          isPlaceholder: response.data.data.isPlaceholder,
-          isFallback: response.data.data.isFallback
-        };
-        
-        setImages([...images, newImage]);
-        
-        // Show warnings if using placeholder/fallback
-        if (response.data.data.isPlaceholder || response.data.data.isFallback) {
-          console.warn('Using fallback/placeholder image due to upload issues');
-          alert('Note: Using a placeholder image because the image upload service is currently unavailable. Your activity will still be saved.');
-        }
-      } else {
-        throw new Error(response.data.error || 'Upload failed with unknown error');
+      setImages([...images, newImage]);
+      
+      // Show warnings if using placeholder/fallback
+      if (result.isPlaceholder || result.isFallback) {
+        console.warn('Using fallback/placeholder image due to upload issues');
+        alert('Note: Using a placeholder image because the image upload service is currently unavailable. Your activity will still be saved.');
       }
     } catch (error) {
       console.error('Error uploading image:', error);
@@ -214,21 +228,22 @@ const ActivityForm = ({ isStandalone = false, activityId = null, onSuccess = nul
             }
           }
           
-          if (response.data.success) {
+          const result = normalizeUploadResponse(response);
+          
+          if (!result.success || !result.url) {
+            console.error('Upload failed:', result.error);
+            uploadResults.failed++;
+          } else {
             const newImage = {
               id: Date.now() + Math.random(),
-              url: response.data.data.url,
+              url: result.url,
               isUploaded: true,
-              // Store these for debugging purposes
-              isPlaceholder: response.data.data.isPlaceholder,
-              isFallback: response.data.data.isFallback
+              isPlaceholder: result.isPlaceholder,
+              isFallback: result.isFallback
             };
             
             setGalleryImages(prev => [...prev, newImage]);
             uploadResults.success++;
-          } else {
-            console.error('Upload failed:', response.data.error);
-            uploadResults.failed++;
           }
         } catch (individualError) {
           console.error(`Error uploading gallery image ${file.name}:`, individualError);
@@ -316,6 +331,8 @@ const ActivityForm = ({ isStandalone = false, activityId = null, onSuccess = nul
         // Call onSuccess callback if provided, otherwise navigate
         if (onSuccess) {
           onSuccess();
+        } else if (isServiceProvider || isStandalone) {
+          navigate('/service-provider/dashboard');
         } else {
           navigate(backPath);
         }
@@ -356,11 +373,11 @@ const ActivityForm = ({ isStandalone = false, activityId = null, onSuccess = nul
   // Form content component
   const formContent = (
     <>
-      <div className="pb-5 border-b border-gray-200 mb-6">
-        <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold text-gray-800">
-            {isNew ? 'Add New Activity' : 'Edit Activity'}
-          </h1>
+      <div className="pb-5 border-b border-gray-300  mb-6">
+        <div className="flex items-center  justify-between">
+            <h1 className="text-2xl font-bold  text-gray-800">
+              {isNew ? 'Add New Activity' : 'Edit Activity'}
+            </h1>
           <button
             type="button"
             onClick={() => navigate(backPath)}
@@ -401,7 +418,7 @@ const ActivityForm = ({ isStandalone = false, activityId = null, onSuccess = nul
             onSubmit={handleSubmit}
           >
             {({ isSubmitting, errors, touched, values, setFieldValue }) => (
-              <Form className="space-y-6 p-6">
+              <Form className="space-y-6 shadow-md p-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {/* Basic Info */}
                   <div className="space-y-4">
@@ -414,7 +431,7 @@ const ActivityForm = ({ isStandalone = false, activityId = null, onSuccess = nul
                         type="text"
                         name="title"
                         id="title"
-                        className={`mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm border-gray-300 rounded-md 
+                        className={`mt-1 bg-gray-50 border-2 rounded-xl focus:ring-blue-500 focus:border-teal-500 block w-full shadow-sm border-gray-300 focus:outline-none
                           text-base py-3 px-4 ${
                           errors.title && touched.title ? 'border-red-300' : ''
                         }`}
@@ -430,7 +447,7 @@ const ActivityForm = ({ isStandalone = false, activityId = null, onSuccess = nul
                         name="googleMapLink"
                         id="googleMapLink"
                         placeholder="https://www.google.com/maps/embed?..."
-                        className={`mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm border-gray-300 rounded-md 
+                        className={`mt-1 bg-gray-50 border-2 focus:border-teal-500 block w-full shadow-sm border-gray-300 rounded-xl focus:outline-none
                           text-base py-3 px-4 ${
                           errors.googleMapLink && touched.googleMapLink ? 'border-red-300' : ''
                         }`}
@@ -447,7 +464,7 @@ const ActivityForm = ({ isStandalone = false, activityId = null, onSuccess = nul
                         name="shortDescription"
                         id="shortDescription"
                         rows={2}
-                        className={`mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm border-gray-300 rounded-md 
+                        className={`mt-1 bg-gray-50 border-2 rounded-xl focus:ring-blue-500 focus:border-teal-500 block w-full shadow-sm border-gray-300 focus:outline-none
                           text-base py-3 px-4 ${
                           errors.shortDescription && touched.shortDescription ? 'border-red-300' : ''
                         }`}
@@ -464,7 +481,7 @@ const ActivityForm = ({ isStandalone = false, activityId = null, onSuccess = nul
                         name="description"
                         id="description"
                         rows={6}
-                        className={`mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm border-gray-300 rounded-md 
+                        className={`mt-1 bg-gray-50 border-2 rounded-xl focus:ring-blue-500 focus:border-teal-500 block w-full shadow-sm border-gray-300 focus:outline-none
                           text-base py-3 px-4 ${
                           errors.description && touched.description ? 'border-red-300' : ''
                         }`}
@@ -480,7 +497,7 @@ const ActivityForm = ({ isStandalone = false, activityId = null, onSuccess = nul
                           type="number"
                           name="price"
                           id="price"
-                          className={`mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm border-gray-300 rounded-md 
+                          className={`mt-1 bg-gray-50 border-2 rounded-xl focus:ring-blue-500 focus:border-teal-500 block w-full shadow-sm border-gray-300 focus:outline-none
                             text-base py-3 px-4 ${
                             errors.price && touched.price ? 'border-red-300' : ''
                           }`}
@@ -495,7 +512,7 @@ const ActivityForm = ({ isStandalone = false, activityId = null, onSuccess = nul
                           type="number"
                           name="duration"
                           id="duration"
-                          className={`mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm border-gray-300 rounded-md 
+                          className={`mt-1 bg-gray-50 border-2 rounded-xl focus:ring-blue-500 focus:border-teal-500 block w-full shadow-sm border-gray-300 focus:outline-none
                             text-base py-3 px-4 ${
                             errors.duration && touched.duration ? 'border-red-300' : ''
                           }`}
@@ -518,7 +535,7 @@ const ActivityForm = ({ isStandalone = false, activityId = null, onSuccess = nul
                           type="text"
                           name="location"
                           id="location"
-                          className={`mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm border-gray-300 rounded-md 
+                          className={`mt-1 bg-gray-50 border-2 rounded-xl focus:ring-blue-500 focus:border-teal-500 block w-full shadow-sm border-gray-300 focus:outline-none
                             text-base py-3 px-4 ${
                             errors.location && touched.location ? 'border-red-300' : ''
                           }`}
@@ -533,8 +550,8 @@ const ActivityForm = ({ isStandalone = false, activityId = null, onSuccess = nul
                           as="select"
                           name="type"
                           id="type"
-                          className={`mt-1 block w-full py-3 px-4 border border-gray-300 bg-white rounded-md shadow-sm 
-                            focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-base ${
+                          className={`mt-1 block w-full py-3 px-4 border-2 border-gray-300 bg-white rounded-xl shadow-sm 
+                            focus:outline-none focus:ring-blue-500 focus:border-teal-500 text-base ${
                             errors.type && touched.type ? 'border-red-300' : ''
                           }`}
                         >
@@ -560,7 +577,7 @@ const ActivityForm = ({ isStandalone = false, activityId = null, onSuccess = nul
                         type="number"
                         name="maxParticipants"
                         id="maxParticipants"
-                        className={`mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm border-gray-300 rounded-md 
+                        className={`mt-1 bg-gray-50 border-2 rounded-xl focus:ring-blue-500 focus:border-teal-500 block w-full shadow-sm border-gray-300 focus:outline-none
                           text-base py-3 px-4 ${
                           errors.maxParticipants && touched.maxParticipants ? 'border-red-300' : ''
                         }`}
@@ -581,7 +598,7 @@ const ActivityForm = ({ isStandalone = false, activityId = null, onSuccess = nul
                                 <div key={index} className="flex items-center mb-2">
                                   <Field
                                     name={`included.${index}`}
-                                    className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm border-gray-300 rounded-md text-base py-3 px-4"
+                                    className="mt-1 bg-gray-50 border-2 rounded-xl focus:ring-blue-500 focus:border-teal-500 block w-full shadow-sm border-gray-300 focus:outline-none text-base py-3 px-4"
                                     placeholder="E.g., Equipment rental"
                                   />
                                   <button
@@ -598,7 +615,7 @@ const ActivityForm = ({ isStandalone = false, activityId = null, onSuccess = nul
                             )}
                             <button
                               type="button"
-                              className="mt-2 inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none"
+                              className="mt-2 inline-flex items-center px-4 py-2  border-transparent text-base font-medium rounded-md text-white bg-teal-600 hover:bg-white hover:text-black border-2 hover:border-teal-500 hover:scale-105 duration-300 focus:outline-none"
                               onClick={() => push('')}
                             >
                               <i className="fas fa-plus mr-2"></i> Add Item
@@ -620,7 +637,7 @@ const ActivityForm = ({ isStandalone = false, activityId = null, onSuccess = nul
                                 <div key={index} className="flex items-center mb-2">
                                   <Field
                                     name={`notIncluded.${index}`}
-                                    className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm border-gray-300 rounded-md text-base py-3 px-4"
+                                    className="mt-1 bg-gray-50 border-2 rounded-xl focus:ring-blue-500 focus:border-teal-500 block w-full shadow-sm border-gray-300 focus:outline-none text-base py-3 px-4"
                                     placeholder="E.g., Gratuities"
                                   />
                                   <button
@@ -637,7 +654,7 @@ const ActivityForm = ({ isStandalone = false, activityId = null, onSuccess = nul
                             )}
                             <button
                               type="button"
-                              className="mt-2 inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none"
+                              className="mt-2 inline-flex items-center px-4 py-2  border-transparent text-base font-medium rounded-md text-white bg-teal-600 hover:bg-white hover:text-black border-2 hover:border-teal-500 hover:scale-105 duration-300 focus:outline-none"
                               onClick={() => push('')}
                             >
                               <i className="fas fa-plus mr-2"></i> Add Item
@@ -659,7 +676,7 @@ const ActivityForm = ({ isStandalone = false, activityId = null, onSuccess = nul
                                 <div key={index} className="flex items-center mb-2">
                                   <Field
                                     name={`requirements.${index}`}
-                                    className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm border-gray-300 rounded-md text-base py-3 px-4"
+                                    className="mt-1 bg-gray-50 border-2 rounded-xl focus:ring-blue-500 focus:border-teal-500 block w-full shadow-sm border-gray-300 focus:outline-none text-base py-3 px-4"
                                     placeholder="E.g., Minimum age: 8 years"
                                   />
                                   <button
@@ -676,7 +693,7 @@ const ActivityForm = ({ isStandalone = false, activityId = null, onSuccess = nul
                             )}
                             <button
                               type="button"
-                              className="mt-2 inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none"
+                              className="mt-2 inline-flex items-center px-4 py-2  border-transparent text-base font-medium rounded-md text-white bg-teal-600 hover:bg-white hover:text-black border-2 hover:border-teal-500 hover:scale-105 duration-300 focus:outline-none"
                               onClick={() => push('')}
                             >
                               <i className="fas fa-plus mr-2"></i> Add Requirement
@@ -692,7 +709,7 @@ const ActivityForm = ({ isStandalone = false, activityId = null, onSuccess = nul
                           type="checkbox"
                           name="featured"
                           id="featured"
-                          className="focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300 rounded"
+                          className="focus:ring-blue-500 h-4 w-4 text-teal-600 border-gray-300 rounded"
                         />
                       </div>
                       <div className="ml-3 text-sm">
@@ -711,7 +728,7 @@ const ActivityForm = ({ isStandalone = false, activityId = null, onSuccess = nul
                         as="select"
                         name="status"
                         id="status"
-                        className="mt-1 block w-full py-3 px-4 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                        className="mt-1 block w-full py-3 px-4 border-2 border-gray-300 bg-white rounded-xl shadow-sm focus:outline-none focus:ring-blue-500 focus:border-teal-500 sm:text-sm"
                       >
                         <option value="active">Active</option>
                         <option value="inactive">Inactive</option>
@@ -725,109 +742,117 @@ const ActivityForm = ({ isStandalone = false, activityId = null, onSuccess = nul
                 
                 {/* Main Image Section */}
                 <div className="border-t border-gray-200 pt-6">
-                  <h3 className="text-lg font-medium text-gray-900 mb-4">Main Activity Image</h3>
-                  
+                  <div className="flex items-center justify-between mb-3">
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-900">Main Activity Image</h3>
+                      <p className="text-sm text-gray-500">One strong cover image; recommended 1200x800 or higher.</p>
+                    </div>
+                    <span className="text-xs uppercase tracking-wide text-gray-400">Required</span>
+                  </div>
+
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
                     {images.map((image) => (
-                      <div key={image.id} className="relative">
+                      <div key={image.id} className="relative group rounded-lg overflow-hidden shadow-sm border border-gray-200 bg-gray-50">
                         <img 
                           src={image.url} 
                           alt="Activity" 
-                          className="h-32 w-full object-cover rounded-lg"
+                          className="h-32 w-full object-cover transition-transform duration-200 group-hover:scale-105"
                         />
                         <button
                           type="button"
                           onClick={() => removeImage(image.id)}
-                          className="absolute top-1 right-1 bg-red-600 rounded-full p-2 text-white hover:bg-red-700 focus:outline-none"
+                          className="absolute top-2 right-2 bg-white/90 border border-red-200 rounded-full p-2 text-red-600 hover:bg-red-600 hover:text-white focus:outline-none shadow-sm"
                           title="Remove image"
                         >
-                          <FaTrash size={18} />
+                          <FaTrash size={16} />
                         </button>
                       </div>
                     ))}
                     
                     {/* Upload button */}
                     {images.length === 0 && (
-                      <div className="h-32 border-2 border-gray-300 border-dashed rounded-lg flex items-center justify-center">                        <label htmlFor="mainImage" className="w-full h-full flex flex-col items-center justify-center cursor-pointer">
-                          {uploading ? (
-                            <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500"></div>
-                          ) : (
-                            <>
-                              <i className="fas fa-cloud-upload-alt text-3xl text-gray-400"></i>
-                              <span className="mt-2 block text-sm font-medium text-gray-700">
-                                Add Main Image
-                              </span>
-                            </>
-                          )}<input
-                            type="file"
-                            id="mainImage"
-                            name="mainImage"
-                            className="hidden"
-                            accept="image/*"
-                            onChange={handleImageUpload}
-                            disabled={uploading}
-                          />
-                        </label>
-                      </div>
+                      <label
+                        htmlFor="mainImage"
+                        className="h-32 border-2 border-dashed border-teal-300 rounded-lg flex flex-col items-center justify-center cursor-pointer bg-teal-50/40 hover:bg-teal-50 transition"
+                      >
+                        {uploading ? (
+                          <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-teal-500"></div>
+                        ) : (
+                          <>
+                            <i className="fas fa-cloud-upload-alt text-3xl text-teal-500"></i>
+                            <span className="mt-2 block text-sm font-medium text-teal-700">Upload main image</span>
+                            <span className="text-xs text-gray-500">JPG/PNG, max 5MB</span>
+                          </>
+                        )}
+                        <input
+                          type="file"
+                          id="mainImage"
+                          name="mainImage"
+                          className="hidden"
+                          accept="image/*"
+                          onChange={handleImageUpload}
+                          disabled={uploading}
+                        />
+                      </label>
                     )}
                   </div>
-                  
-                  <p className="text-sm text-gray-500">
-                    This image will be used as the main image for the activity in listings and the detail page.
-                  </p>
                 </div>
                 
                 {/* Gallery Images Section */}
                 <div className="border-t border-gray-200 pt-6">
-                  <h3 className="text-lg font-medium text-gray-900 mb-4">Gallery Images</h3>
+                  <div className="flex items-center justify-between mb-3">
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-900">Gallery Images</h3>
+                      <p className="text-sm text-gray-500">Showcase 3–8 supporting photos; we will keep the upload order.</p>
+                    </div>
+                    <span className="text-xs uppercase tracking-wide text-gray-400">Optional</span>
+                  </div>
                   
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
                     {galleryImages.map((image) => (
-                      <div key={image.id} className="relative">
+                      <div key={image.id} className="relative group rounded-lg overflow-hidden shadow-sm border border-gray-200 bg-gray-50">
                         <img 
                           src={image.url} 
                           alt="Gallery" 
-                          className="h-32 w-full object-cover rounded-lg"
+                          className="h-32 w-full object-cover transition-transform duration-200 group-hover:scale-105"
                         />
                         <button
                           type="button"
                           onClick={() => removeGalleryImage(image.id)}
-                          className="absolute top-1 right-1 bg-red-600 rounded-full p-2 text-white hover:bg-red-700 focus:outline-none"
+                          className="absolute top-2 right-2 bg-white/90 border border-red-200 rounded-full p-2 text-red-600 hover:bg-red-600 hover:text-white focus:outline-none shadow-sm"
                           title="Remove image"
                         >
-                          <FaTrash size={18} />
+                          <FaTrash size={16} />
                         </button>
                       </div>
                     ))}
                     
                     {/* Upload button */}
-                    <div className="h-32 border-2 border-gray-300 border-dashed rounded-lg flex items-center justify-center">                      <label htmlFor="galleryImages" className="w-full h-full flex flex-col items-center justify-center cursor-pointer">
-                        {uploading ? (
-                          <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500"></div>
-                        ) : (
-                          <>
-                            <i className="fas fa-images text-3xl text-gray-400"></i>
-                            <span className="mt-2 block text-sm font-medium text-gray-700">
-                              Add Gallery Images
-                            </span>
-                          </>
-                        )}<input
-                          type="file"
-                          id="galleryImages"
-                          name="galleryImages"
-                          className="hidden"
-                          accept="image/*"
-                          multiple
-                          onChange={handleGalleryImageUpload}
-                          disabled={uploading}
-                        />
-                      </label>
-                    </div>
+                    <label
+                      htmlFor="galleryImages"
+                      className="h-32 border-2 border-dashed border-teal-300 rounded-lg flex flex-col items-center justify-center cursor-pointer bg-teal-50/40 hover:bg-teal-50 transition"
+                    >
+                      {uploading ? (
+                        <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-teal-500"></div>
+                      ) : (
+                        <>
+                          <i className="fas fa-images text-3xl text-teal-500"></i>
+                          <span className="mt-2 block text-sm font-medium text-teal-700">Add gallery images</span>
+                          <span className="text-xs text-gray-500">JPG/PNG, multi-select allowed</span>
+                        </>
+                      )}
+                      <input
+                        type="file"
+                        id="galleryImages"
+                        name="galleryImages"
+                        className="hidden"
+                        accept="image/*"
+                        multiple
+                        onChange={handleGalleryImageUpload}
+                        disabled={uploading}
+                      />
+                    </label>
                   </div>
-                  
-                  <p className="text-sm text-gray-500">
-                    Add additional images for the activity gallery on the detail page. You can upload multiple images at once.
-                  </p>
                 </div>
                 
                 {/* Submit Button */}
@@ -835,7 +860,7 @@ const ActivityForm = ({ isStandalone = false, activityId = null, onSuccess = nul
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                    className="inline-flex items-center px-4 py-2  border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-teal-600 hover:bg-white hover:text-black border-2 hover:border-teal-500 hover:scale-105 duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                   >
                     {isSubmitting ? (
                       <>

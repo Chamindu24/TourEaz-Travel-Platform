@@ -200,30 +200,48 @@ const Itinerary = ({selectedNightsKey}) => {
                   <div className="absolute left-6 w-4 h-4 bg-gradient-to-r from-[#005E84] to-[#0A435C] rounded-full border-4 border-white shadow-lg z-10 hidden lg:block group-hover:scale-125 transition-transform duration-300"></div>
                   
                   {/* Card container with hover effects */}
-                  <div className="lg:ml-16 bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 group-hover:-translate-y-1 overflow-hidden border border-gray-100">
-                    {/* Card header with gradient */}
-                    <div className="bg-emerald-500 text-white p-6">
-                      <div className="flex items-center gap-4 flex-wrap">
-                        <div className="bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full border border-white/30">
-                          <span className="font-bold text-lg md:text-xl">Day {dayItem.day}</span>
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <h3 className="text-xl md:text-2xl font-bold truncate">{dayItem.title}</h3>
+                  <div className="lg:ml-16 bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 group-hover:-translate-y-1 overflow-hidden border border-gray-100 relative">
+                    {/* Background Image - Full Card */}
+                    {dayItem.images && dayItem.images.length > 0 && (
+                      <div className="absolute inset-0 h-full w-full">
+                        <img
+                          src={dayItem.images[imageIndices[index]]}
+                          alt={`Day ${dayItem.day} background`}
+                          style={{
+                            width: '100%',
+                            height: '100%',
+                            objectFit: 'cover',
+                          }}
+                          className="transition-all duration-1000 ease-in-out group-hover:scale-105"
+                        />
+                        {/* Gradient overlay for readability */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-black/20"></div>
+                      </div>
+                    )}
+
+                    {/* Content overlay on top of image */}
+                    <div className={`relative z-10 flex flex-col ${dayItem.images && dayItem.images.length > 0 ? 'min-h-96 justify-between' : ''}`}>
+                      {/* Card header with gradient */}
+                      <div className="bg-emerald-500 text-white p-6">
+                        <div className="flex items-center gap-4 flex-wrap">
+                          <div className="bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full border border-white/30">
+                            <span className="font-bold text-lg md:text-xl">Day {dayItem.day}</span>
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <h3 className="text-xl md:text-2xl font-bold truncate">{dayItem.title}</h3>
+                          </div>
                         </div>
                       </div>
-                    </div>
 
-                    {/* Card content */}
-                    <div className="flex flex-col lg:flex-row">
                       {/* Content section */}
-                      <div className={`${dayItem.images && dayItem.images.length > 0 ? 'flex-1' : 'w-full'} p-6 lg:p-8`}>
+                      <div className="p-6 lg:p-8 flex-1">
                         <div className="itinerary-desc">
                           {dayItem.details.length > 0 ? (
                             <div className="space-y-4">
                               {dayItem.details.map((detail, idx) => (
                                 <div key={idx} className="flex items-start gap-3 group/item">
                                   <div className="flex-shrink-0 w-2 h-2 bg-gradient-to-r from-[#005E84] to-[#0A435C] rounded-full mt-2 group-hover/item:scale-150 transition-transform duration-200"></div>
-                                  <p className="text-gray-700 text-base md:text-lg leading-relaxed group-hover/item:text-gray-900 transition-colors duration-200">
+                                  <p className="text-white text-base md:text-lg leading-relaxed group-hover/item:text-gray-100 transition-colors duration-200">
                                     {detail}
                                   </p>
                                 </div>
@@ -231,38 +249,24 @@ const Itinerary = ({selectedNightsKey}) => {
                             </div>
                           ) : (
                             <div className="text-center py-8">
-                              <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                                <svg className="w-8 h-8 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                              <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <svg className="w-8 h-8 text-white/60" fill="currentColor" viewBox="0 0 20 20">
                                   <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
                                 </svg>
                               </div>
-                              <p className="text-gray-500 text-lg">No activities available for this day.</p>
+                              <p className="text-white/70 text-lg">No activities available for this day.</p>
                             </div>
                           )}
                         </div>
                       </div>
 
-                      {/* Image section with enhanced styling */}
+                      {/* Image controls - Bottom of card */}
                       {dayItem.images && dayItem.images.length > 0 && (
-                        <div className="lg:w-80 xl:w-96 relative">
-                          <div className="relative h-64 lg:h-full lg:max-h-96 overflow-hidden">
-                            <img
-                              src={dayItem.images[imageIndices[index]]}
-                              alt={`Day ${dayItem.day} image`}
-                              style={{
-                                width: '100%',
-                                height: '100%',
-                                objectFit: 'cover',
-                              }}
-                              className="transition-all duration-1000 ease-in-out group-hover:scale-105"
-                            />
-                            
-                            {/* Image overlay gradient */}
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent"></div>
-                            
-                            {/* Navigation arrows with enhanced styling */}
+                        <div className="px-6 pb-6 flex items-center justify-between">
+                          {/* Navigation arrows */}
+                          <div className="flex gap-2">
                             <button
-                              className="absolute left-4 top-1/2 transform -translate-y-1/2 w-10 h-10 bg-white/90 hover:bg-white text-gray-800 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center group-hover:scale-110"
+                              className="w-10 h-10 bg-white/90 hover:bg-white text-gray-800 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center group-hover:scale-110"
                               onClick={() =>
                                 setImageIndices((prev) => {
                                   const newIndices = [...prev];
@@ -278,7 +282,7 @@ const Itinerary = ({selectedNightsKey}) => {
                               </svg>
                             </button>
                             <button
-                              className="absolute right-4 top-1/2 transform -translate-y-1/2 w-10 h-10 bg-white/90 hover:bg-white text-gray-800 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center group-hover:scale-110"
+                              className="w-10 h-10 bg-white/90 hover:bg-white text-gray-800 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center group-hover:scale-110"
                               onClick={() =>
                                 setImageIndices((prev) => {
                                   const newIndices = [...prev];
@@ -291,23 +295,23 @@ const Itinerary = ({selectedNightsKey}) => {
                                 <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
                               </svg>
                             </button>
-                            
-                            {/* Image indicator dots */}
-                            {dayItem.images.length > 1 && (
-                              <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2">
-                                {dayItem.images.map((_, imgIdx) => (
-                                  <div
-                                    key={imgIdx}
-                                    className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                                      imgIdx === imageIndices[index]
-                                        ? 'bg-white scale-125'
-                                        : 'bg-white/50 hover:bg-white/75'
-                                    }`}
-                                  ></div>
-                                ))}
-                              </div>
-                            )}
                           </div>
+
+                          {/* Image indicator dots */}
+                          {dayItem.images.length > 1 && (
+                            <div className="flex gap-2">
+                              {dayItem.images.map((_, imgIdx) => (
+                                <div
+                                  key={imgIdx}
+                                  className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                                    imgIdx === imageIndices[index]
+                                      ? 'bg-white scale-125'
+                                      : 'bg-white/50 hover:bg-white/75'
+                                  }`}
+                                ></div>
+                              ))}
+                            </div>
+                          )}
                         </div>
                       )}
                     </div>
@@ -321,31 +325,33 @@ const Itinerary = ({selectedNightsKey}) => {
         {activeTab === "fineprint" && (
           <div className="space-y-12">
             {/* Hero summary section */}
-            <div className="bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100">
-              <div className="flex flex-col lg:flex-row">
-                <div className="flex-1 p-8 lg:p-12">
-                  <div className="mb-8">
-                    <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
-                      Tour Summary
-                    </h2>
-                    <div className="w-24 h-1 bg-gradient-to-r from-[#005E84] to-[#0A435C] rounded-full"></div>
-                  </div>
-                  <div className="prose prose-lg max-w-none">
-                    <p className="text-gray-700 text-lg leading-relaxed">
-                      {tourData.tour_summary || "No summary available."}
-                    </p>
-                  </div>
+            <div className="bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100 relative min-h-96">
+              {/* Background Image */}
+              {tourData.tour_image && (
+                <div className="absolute inset-0 h-full w-full">
+                  <img
+                    src={tourData.tour_image}
+                    alt="Tour Summary"
+                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
+                  />
+                  {/* Gradient overlay for readability */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-black/20"></div>
                 </div>
-                {tourData.tour_image && (
-                  <div className={`${isMobile ? 'w-full h-64' : 'w-96 lg:w-1/3'} relative overflow-hidden`}>
-                    <img
-                      src={tourData.tour_image}
-                      alt="Tour Summary"
-                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent"></div>
-                  </div>
-                )}
+              )}
+              
+              {/* Content overlay on top of image */}
+              <div className="relative z-10 p-8 lg:p-12">
+                <div className="mb-8">
+                  <h2 className="text-3xl lg:text-4xl font-bold text-white mb-4">
+                    Tour Summary
+                  </h2>
+                  <div className="w-24 h-1 bg-gradient-to-r from-[#005E84] to-[#0A435C] rounded-full"></div>
+                </div>
+                <div className="prose prose-lg max-w-none">
+                  <p className="text-white text-lg leading-relaxed">
+                    {tourData.tour_summary || "No summary available."}
+                  </p>
+                </div>
               </div>
             </div>
 

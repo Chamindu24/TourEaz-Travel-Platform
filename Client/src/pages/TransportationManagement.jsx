@@ -961,7 +961,7 @@ const TransportationManagement = () => {
 
       {/* Transportation Dialog */}
       <Transition appear show={dialogOpen} as={Fragment}>
-        <Dialog as="div" className="relative z-50" onClose={closeDialog}>
+        <Dialog as="div" className="relative  z-1300" onClose={closeDialog}>
           <Transition.Child
             as={Fragment}
             enter="ease-out duration-300"
@@ -974,7 +974,7 @@ const TransportationManagement = () => {
             <div className="fixed inset-0 bg-black/30" />
           </Transition.Child>
 
-          <div className="fixed inset-0 overflow-y-auto">
+          <div className="fixed inset-0 z-[1300] backdrop-blur-sm overflow-y-auto">
             <div className="flex min-h-full items-center justify-center p-4 text-center">
               <Transition.Child
                 as={Fragment}
@@ -985,9 +985,9 @@ const TransportationManagement = () => {
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="w-full max-w-6xl z-50 transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                <Dialog.Panel className="w-full max-w-4xl z-[1300] transform overflow-hidden rounded-xl  bg-white p-6 text-left align-middle shadow-xl transition-all">
                   <div className="flex items-start justify-between mb-4">
-                    <div>
+                    <div className="flex-1 text-center">
                       <Dialog.Title className="text-2xl font-bold text-gray-800">
                         {editingTransportation ? 'Edit Transportation' : 'Add Transportation'}
                       </Dialog.Title>
@@ -998,7 +998,7 @@ const TransportationManagement = () => {
                     </button>
                   </div>
 
-                  <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 p-6">
                     <div className="lg:col-span-2 space-y-6">
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
@@ -1007,7 +1007,7 @@ const TransportationManagement = () => {
                             name="name"
                             value={formData.name}
                             onChange={handleChange}
-                            className="mt-1 w-full rounded-lg border border-gray-200 px-4 py-3 focus:border-teal-500 focus:ring-2 focus:ring-teal-100"
+                            className="mt-1 w-full rounded-lg border border-gray-200 px-4 py-3 focus:border-teal-500 focus:ring-2 focus:ring-teal-500 focus:outline-none"
                             placeholder="Toyota Hiace"
                           />
                         </div>
@@ -1017,7 +1017,7 @@ const TransportationManagement = () => {
                             name="type"
                             value={formData.type}
                             onChange={handleChange}
-                            className="mt-1 w-full rounded-lg border border-gray-200 px-4 py-3 focus:border-teal-500 focus:ring-2 focus:ring-teal-100"
+                            className="mt-1 w-full rounded-lg border border-gray-200 px-4 py-3 focus:border-teal-500 focus:ring-2 focus:ring-teal-500 focus:outline-none"
                           >
                             {vehicleTypes.map(option => (
                               <option key={option.value} value={option.value}>{option.label}</option>
@@ -1031,7 +1031,7 @@ const TransportationManagement = () => {
                             name="capacity"
                             value={formData.capacity}
                             onChange={handleChange}
-                            className="mt-1 w-full rounded-lg border border-gray-200 px-4 py-3 focus:border-teal-500 focus:ring-2 focus:ring-teal-100"
+                            className="mt-1 w-full rounded-lg border border-gray-200 px-4 py-3 focus:border-teal-500 focus:ring-2 focus:ring-teal-500 focus:outline-none"
                             placeholder="10"
                           />
                         </div>
@@ -1042,7 +1042,7 @@ const TransportationManagement = () => {
                             name="year"
                             value={formData.year}
                             onChange={handleChange}
-                            className="mt-1 w-full rounded-lg border border-gray-200 px-4 py-3 focus:border-teal-500 focus:ring-2 focus:ring-teal-100"
+                            className="mt-1 w-full rounded-lg border border-gray-200 px-4 py-3 focus:border-teal-500 focus:ring-2 focus:ring-teal-500 focus:outline-none"
                             placeholder="2022"
                           />
                         </div>
@@ -1053,7 +1053,7 @@ const TransportationManagement = () => {
                             name="pricePerDay"
                             value={formData.pricePerDay}
                             onChange={handleChange}
-                            className="mt-1 w-full rounded-lg border border-gray-200 px-4 py-3 focus:border-teal-500 focus:ring-2 focus:ring-teal-100"
+                            className="mt-1 w-full rounded-lg border border-gray-200 px-4 py-3 focus:border-teal-500 focus:ring-2 focus:ring-teal-500 focus:outline-none"
                             placeholder="80"
                           />
                         </div>
@@ -1064,7 +1064,7 @@ const TransportationManagement = () => {
                             name="pricePerKm"
                             value={formData.pricePerKm}
                             onChange={handleChange}
-                            className="mt-1 w-full rounded-lg border border-gray-200 px-4 py-3 focus:border-teal-500 focus:ring-2 focus:ring-teal-100"
+                            className="mt-1 w-full rounded-lg border border-gray-200 px-4 py-3 focus:border-teal-500 focus:ring-2 focus:ring-teal-500 focus:outline-none"
                             placeholder="0.5"
                           />
                         </div>
@@ -1074,7 +1074,7 @@ const TransportationManagement = () => {
                             name="availability"
                             value={formData.availability}
                             onChange={handleChange}
-                            className="mt-1 w-full rounded-lg border border-gray-200 px-4 py-3 focus:border-teal-500 focus:ring-2 focus:ring-teal-100"
+                            className="mt-1 w-full rounded-lg border border-gray-200 px-4 py-3 focus:border-teal-500 focus:ring-2 focus:ring-teal-500 focus:outline-none"
                           >
                             <option value="available">Available</option>
                             <option value="unavailable">Unavailable</option>
@@ -1087,7 +1087,7 @@ const TransportationManagement = () => {
                             name="status"
                             value={formData.status}
                             onChange={handleChange}
-                            className="mt-1 w-full rounded-lg border border-gray-200 px-4 py-3 focus:border-teal-500 focus:ring-2 focus:ring-teal-100"
+                            className="mt-1 w-full rounded-lg border border-gray-200 px-4 py-3 focus:border-teal-500 focus:ring-2 focus:ring-teal-500 focus:outline-none"
                           >
                             <option value="active">Active</option>
                             <option value="inactive">Inactive</option>
@@ -1099,7 +1099,7 @@ const TransportationManagement = () => {
                             name="fuelType"
                             value={formData.fuelType}
                             onChange={handleChange}
-                            className="mt-1 w-full rounded-lg border border-gray-200 px-4 py-3 focus:border-teal-500 focus:ring-2 focus:ring-teal-100"
+                            className="mt-1 w-full rounded-lg border border-gray-200 px-4 py-3 focus:border-teal-500 focus:ring-2 focus:ring-teal-500 focus:outline-none"
                           >
                             {fuelTypes.map(option => (
                               <option key={option.value} value={option.value}>{option.label}</option>
@@ -1112,7 +1112,7 @@ const TransportationManagement = () => {
                             name="transmission"
                             value={formData.transmission}
                             onChange={handleChange}
-                            className="mt-1 w-full rounded-lg border border-gray-200 px-4 py-3 focus:border-teal-500 focus:ring-2 focus:ring-teal-100"
+                            className="mt-1 w-full rounded-lg border border-gray-200 px-4 py-3 focus:border-teal-500 focus:ring-2 focus:ring-teal-500 focus:outline-none"
                           >
                             {transmissions.map(option => (
                               <option key={option.value} value={option.value}>{option.label}</option>
@@ -1125,7 +1125,7 @@ const TransportationManagement = () => {
                             name="location"
                             value={formData.location}
                             onChange={handleChange}
-                            className="mt-1 w-full rounded-lg border border-gray-200 px-4 py-3 focus:border-teal-500 focus:ring-2 focus:ring-teal-100"
+                            className="mt-1 w-full rounded-lg border border-gray-200 px-4 py-3 focus:border-teal-500 focus:ring-2 focus:ring-teal-500 focus:outline-none"
                             placeholder="Colombo, Sri Lanka"
                           />
                         </div>
@@ -1156,7 +1156,7 @@ const TransportationManagement = () => {
                           value={formData.description}
                           onChange={handleChange}
                           rows={3}
-                          className="mt-1 w-full rounded-lg border border-gray-200 px-4 py-3 focus:border-teal-500 focus:ring-2 focus:ring-teal-100"
+                          className="mt-1 w-full rounded-lg border border-gray-200 px-4 py-3 focus:border-teal-500 focus:ring-2 focus:ring-teal-500 focus:outline-none"
                           placeholder="Highlight comfort, luggage space, and ideal trip types."
                         />
                       </div>
@@ -1169,10 +1169,10 @@ const TransportationManagement = () => {
                               name="featureInput"
                               value={formData.featureInput}
                               onChange={handleChange}
-                              className="flex-1 rounded-lg border border-gray-200 px-4 py-3 focus:border-teal-500 focus:ring-2 focus:ring-teal-100"
+                              className="flex-1 rounded-lg border border-gray-200 px-4 py-3 focus:border-teal-500 focus:ring-2 focus:ring-teal-500 focus:outline-none"
                               placeholder="USB charging"
                             />
-                            <button onClick={addFeature} className="px-4 py-2 bg-teal-500 text-white rounded-lg">Add</button>
+                            <button onClick={addFeature} className="px-4 py-0.5 bg-teal-500 text-white hover:bg-white hover:text-black border-2 hover:border-teal-500 rounded-md">Add</button>
                           </div>
                           {formData.features.length > 0 && (
                             <div className="flex flex-wrap gap-2 mt-2">
@@ -1196,10 +1196,10 @@ const TransportationManagement = () => {
                                 name="pickupInput"
                                 value={formData.pickupInput}
                                 onChange={handleChange}
-                                className="flex-1 rounded-lg border border-gray-200 px-4 py-3 focus:border-teal-500 focus:ring-2 focus:ring-teal-100"
+                                className="flex-1 rounded-lg border border-gray-200 px-4 py-3 focus:border-teal-500 focus:ring-2 focus:ring-teal-500 focus:outline-none"
                                 placeholder="Airport, hotel"
                               />
-                              <button onClick={addPickupLocation} className="px-4 py-2 bg-teal-500 text-white rounded-lg">Add</button>
+                              <button onClick={addPickupLocation} className="px-4 py-0.5 bg-teal-500 text-white hover:bg-white hover:text-black border-2 hover:border-teal-500 rounded-md">Add</button>
                             </div>
                             {formData.pickupLocations.length > 0 && (
                               <div className="flex flex-wrap gap-2 mt-2">
@@ -1221,10 +1221,10 @@ const TransportationManagement = () => {
                                 name="dropoffInput"
                                 value={formData.dropoffInput}
                                 onChange={handleChange}
-                                className="flex-1 rounded-lg border border-gray-200 px-4 py-3 focus:border-teal-500 focus:ring-2 focus:ring-teal-100"
+                                className="flex-1 rounded-lg border border-gray-200 px-4 py-3 focus:border-teal-500 focus:ring-2 focus:ring-teal-500 focus:outline-none"
                                 placeholder="City center"
                               />
-                              <button onClick={addDropoffLocation} className="px-4 py-2 bg-teal-500 text-white rounded-lg">Add</button>
+                              <button onClick={addDropoffLocation} className="px-3 py-0.5 bg-teal-500 text-white hover:bg-white hover:text-black border-2 hover:border-teal-500 rounded-md">Add</button>
                             </div>
                             {formData.dropoffLocations.length > 0 && (
                               <div className="flex flex-wrap gap-2 mt-2">
@@ -1249,7 +1249,7 @@ const TransportationManagement = () => {
                             name="contactDetails.phone"
                             value={formData.contactDetails.phone}
                             onChange={handleChange}
-                            className="mt-1 w-full rounded-lg border border-gray-200 px-4 py-3 focus:border-teal-500 focus:ring-2 focus:ring-teal-100"
+                            className="mt-1 w-full rounded-lg border border-gray-200 px-4 py-3 focus:border-teal-500 focus:ring-2 focus:ring-teal-500 focus:outline-none"
                             placeholder="+94 71 234 5678"
                           />
                         </div>
@@ -1259,7 +1259,7 @@ const TransportationManagement = () => {
                             name="contactDetails.email"
                             value={formData.contactDetails.email}
                             onChange={handleChange}
-                            className="mt-1 w-full rounded-lg border border-gray-200 px-4 py-3 focus:border-teal-500 focus:ring-2 focus:ring-teal-100"
+                            className="mt-1 w-full rounded-lg border border-gray-200 px-4 py-3 focus:border-teal-500 focus:ring-2 focus:ring-teal-500 focus:outline-none"
                             placeholder="fleet@agency.com"
                           />
                         </div>
@@ -1269,7 +1269,7 @@ const TransportationManagement = () => {
                             name="contactDetails.whatsapp"
                             value={formData.contactDetails.whatsapp}
                             onChange={handleChange}
-                            className="mt-1 w-full rounded-lg border border-gray-200 px-4 py-3 focus:border-teal-500 focus:ring-2 focus:ring-teal-100"
+                            className="mt-1 w-full rounded-lg border border-gray-200 px-4 py-3 focus:border-teal-500 focus:ring-2 focus:ring-teal-500 focus:outline-none"
                             placeholder="WhatsApp number"
                           />
                         </div>
@@ -1280,7 +1280,7 @@ const TransportationManagement = () => {
                       <div className="border border-gray-200 rounded-xl p-4">
                         <div className="flex items-center justify-between mb-3">
                           <p className="font-semibold text-gray-800">Upload Images</p>
-                          <label className="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-teal-50 text-teal-700 border border-teal-100 cursor-pointer">
+                          <label className="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-teal-50 text-teal-700 border border-teal-500 cursor-pointer">
                             <CloudArrowUpIcon className="w-5 h-5" />
                             <span className="text-sm font-semibold">Upload</span>
                             <input
@@ -1337,7 +1337,17 @@ const TransportationManagement = () => {
                       </div>
 
                       <div className="border border-gray-200 rounded-xl p-4 space-y-3">
-                        <p className="font-semibold text-gray-800 mb-2">Assign Drivers</p>
+                        <div className="flex items-center justify-between mb-2">
+                          <p className="font-semibold text-gray-800">Assign Drivers</p>
+                          <button
+                            type="button"
+                            onClick={() => openDriverDialog(null)}
+                            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-teal-500 text-white text-sm font-semibold border-2 border-transparent hover:bg-white hover:text-black hover:border-teal-500 transition-all"
+                          >
+                            <PlusIcon className="w-4 h-4" />
+                            Add New Driver
+                          </button>
+                        </div>
                         {drivers.length === 0 ? (
                           <p className="text-sm text-gray-500">No drivers available. Add drivers first.</p>
                         ) : (
@@ -1363,13 +1373,13 @@ const TransportationManagement = () => {
                       <div className="flex justify-end gap-3">
                         <button
                           onClick={closeDialog}
-                          className="px-5 py-3 rounded-lg border border-gray-200 text-gray-700 font-semibold hover:bg-gray-50"
+                          className="px-5 py-3 rounded-md border-2 border-teal-500 text-black font-semibold hover:bg-teal-500 hover:text-white hover:scale-105 duration-300"
                         >
                           Cancel
                         </button>
                         <button
                           onClick={handleTransportationSubmit}
-                          className="px-5 py-3 rounded-lg bg-teal-500 text-white font-semibold hover:bg-teal-600"
+                          className="px-5 py-3 rounded-lg  bg-teal-500 text-white hover:bg-white hover:text-black border-2 hover:border-teal-500 hover:scale-105 duration-300"
                         >
                           {editingTransportation ? 'Update Transportation' : 'Create Transportation'}
                         </button>
@@ -1385,7 +1395,7 @@ const TransportationManagement = () => {
 
       {/* Driver Dialog */}
       <Transition appear show={driverDialogOpen} as={Fragment}>
-        <Dialog as="div" className="relative z-50" onClose={closeDriverDialog}>
+        <Dialog as="div" className="relative z-1300" onClose={closeDriverDialog}>
           <Transition.Child
             as={Fragment}
             enter="ease-out duration-300"
@@ -1398,7 +1408,7 @@ const TransportationManagement = () => {
             <div className="fixed inset-0 bg-black/30" />
           </Transition.Child>
 
-          <div className="fixed inset-0 overflow-y-auto">
+          <div className="fixed z-[1300] inset-0 backdrop-blur-sm overflow-y-auto">
             <div className="flex min-h-full items-center justify-center p-4 text-center">
               <Transition.Child
                 as={Fragment}
@@ -1409,9 +1419,9 @@ const TransportationManagement = () => {
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="w-full max-w-3xl transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                <Dialog.Panel className="w-full max-w-3xl transform overflow-hidden rounded-2xl bg-white p-6  text-left align-middle shadow-xl transition-all">
                   <div className="flex items-start justify-between mb-4">
-                    <div>
+                    <div className="flex-1 text-center">
                       <Dialog.Title className="text-2xl font-bold text-gray-800">
                         {editingDriver ? 'Edit Driver' : 'Add Driver'}
                       </Dialog.Title>
@@ -1422,14 +1432,14 @@ const TransportationManagement = () => {
                     </button>
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 p-4 gap-4">
                     <div>
                       <label className="text-sm font-semibold text-gray-700">First Name</label>
                       <input
                         name="firstName"
                         value={driverFormData.firstName}
                         onChange={handleDriverChange}
-                        className="mt-1 w-full rounded-lg border border-gray-200 px-4 py-3 focus:border-teal-500 focus:ring-2 focus:ring-teal-100"
+                        className="mt-1 w-full rounded-lg border border-gray-200 px-4 py-3 focus:border-teal-500 focus:ring-2 focus:ring-teal-500 focus:outline-none "
                         placeholder="John"
                       />
                     </div>
@@ -1439,7 +1449,7 @@ const TransportationManagement = () => {
                         name="lastName"
                         value={driverFormData.lastName}
                         onChange={handleDriverChange}
-                        className="mt-1 w-full rounded-lg border border-gray-200 px-4 py-3 focus:border-teal-500 focus:ring-2 focus:ring-teal-100"
+                        className="mt-1 w-full rounded-lg border border-gray-200 px-4 py-3 focus:border-teal-500 focus:ring-2 focus:ring-teal-500 focus:outline-none "
                         placeholder="Doe"
                       />
                     </div>
@@ -1449,7 +1459,7 @@ const TransportationManagement = () => {
                         name="email"
                         value={driverFormData.email}
                         onChange={handleDriverChange}
-                        className="mt-1 w-full rounded-lg border border-gray-200 px-4 py-3 focus:border-teal-500 focus:ring-2 focus:ring-teal-100"
+                        className="mt-1 w-full rounded-lg border border-gray-200 px-4 py-3 focus:border-teal-500 focus:ring-2 focus:ring-teal-500 focus:outline-none "
                         placeholder="driver@agency.com"
                       />
                     </div>
@@ -1459,7 +1469,7 @@ const TransportationManagement = () => {
                         name="phone"
                         value={driverFormData.phone}
                         onChange={handleDriverChange}
-                        className="mt-1 w-full rounded-lg border border-gray-200 px-4 py-3 focus:border-teal-500 focus:ring-2 focus:ring-teal-100"
+                        className="mt-1 w-full rounded-lg border border-gray-200 px-4 py-3 focus:border-teal-500 focus:ring-2 focus:ring-teal-500 focus:outline-none "
                         placeholder="+94 77 123 4567"
                       />
                     </div>
@@ -1469,7 +1479,7 @@ const TransportationManagement = () => {
                         name="gender"
                         value={driverFormData.gender}
                         onChange={handleDriverChange}
-                        className="mt-1 w-full rounded-lg border border-gray-200 px-4 py-3 focus:border-teal-500 focus:ring-2 focus:ring-teal-100"
+                        className="mt-1 w-full rounded-lg border border-gray-200 px-4 py-3 focus:border-teal-500 focus:ring-2 focus:ring-teal-500 focus:outline-none "
                       >
                         <option value="male">Male</option>
                         <option value="female">Female</option>
@@ -1482,7 +1492,7 @@ const TransportationManagement = () => {
                         name="address.street"
                         value={driverFormData.address.street}
                         onChange={handleDriverChange}
-                        className="mt-1 w-full rounded-lg border border-gray-200 px-4 py-3 focus:border-teal-500 focus:ring-2 focus:ring-teal-100"
+                        className="mt-1 w-full rounded-lg border border-gray-200 px-4 py-3 focus:border-teal-500 focus:ring-2 focus:ring-teal-500 focus:outline-none "
                         placeholder="123 Main St"
                       />
                     </div>
@@ -1492,7 +1502,7 @@ const TransportationManagement = () => {
                         name="address.city"
                         value={driverFormData.address.city}
                         onChange={handleDriverChange}
-                        className="mt-1 w-full rounded-lg border border-gray-200 px-4 py-3 focus:border-teal-500 focus:ring-2 focus:ring-teal-100"
+                        className="mt-1 w-full rounded-lg border border-gray-200 px-4 py-3 focus:border-teal-500 focus:ring-2 focus:ring-teal-500 focus:outline-none "
                         placeholder="Colombo"
                       />
                     </div>
@@ -1502,7 +1512,7 @@ const TransportationManagement = () => {
                         name="address.state"
                         value={driverFormData.address.state}
                         onChange={handleDriverChange}
-                        className="mt-1 w-full rounded-lg border border-gray-200 px-4 py-3 focus:border-teal-500 focus:ring-2 focus:ring-teal-100"
+                        className="mt-1 w-full rounded-lg border border-gray-200 px-4 py-3 focus:border-teal-500 focus:ring-2 focus:ring-teal-500 focus:outline-none "
                         placeholder="Western"
                       />
                     </div>
@@ -1512,7 +1522,7 @@ const TransportationManagement = () => {
                         name="address.postalCode"
                         value={driverFormData.address.postalCode}
                         onChange={handleDriverChange}
-                        className="mt-1 w-full rounded-lg border border-gray-200 px-4 py-3 focus:border-teal-500 focus:ring-2 focus:ring-teal-100"
+                        className="mt-1 w-full rounded-lg border border-gray-200 px-4 py-3 focus:border-teal-500 focus:ring-2 focus:ring-teal-500 focus:outline-none "
                         placeholder="00100"
                       />
                     </div>
@@ -1522,7 +1532,7 @@ const TransportationManagement = () => {
                         name="address.country"
                         value={driverFormData.address.country}
                         onChange={handleDriverChange}
-                        className="mt-1 w-full rounded-lg border border-gray-200 px-4 py-3 focus:border-teal-500 focus:ring-2 focus:ring-teal-100"
+                        className="mt-1 w-full rounded-lg border border-gray-200 px-4 py-3 focus:border-teal-500 focus:ring-2 focus:ring-teal-500 focus:outline-none "
                         placeholder="Sri Lanka"
                       />
                     </div>
@@ -1535,10 +1545,10 @@ const TransportationManagement = () => {
                         name="languageInput"
                         value={driverFormData.languageInput}
                         onChange={handleDriverChange}
-                        className="flex-1 rounded-lg border border-gray-200 px-4 py-3 focus:border-teal-500 focus:ring-2 focus:ring-teal-100"
+                        className="flex-1 rounded-lg border border-gray-200 px-4 py-3 focus:border-teal-500 focus:ring-2 focus:ring-teal-500 focus:outline-none "
                         placeholder="English"
                       />
-                      <button onClick={addLanguage} className="px-4 py-2 bg-teal-500 text-white rounded-lg">Add</button>
+                      <button onClick={addLanguage} className="px-4 py-1 bg-teal-500 text-white hover:bg-white hover:text-black border-2 border-teal-500 rounded-lg">Add</button>
                     </div>
                     {driverFormData.languagesSpoken.length > 0 && (
                       <div className="flex flex-wrap gap-2 mt-2">
@@ -1557,13 +1567,13 @@ const TransportationManagement = () => {
                   <div className="flex justify-end gap-3 mt-6">
                     <button
                       onClick={closeDriverDialog}
-                      className="px-5 py-3 rounded-lg border border-gray-200 text-gray-700 font-semibold hover:bg-gray-50"
+                      className="px-5 py-3 rounded-md border-2 border-teal-500 text-black font-semibold hover:bg-teal-500 hover:text-white hover:scale-105 duration-300"
                     >
                       Cancel
                     </button>
                     <button
                       onClick={handleDriverSubmit}
-                      className="px-5 py-3 rounded-lg bg-teal-500 text-white font-semibold hover:bg-teal-600"
+                      className="px-5 py-3   bg-teal-500 text-white hover:bg-white hover:text-black border-2 hover:border-teal-500 hover:scale-105 duration-300 rounded-md font-semibold "
                     >
                       {editingDriver ? 'Update Driver' : 'Create Driver'}
                     </button>

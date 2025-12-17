@@ -760,31 +760,31 @@ const TourDetails = ({ sidebarOpen }) => {
             <div className="xl:col-span-1">
               <div className="sticky top-8 space-y-4">
                 {/* Premium Price Card */}
-                <div className="bg-gradient-to-br from-teal-500 via-teal-600 to-teal-500 rounded-2xl shadow-2xl overflow-hidden border border-teal-400">
+                <div className="bg-emerald-100 rounded-2xl shadow-md overflow-hidden border border-teal-400">
                   <div className="p-3">
                     <div className="flex items-center justify-between mb-3">
-                      <h3 className="text-lg font-bold text-white">Total Investment</h3>
+                      <h3 className="text-lg font-bold text-gray-600">Total Investment</h3>
                       <div className="bg-teal-500 rounded-full p-1">
                         <DollarSign className="w-4 h-4 text-white" />
                       </div>
                     </div>
                     
                     <div className="text-center mb-3">
-                      <div className="text-2xl font-extrabold text-white mb-1">
+                      <div className="text-2xl font-extrabold text-teal-500 mb-1">
                         {selectedCurrency} {convertPrice(totalPrice)}
                       </div>
                       {finalOldPrice > totalPrice && (
-                        <div className="text-gray-300 line-through text-lg mb-1">
+                        <div className="text-gray-700 line-through text-lg mb-1">
                           {selectedCurrency} {convertPrice(finalOldPrice)}
                         </div>
                       )}
-                      <div className="text-gray-200 text-sm">
+                      <div className="text-gray-600 text-sm">
                         For {personCount} Person(s)
                       </div>
                     </div>
 
                     {finalOldPrice > totalPrice && (
-                      <div className="bg-[#0A435C]/30 border border-teal-500/50 rounded-xl p-2 mb-3">
+                      <div className="bg-teal-500 border border-teal-500/50 rounded-xl p-2 mb-3">
                         <div className="text-white font-semibold text-center text-xs">
                           You Save {selectedCurrency} {convertPrice(finalOldPrice - totalPrice)}!
                         </div>
@@ -796,7 +796,7 @@ const TourDetails = ({ sidebarOpen }) => {
                 {/* Enhanced Tour Details Cards */}
                 <div className="space-y-2">
                   {/* Duration Card */}
-                  <div className="bg-white rounded-xl shadow-lg p-3 border-l-4 border-teal-500 transform transition-all duration-300 hover:scale-[1.02] hover:shadow-xl">
+                  <div className="bg-white rounded-xl shadow-md p-3 border-l-4 border-teal-500 transform transition-all duration-300 hover:scale-[1.02] hover:shadow-lg">
                     <div className="flex items-center">
                       <div className="bg-gray-100 rounded-full p-1 mr-2">
                         <Clock className="w-4 h-4 text-teal-500" />
@@ -809,7 +809,7 @@ const TourDetails = ({ sidebarOpen }) => {
                   </div>
 
                   {/* Valid Period Card */}
-                  <div className="bg-white rounded-xl shadow-lg p-3 border-l-4 border-teal-500 transform transition-all duration-300 hover:scale-[1.02] hover:shadow-xl">
+                  <div className="bg-white rounded-xl shadow-md p-3 border-l-4 border-teal-500 transform transition-all duration-300 hover:scale-[1.02] hover:shadow-lg">
                     <div className="flex items-center">
                       <div className="bg-gray-100 rounded-full p-1 mr-2">
                         <Calendar className="w-4 h-4 text-teal-500" />
@@ -832,7 +832,7 @@ const TourDetails = ({ sidebarOpen }) => {
                   </div>
 
                   {/* Expiry Card */}
-                  <div className="bg-white rounded-xl shadow-lg p-3 border-l-4 border-teal-500 transform transition-all duration-300 hover:scale-[1.02] hover:shadow-xl">
+                  <div className="bg-white rounded-xl shadow-md p-3 border-l-4 border-teal-500 transform transition-all duration-300 hover:scale-[1.02] hover:shadow-lg">
                     <div className="flex items-center">
                       <div className="bg-gray-100 rounded-full p-1 mr-2">
                         <CalendarMonthIcon className="w-4 h-4 text-teal-500" />

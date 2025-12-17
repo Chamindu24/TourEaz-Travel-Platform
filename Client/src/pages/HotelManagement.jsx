@@ -28,6 +28,10 @@ import {
   CardContent,
   Divider,
   Typography as TypographyComponent,
+  Avatar,
+  Stack,
+  Tooltip,
+
 } from '@mui/material';
 import {
   Add as AddIcon,
@@ -35,6 +39,11 @@ import {
   Delete as DeleteIcon,
   Close as CloseIcon,
   ErrorOutline as ErrorIcon,
+  StarRounded,
+  PhoneIphone,
+  EmailOutlined,
+  LanguageOutlined,
+  PlaceOutlined,
 } from '@mui/icons-material';
 import { AuthContext } from '../context/AuthContext';
 
@@ -405,30 +414,88 @@ const HotelManagement = () => {
       </Paper>
 
 
-      <TableContainer component={Paper}>
+      <TableContainer
+        component={Paper}
+        elevation={3}
+        sx={{ borderRadius: 3, overflow: "hidden" }}
+      >
         <Table>
+          {/* TABLE HEADER */}
           <TableHead>
-            <TableRow>
-              <TableCell>Name</TableCell>
-              <TableCell>Location</TableCell>
-              <TableCell>Actions</TableCell>
+            <TableRow sx={{ backgroundColor: "#f8fafc" }}>
+              <TableCell sx={{ fontWeight: 600 }}>Hotel</TableCell>
+              <TableCell sx={{ fontWeight: 600 }}>Location</TableCell>
+              <TableCell sx={{ fontWeight: 600 }} align="right">
+                Actions
+              </TableCell>
             </TableRow>
           </TableHead>
+
+          {/* TABLE BODY */}
           <TableBody>
-            {hotels.map(hotel => (
-              <TableRow key={hotel._id}>
-                <TableCell>{hotel.name}</TableCell>
-                <TableCell>{hotel.location}</TableCell>
+            {hotels.map((hotel) => (
+              <TableRow
+                key={hotel._id}
+                hover
+                sx={{
+                  "&:last-child td": { borderBottom: 0 },
+                }}
+              >
+                {/* HOTEL NAME */}
                 <TableCell>
-                  <IconButton onClick={() => openDialog(hotel)}><EditIcon /></IconButton>
-                  <IconButton onClick={() => handleDelete(hotel._id)} color="error"><DeleteIcon /></IconButton>
-                  <Button variant="outlined" sx={{ ml: 1 }} onClick={() => openProfile(hotel)}>Profile</Button>
+                  <Box display="flex" alignItems="center" gap={2}>
+                    <Avatar sx={{ bgcolor: "primary.main" }}>
+                      {hotel.name.charAt(0)}
+                    </Avatar>
+                    <Box>
+                      <Typography fontWeight={600}>
+                        {hotel.name}
+                      </Typography>
+                    </Box>
+                  </Box>
+                </TableCell>
+
+                {/* LOCATION */}
+                <TableCell>
+                  <Typography>{hotel.location}</Typography>
+                </TableCell>
+
+                {/* ACTIONS */}
+                <TableCell align="right">
+                  <Stack direction="row" spacing={1} justifyContent="flex-end">
+                    <Tooltip title="Edit Hotel">
+                      <IconButton
+                        color="primary"
+                        onClick={() => openDialog(hotel)}
+                      >
+                        <EditIcon />
+                      </IconButton>
+                    </Tooltip>
+
+                    <Tooltip title="Delete Hotel">
+                      <IconButton
+                        color="error"
+                        onClick={() => handleDelete(hotel._id)}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    </Tooltip>
+
+                    <Button
+                      variant="outlined"
+                      size="small"
+                      onClick={() => openProfile(hotel)}
+                    >
+                      View Profile
+                    </Button>
+                  </Stack>
                 </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </TableContainer>
+
 
       {/* Add/Edit Dialog */}
       <Dialog open={dialogOpen} onClose={closeDialog} fullWidth maxWidth="md">
@@ -868,13 +935,40 @@ const HotelManagement = () => {
               <Card elevation={2} sx={{ p: 2, mb: 3 }}>
                 <CardContent>
                   <Typography variant="subtitle1" gutterBottom>General Information</Typography>
-                  <Typography><strong>Name:</strong> {profileHotel?.name}</Typography>
-                  <Typography><strong>Location:</strong> {profileHotel?.location}</Typography>
-                  <Typography><strong>Rating:</strong> {profileHotel?.starRating} ⭐</Typography>
-                  <Typography variant="subtitle2" sx={{ mt: 2 }}>Contact Details</Typography>
-                  <Typography><strong>Phone:</strong> {profileHotel?.contactDetails.phone || '—'}</Typography>
-                  <Typography><strong>Email:</strong> {profileHotel?.contactDetails.email || '—'}</Typography>
-                  <Typography><strong>Website:</strong> {profileHotel?.contactDetails.website || '—'}</Typography>
+                  <Stack spacing={1.25} sx={{ color: '#0f172a' }}>
+                    <Typography variant="h6" fontWeight={700} sx={{ lineHeight: 1.3 }}>
+                      {profileHotel?.name || '—'}
+                    </Typography>
+                    <Stack direction="row" spacing={1} alignItems="center">
+                      <PlaceOutlined fontSize="small" sx={{ color: '#0ea5e9' }} />
+                      <Typography>{profileHotel?.location || '—'}</Typography>
+                    </Stack>
+                    <Chip
+                      icon={<StarRounded fontSize="small" />}
+                      label={`${profileHotel?.starRating || '—'} Star`}
+                      color="warning"
+                      variant="outlined"
+                      size="small"
+                      sx={{ alignSelf: 'flex-start' }}
+                    />
+
+                    <Divider sx={{ my: 1 }} />
+                    <Typography variant="subtitle2">Contact</Typography>
+                    <Stack spacing={0.75}>
+                      <Stack direction="row" spacing={1} alignItems="center">
+                        <PhoneIphone fontSize="small" sx={{ color: '#0ea5e9' }} />
+                        <Typography>{profileHotel?.contactDetails?.phone || '—'}</Typography>
+                      </Stack>
+                      <Stack direction="row" spacing={1} alignItems="center">
+                        <EmailOutlined fontSize="small" sx={{ color: '#0ea5e9' }} />
+                        <Typography>{profileHotel?.contactDetails?.email || '—'}</Typography>
+                      </Stack>
+                      <Stack direction="row" spacing={1} alignItems="center">
+                        <LanguageOutlined fontSize="small" sx={{ color: '#0ea5e9' }} />
+                        <Typography>{profileHotel?.contactDetails?.website || '—'}</Typography>
+                      </Stack>
+                    </Stack>
+                  </Stack>
                 </CardContent>
               </Card>
 
@@ -901,9 +995,13 @@ const HotelManagement = () => {
                 <CardContent>
                   <Typography variant="subtitle1" gutterBottom>Amenities</Typography>
                   <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
-                    {profileHotel?.amenities.map((a, i) => (
-                      <Chip key={i} label={a} sx={{ backgroundColor: '#E7E9E5', color: '#0A435C' }} />
-                    ))}
+                    {(profileHotel?.amenities || []).length > 0 ? (
+                      profileHotel.amenities.map((a, i) => (
+                        <Chip key={i} label={a} sx={{ backgroundColor: '#e0f2fe', color: '#075985', border: '1px solid #bfdbfe' }} />
+                      ))
+                    ) : (
+                      <Typography color="text.secondary">No amenities added yet.</Typography>
+                    )}
                   </Box>
                 </CardContent>
               </Card>
@@ -912,15 +1010,23 @@ const HotelManagement = () => {
                 <CardContent>
                   <Typography variant="subtitle1" gutterBottom>Meal Plans</Typography>
                   <Grid container spacing={2}>
-                    {profileHotel?.mealPlans.map((m, i) => (
-                      <Grid item xs={12} sm={6} key={i}>
-                        <Box>
-                          <Typography variant="subtitle2">{m.planName}</Typography>
-                          <Typography variant="body2" sx={{ mb: 1 }}>{m.description}</Typography>
-                          <Typography variant="body2"><strong>Price:</strong> ${m.price}</Typography>
-                        </Box>
+                    {(profileHotel?.mealPlans || []).length > 0 ? (
+                      profileHotel.mealPlans.map((m, i) => (
+                        <Grid item xs={12} sm={6} key={i}>
+                          <Box sx={{ border: '1px solid #e2e8f0', borderRadius: 2, p: 2, bgcolor: '#f8fafc' }}>
+                            <Typography variant="subtitle2" fontWeight={700}>{m.planName}</Typography>
+                            <Typography variant="body2" sx={{ mb: 1 }} color="text.secondary">{m.description}</Typography>
+                            <Typography variant="body2" fontWeight={600} color="success.main">
+                              Price: ${m.price}
+                            </Typography>
+                          </Box>
+                        </Grid>
+                      ))
+                    ) : (
+                      <Grid item xs={12}>
+                        <Typography color="text.secondary">No meal plans provided.</Typography>
                       </Grid>
-                    ))}
+                    )}
                   </Grid>
                 </CardContent>
               </Card>
@@ -929,34 +1035,40 @@ const HotelManagement = () => {
                 <CardContent>
                   <Typography variant="subtitle1" gutterBottom>Dining Options</Typography>
                   <Grid container spacing={2}>
-                    {profileHotel?.dinningOptions.map((d, i) => (
-                      <Grid item xs={12} sm={6} key={i}>
-                        <Box>
-                          <Typography variant="subtitle2">{d.optionName}</Typography>
-                          <Typography variant="body2" sx={{ mb: 1 }}>{d.description}</Typography>
-                          <Grid container spacing={1}>
-                            {d.image && (
-                              <Grid item>
-                                <img
-                                  src={d.image}
-                                  alt="dining"
-                                  style={{ width: 100, height: 100, objectFit: 'cover', borderRadius: '4px' }}
-                                />
-                              </Grid>
-                            )}
-                            {d.menu && (
-                              <Grid item>
+                    {(profileHotel?.dinningOptions || []).length > 0 ? (
+                      profileHotel.dinningOptions.map((d, i) => (
+                        <Grid item xs={12} sm={6} key={i}>
+                          <Box sx={{ border: '1px solid #e2e8f0', borderRadius: 2, p: 2, height: '100%' }}>
+                            <Typography variant="subtitle2" fontWeight={700}>{d.optionName}</Typography>
+                            <Typography variant="body2" sx={{ mb: 1 }} color="text.secondary">{d.description}</Typography>
+                            <Grid container spacing={1}>
+                              {d.image && (
+                                <Grid item>
+                                  <img
+                                    src={d.image}
+                                    alt="dining"
+                                    style={{ width: 110, height: 110, objectFit: 'cover', borderRadius: '6px' }}
+                                  />
+                                </Grid>
+                              )}
+                              {d.menu && (
+                                <Grid item>
                                   <img
                                     src={d.menu}
                                     alt="menu"
-                                    style={{ width: 'auto', height: '100%', objectFit: 'cover', borderRadius: '4px' }}
+                                    style={{ width: 110, height: 110, objectFit: 'cover', borderRadius: '6px' }}
                                   />
                                 </Grid>
-                            )}
-                          </Grid>
-                        </Box>
+                              )}
+                            </Grid>
+                          </Box>
+                        </Grid>
+                      ))
+                    ) : (
+                      <Grid item xs={12}>
+                        <Typography color="text.secondary">No dining options listed.</Typography>
                       </Grid>
-                    ))}
+                    )}
                   </Grid>
                 </CardContent>
               </Card>
@@ -964,13 +1076,17 @@ const HotelManagement = () => {
               <Card elevation={2} sx={{ p: 2 }}>
                 <CardContent>
                   <Typography variant="subtitle1" gutterBottom>Gallery</Typography>
-                  <ImageList cols={3} rowHeight={140} gap={8}>
-                    {profileHotel?.gallery.map((url, i) => (
-                      <ImageListItem key={i}>
-                        <img src={url} alt="gallery" loading="lazy" style={{ borderRadius: '4px' }} />
-                      </ImageListItem>
-                    ))}
-                  </ImageList>
+                  {(profileHotel?.gallery || []).length > 0 ? (
+                    <ImageList cols={3} rowHeight={140} gap={8}>
+                      {profileHotel.gallery.map((url, i) => (
+                        <ImageListItem key={i}>
+                          <img src={url} alt="gallery" loading="lazy" style={{ borderRadius: '6px' }} />
+                        </ImageListItem>
+                      ))}
+                    </ImageList>
+                  ) : (
+                    <Typography color="text.secondary">No gallery images yet.</Typography>
+                  )}
                 </CardContent>
               </Card>
             </Grid>
