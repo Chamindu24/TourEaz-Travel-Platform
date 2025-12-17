@@ -68,6 +68,9 @@ export default function AdminPanel() {
     activities: 0, 
     activityBookings: 0,
     tourInquiries: 0,
+    tourInquiryCount: 0,
+    tourBookingNotConfirmed: 0,
+    tourInquiryNotConfirmed: 0,
     transportations: 0
   });
   const [recentBookings, setRecentBookings] = useState([]);
@@ -87,7 +90,7 @@ export default function AdminPanel() {
       try {
         setLoading(true);
         setError(null);
-        const [u, h, b, t, c, a, ab, tb, tr, cap] = await Promise.all([
+        const [u, h, b, t, c, a, ab, tb, tr, cap, ti] = await Promise.all([
           axios.get('/users', { withCredentials: true }),
           axios.get('/hotels', { withCredentials: true }),
           axios.get('/bookings', { withCredentials: true }),
@@ -97,8 +100,16 @@ export default function AdminPanel() {
           axios.get('/activity-bookings', { withCredentials: true }).catch(() => ({ data: { data: [] } })),
           axios.get('/tour-bookings', { withCredentials: true }),
           axios.get('/transportations', { withCredentials: true }).catch(() => ({ data: [] })),
-          axios.get('/category-approvals/admin/pending', { withCredentials: true }).catch(() => ({ data: [] }))
+          axios.get('/category-approvals/admin/pending', { withCredentials: true }).catch(() => ({ data: [] })),
+          axios.get('/inquiries?inquiry_type=tour', { withCredentials: true }).catch(() => ({ data: [] }))
         ]);
+        const tourBookingNotConfirmed = Array.isArray(tb.data) 
+          ? tb.data.filter((b) => b.status !== 'Confirmed').length 
+          : 0;
+        const tourInquiryNotConfirmed = Array.isArray(ti.data) 
+          ? ti.data.filter((i) => i.status !== 'Confirmed').length 
+          : 0;
+
         setStats({ 
           users: u.data.length, 
           hotels: h.data.length, 
@@ -108,6 +119,9 @@ export default function AdminPanel() {
           activities: a.data.success ? a.data.data.length : 0,
           activityBookings: ab.data.success ? ab.data.data.length : 0,
           tourInquiries: tb.data.length,
+          tourInquiryCount: Array.isArray(ti.data) ? ti.data.length : 0,
+          tourBookingNotConfirmed,
+          tourInquiryNotConfirmed,
           transportations: tr.data.length || 0
         });
         setRecentBookings(b.data.slice(0, 5));
@@ -344,6 +358,9 @@ export default function AdminPanel() {
                     {item.id === 'approvals' && pendingApprovalsCount > 0 && (
                       <Chip size="small" color="warning" label={pendingApprovalsCount} />
                     )}
+                    {item.id === 'tours' && (stats.tourBookingNotConfirmed + (stats.tourInquiryNotConfirmed || 0)) > 0 && (
+                      <Chip size="small" color="primary" label={stats.tourBookingNotConfirmed + (stats.tourInquiryNotConfirmed || 0)} />
+                    )}
                   </Box>
                 }
               />
@@ -396,6 +413,9 @@ export default function AdminPanel() {
                       <span>{item.text}</span>
                       {item.id === 'approvals' && pendingApprovalsCount > 0 && (
                         <Chip size="small" color="warning" label={pendingApprovalsCount} />
+                      )}
+                      {item.id === 'tours' && (stats.tourBookingNotConfirmed + (stats.tourInquiryNotConfirmed || 0)) > 0 && (
+                        <Chip size="small" color="primary" label={stats.tourBookingNotConfirmed + (stats.tourInquiryNotConfirmed || 0)} />
                       )}
                     </Box>
                   }

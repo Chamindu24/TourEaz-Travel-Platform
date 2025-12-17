@@ -24,6 +24,7 @@ const AllTours = () => {
   const { user } = useContext(AuthContext);
   const [tours, setTours] = useState([]);
   const [editTour, setEditTour] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   // Local state for editing a single tour
   const [formData, setFormData] = useState({
@@ -76,6 +77,7 @@ const AllTours = () => {
   useEffect(() => {
     const fetchTours = async () => {
       try {
+        setLoading(true);
         const endpoint = user?.role === 'admin' 
           ? '/tours' 
           : '/tours/my-tours';
@@ -84,6 +86,8 @@ const AllTours = () => {
         setTours(data);
       } catch (error) {
         console.error("Error fetching tours:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -721,41 +725,58 @@ const AllTours = () => {
         {user?.role === 'admin' ? 'All Tours (Admin Panel)' : 'My Tours'}
       </h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-        {tours.map((tour) => (
-          <div
-          key={tour._id}
-          className="bg-white border-2 border-black/15 rounded-lg shadow-lg overflow-hidden transition duration-300 transform hover:scale-105"
-        >
-          <img
-            src={tour.tour_image}
-            alt={tour.title}
-            className="h-72 w-full object-cover"
-          />
-            <div className="p-4 text-center">
-              <h3 className="text-xl font-semibold">{tour.title}</h3>
-              <div className="mt-4 flex justify-center space-x-2">
-                <button
-                  className="bg-blue-500 text-white w-full  px-4 py-2 rounded hover:bg-blue-600"
-                  onClick={() => handleEditOpen(tour)}
-                >
-                  Edit
-                </button>
-                <button
-                  className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
-                  onClick={() => handleDuplicate(tour)}
-                >
-                  Duplicate
-                </button>
-                <button
-                  className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
-                  onClick={() => handleDelete(tour._id)}
-                >
-                  Delete
-                </button>
+        {loading
+          ? Array.from({ length: 6 }).map((_, i) => (
+              <div
+                key={`sk-${i}`}
+                className="bg-white border-2 border-black/15 rounded-lg shadow-lg overflow-hidden animate-pulse"
+              >
+                <div className="h-72 w-full bg-gray-200"></div>
+                <div className="p-4 text-center">
+                  <div className="h-6 bg-gray-200 rounded w-3/4 mx-auto"></div>
+                  <div className="mt-4 flex justify-center space-x-2">
+                    <div className="h-10 bg-gray-200 rounded w-24"></div>
+                    <div className="h-10 bg-gray-200 rounded w-24"></div>
+                    <div className="h-10 bg-gray-200 rounded w-24"></div>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-        ))}
+            ))
+          : tours.map((tour) => (
+              <div
+                key={tour._id}
+                className="bg-white border-2 border-black/15 rounded-lg shadow-lg overflow-hidden transition duration-300 transform hover:scale-105"
+              >
+                <img
+                  src={tour.tour_image}
+                  alt={tour.title}
+                  className="h-72 w-full object-cover"
+                />
+                <div className="p-4 text-center">
+                  <h3 className="text-xl font-semibold">{tour.title}</h3>
+                  <div className="mt-4 flex justify-center space-x-2">
+                    <button
+                      className="bg-blue-500 text-white w-full  px-4 py-2 rounded hover:bg-blue-600"
+                      onClick={() => handleEditOpen(tour)}
+                    >
+                      Edit
+                    </button>
+                    <button
+                      className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+                      onClick={() => handleDuplicate(tour)}
+                    >
+                      Duplicate
+                    </button>
+                    <button
+                      className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+                      onClick={() => handleDelete(tour._id)}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
       </div>
 
       {editTour && (

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import ActivityInfo from './ActivityInfo';
 
 // This is a simplified image gallery. In a real app, you'd use a library like react-image-gallery
 const ActivityImageGallery = ({ activity }) => {
@@ -22,38 +23,84 @@ const ActivityImageGallery = ({ activity }) => {
     }
 
     return (
-        <div className="bg-gray-100">
+        <div className=" mt-4 p-1 rounded-xl">
             <div className="container mx-auto">
-                {/* Main Image */}
-                <div className="h-96 md:h-[500px] overflow-hidden relative flex items-center justify-center">
-                    <img 
-                        src={mainImage} 
-                        alt={activity.title} 
-                        className="max-h-full max-w-full object-contain mx-auto"
-                        style={{ display: 'block' }}
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-b from-transparent to-gray-900 opacity-50 pointer-events-none"></div>
+            
+            {/* Main Image */}
+            <div className="relative h-96 md:h-[520px] overflow-hidden rounded-2xl shadow-xl group">
+                
+                <img
+                src={mainImage}
+                alt={activity.title}
+                className="w-full h-full object-cover  transition-transform duration-700 ease-out group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+
+
+                {/* Gradient Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent pointer-events-none" />
+
+                {/* Image Counter */}
+                <div className="absolute top-4 right-4 bg-black/60 text-white text-sm px-3 py-1 rounded-full backdrop-blur-md">
+                {images.indexOf(mainImage) + 1} / {images.length}
                 </div>
-                {/* Thumbnail strip */}
-                <div className="bg-gray-white p-2">
-                    <div className="flex overflow-x-auto space-x-2 pb-2 hide-scrollbar">
-                        {images.map((img, index) => (
-                            <div 
-                                key={index} 
-                                className={`flex-none w-20 h-16 cursor-pointer border-2 ${mainImage === img ? 'border-blue-500' : 'border-transparent'}`}
-                                onClick={() => setMainImage(img)}
-                            >
-                                <img 
-                                    src={img} 
-                                    alt={`${activity.title} view ${index + 1}`} 
-                                    className="w-full h-full object-contain"
-                                    loading="lazy"
-                                />
-                            </div>
-                        ))}
-                    </div>
+
+                {/* Activity Info Overlay - Bottom */}
+                <div className="absolute bottom-0 left-0 right-0 p-6">
+                    <ActivityInfo activity={activity} />
                 </div>
+
             </div>
+
+            {/* Thumbnails */}
+            <div className="mt-4 backdrop-blur-md bg-white/60 p-4 rounded-2xl shadow-sm">
+            <div className="flex gap-4 overflow-x-auto py-2 hide-scrollbar">
+
+                {images.map((img, index) => {
+                const isActive = mainImage === img;
+
+                return (
+                    <button
+                    key={index}
+                    onClick={() => setMainImage(img)}
+                    className={`relative flex-none w-28 h-20 rounded-xl overflow-hidden
+                        transition-all duration-300 ease-out
+                        ${
+                        isActive
+                            ? 'ring-4 ring-teal-500 scale-105 shadow-lg'
+                            : 'hover:scale-105 hover:shadow-md'
+                        }
+                    `}
+                    >
+                    {/* Image */}
+                    <img
+                        src={img}
+                        alt={`${activity.title} thumbnail ${index + 1}`}
+                        className={`w-full h-full object-cover transition-all duration-300
+                        ${isActive ? 'brightness-110' : 'brightness-90 hover:brightness-100'}
+                        `}
+                        loading="lazy"
+                    />
+
+                    {/* Gradient Overlay */}
+                    <div className={`absolute inset-0 transition-opacity duration-300
+                        ${isActive ? 'bg-gradient-to-t from-black/30 to-transparent' : 'bg-black/10'}
+                    `} />
+
+                    {/* Active Indicator */}
+                    {isActive && (
+                        <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-8 h-1 rounded-full bg-teal-400 shadow-md" />
+                    )}
+                    </button>
+                );
+                })}
+
+            </div>
+            </div>
+
+
+            </div>
+
         </div>
     );
 };

@@ -126,7 +126,8 @@ const ActivityBookingRequest = () => {
 
     if (error) {
         return (
-            <div className="container mx-auto px-4 py-12">
+            <div className="max-w-7xl mx-auto px-4 lg:px-6">
+
                 <div className="bg-platinum-500 border border-lapis_lazuli-400 text-lapis_lazuli-500 px-4 py-3 rounded">
                     <h2 className="text-xl font-bold mb-2">Error</h2>
                     <p>{error}</p>
@@ -153,183 +154,196 @@ const ActivityBookingRequest = () => {
     }
 
     return (
-        <div className="bg-platinum-500 py-12">
-            <div className="container mx-auto px-4">
-                <div className="max-w-3xl mx-auto">
-                    <h1 className="text-3xl font-bold text-lapis_lazuli-500 mb-2 font-display">
+        <div className="bg-gray-50 py-12">
+            <div className="max-w-7xl mx-auto px-4 lg:px-6">
+
+                <div className="max-w-6xl mx-auto ">
+                  <div className='text-center'>
+                    <h1 className="text-3xl font-bold text-gray-800 mb-2 font-display">
                         {bookingType === 'inquiry' ? 'Send Activity Inquiry' : 'Complete Your Booking'}
                     </h1>
-                    <p className="text-ash_gray-400 mb-8">
+                    <p className="text-gray-600 mb-8">
                         {bookingType === 'inquiry' 
                             ? 'Please fill in your details to send an inquiry about this activity.' 
                             : 'Please review the details and fill in your information to complete your booking request.'
                         }
                     </p>
-                    {/* Activity Summary */}
-                    <div className="bg-white rounded-lg shadow-md p-6 mb-8">
-                        <div className="flex flex-col md:flex-row">
-                            <div className="md:w-1/4 mb-4 md:mb-0">
-                                <img 
-                                    src={activity.image} 
-                                    alt={activity.title} 
-                                    className="w-full h-32 object-cover rounded"
-                                />
+                </div>
+                    <div className='flex flex-row gap-6'>
+                        {/* Activity Summary - Sticky Vertical Card */}
+                        <div className=" flex-shrink-0">
+                            <div className="bg-white rounded-lg shadow-md p-6 sticky top-24">
+                                <div className="flex flex-col">
+                                    <div className="mb-4">
+                                        <img 
+                                            src={activity.image} 
+                                            alt={activity.title} 
+                                            className="w-full h-48 object-cover rounded-lg"
+                                        />
+                                    </div>
+                                    <div>
+                                        <h2 className="text-xl font-bold text-teal-200 mb-3">{activity.title}</h2>
+                                        <div className="flex items-center mb-3">
+                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-yellow-500" viewBox="0 0 20 20" fill="currentColor">
+                                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                            </svg>
+                                            <span className="ml-1 text-sm text-gray-600">{activity.rating} ({activity.reviewCount} reviews)</span>
+                                        </div>
+                                        <div className="space-y-2 mb-4">
+                                            <div className="text-gray-600">
+                                                <span className="font-medium">Location:</span> {activity.location}
+                                            </div>
+                                            <div className="text-gray-600">
+                                                <span className="font-medium">Duration:</span> {activity.duration} hour{activity.duration !== 1 ? 's' : ''}
+                                            </div>
+                                        </div>
+                                        <div className="border-t pt-4">
+                                            <div className="text-teal-200 font-bold text-2xl">
+                                                ${activity.price} <span className="text-sm font-normal text-gray-600">per person</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div className="md:w-3/4 md:pl-6">
-                                <h2 className="text-xl font-bold text-lapis_lazuli-500">{activity.title}</h2>
-                                <div className="flex items-center mt-1 mb-2">
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-yellow-500" viewBox="0 0 20 20" fill="currentColor">
-                                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                    </svg>
-                                    <span className="ml-1 text-sm text-ash_gray-400">{activity.rating} ({activity.reviewCount} reviews)</span>
+                        </div>
+                        {/* Booking Form */}
+                        <div className="flex-1">
+                            <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow-md p-6">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                                {/* Date Selection */}
+                                <div>
+                                    <label htmlFor="date" className="block text-teal-200 font-medium mb-2">Date *</label>
+                                    <input
+                                        type="date"
+                                        id="date"
+                                        name="date"
+                                        value={formData.date}
+                                        onChange={handleInputChange}
+                                        className="w-full px-4 py-2 border border-ash_gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
+                                        required
+                                        min={(() => {
+                                            const tomorrow = new Date();
+                                            tomorrow.setDate(tomorrow.getDate() + 1);
+                                            return tomorrow.toISOString().split('T')[0];
+                                        })()}
+                                    />
                                 </div>
-                                <div className="text-ash_gray-400 mb-1">
-                                    <span className="font-medium">Location:</span> {activity.location}
+                                {/* Number of Guests */}
+                                <div>
+                                    <label htmlFor="guests" className="block text-teal-200 font-medium mb-2">Number of Guests *</label>
+                                    <select
+                                        id="guests"
+                                        name="guests"
+                                        value={formData.guests}
+                                        onChange={handleInputChange}
+                                        className="w-full px-4 py-2 border border-ash_gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
+                                        required
+                                    >
+                                        {Array.from({ length: activity.maxParticipants || 10 }, (_, i) => i + 1).map(num => (
+                                            <option key={num} value={num}>{num} {num === 1 ? 'guest' : 'guests'}</option>
+                                        ))}
+                                    </select>
                                 </div>
-                                <div className="text-ash_gray-400 mb-1">
-                                    <span className="font-medium">Duration:</span> {activity.duration} hour{activity.duration !== 1 ? 's' : ''}
+                                {/* Full Name */}
+                                <div>
+                                    <label htmlFor="fullName" className="block text-teal-200 font-medium mb-2">Full Name *</label>
+                                    <input
+                                        type="text"
+                                        id="fullName"
+                                        name="fullName"
+                                        value={formData.fullName}
+                                        onChange={handleInputChange}
+                                        className="w-full px-4 py-2 border border-ash_gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
+                                        required
+                                        placeholder="Enter your full name"
+                                    />
                                 </div>
-                                <div className="text-lapis_lazuli-500 font-bold text-lg mt-2">
-                                    ${activity.price} per person
+                                {/* Email */}
+                                <div>
+                                    <label htmlFor="email" className="block text-teal-200 font-medium mb-2">Email Address *</label>
+                                    <input
+                                        type="email"
+                                        id="email"
+                                        name="email"
+                                        value={formData.email}
+                                        onChange={handleInputChange}
+                                        className="w-full px-4 py-2 border border-ash_gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
+                                        required
+                                        placeholder="Enter your email address"
+                                    />
+                                </div>
+                                {/* Phone */}
+                                <div>
+                                    <label htmlFor="phone" className="block text-teal-200 font-medium mb-2">Phone Number *</label>
+                                    <input
+                                        type="tel"
+                                        id="phone"
+                                        name="phone"
+                                        value={formData.phone}
+                                        onChange={handleInputChange}
+                                        className="w-full px-4 py-2 border border-ash_gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
+                                        required
+                                        placeholder="Enter your phone number"
+                                    />
                                 </div>
                             </div>
+                            {/* Special Requests */}
+                            <div className="mb-6">
+                                <label htmlFor="specialRequests" className="block text-teal-200 font-medium mb-2">Special Requests (Optional)</label>
+                                <textarea
+                                    id="specialRequests"
+                                    name="specialRequests"
+                                    value={formData.specialRequests}
+                                    onChange={handleInputChange}
+                                    className="w-full px-4 py-2 border border-ash_gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 h-32"
+                                    placeholder="Any specific dietary requirements, accessibility needs, or other requests..."
+                                ></textarea>
+                            </div>
+                            {/* Price Calculation */}
+                            <div className="border-t border-b border-ash_gray-200 py-4 mb-6">
+                                <div className="flex justify-between mb-2">
+                                    <span className="text-teal-200">${activity.price} × {formData.guests} guests</span>
+                                    <span className="font-medium">${activity.price * formData.guests}</span>
+                                </div>
+                                <div className="flex justify-between text-teal-200 font-bold">
+                                    <span>Total</span>
+                                    <span>${activity.price * formData.guests}</span>
+                                </div>
+                            </div>
+                            <div className="flex justify-between items-center">
+                                <button
+                                    type="button"
+                                    onClick={() => navigate(`/activities/${id}`)}
+                                    className="px-6 py-3 font-semibold border-teal-500 text-black rounded-md hover:bg-teal-500 hover:text-white border-2 duration-300 hover:scale-105"
+                                    disabled={submitting}
+                                >
+                                    Back to Activity
+                                </button>
+                                <button
+                                    type="submit"
+                                    className={`px-6 py-3 bg-teal-500 text-white hover:bg-white hover:text-black border-2 hover:border-teal-500 font-medium rounded-lg ${
+                                        submitting ? 'opacity-50 cursor-not-allowed' : 'hover:bg-teal-600'
+                                    } transition-colors`}
+                                    disabled={submitting}
+                                >
+                                    {submitting ? 'Processing...' : (bookingType === 'inquiry' ? 'Send Inquiry' : 'Send Booking Request')}
+                                </button>
+                            </div>
+                            {error && (
+                                <div className="mt-4 p-3 bg-platinum-50 text-lapis_lazuli-500 rounded-md">
+                                    {error}
+                                </div>
+                            )}
+                        </form>
                         </div>
                     </div>
-                    {/* Booking Form */}
-                    <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow-md p-6">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                            {/* Date Selection */}
-                            <div>
-                                <label htmlFor="date" className="block text-lapis_lazuli-500 font-medium mb-2">Date *</label>
-                                <input
-                                    type="date"
-                                    id="date"
-                                    name="date"
-                                    value={formData.date}
-                                    onChange={handleInputChange}
-                                    className="w-full px-4 py-2 border border-ash_gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-lapis_lazuli-500"
-                                    required
-                                    min={(() => {
-                                        const tomorrow = new Date();
-                                        tomorrow.setDate(tomorrow.getDate() + 1);
-                                        return tomorrow.toISOString().split('T')[0];
-                                    })()}
-                                />
-                            </div>
-                            {/* Number of Guests */}
-                            <div>
-                                <label htmlFor="guests" className="block text-lapis_lazuli-500 font-medium mb-2">Number of Guests *</label>
-                                <select
-                                    id="guests"
-                                    name="guests"
-                                    value={formData.guests}
-                                    onChange={handleInputChange}
-                                    className="w-full px-4 py-2 border border-ash_gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-lapis_lazuli-500"
-                                    required
-                                >
-                                    {Array.from({ length: activity.maxParticipants || 10 }, (_, i) => i + 1).map(num => (
-                                        <option key={num} value={num}>{num} {num === 1 ? 'guest' : 'guests'}</option>
-                                    ))}
-                                </select>
-                            </div>
-                            {/* Full Name */}
-                            <div>
-                                <label htmlFor="fullName" className="block text-lapis_lazuli-500 font-medium mb-2">Full Name *</label>
-                                <input
-                                    type="text"
-                                    id="fullName"
-                                    name="fullName"
-                                    value={formData.fullName}
-                                    onChange={handleInputChange}
-                                    className="w-full px-4 py-2 border border-ash_gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-lapis_lazuli-500"
-                                    required
-                                    placeholder="Enter your full name"
-                                />
-                            </div>
-                            {/* Email */}
-                            <div>
-                                <label htmlFor="email" className="block text-lapis_lazuli-500 font-medium mb-2">Email Address *</label>
-                                <input
-                                    type="email"
-                                    id="email"
-                                    name="email"
-                                    value={formData.email}
-                                    onChange={handleInputChange}
-                                    className="w-full px-4 py-2 border border-ash_gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-lapis_lazuli-500"
-                                    required
-                                    placeholder="Enter your email address"
-                                />
-                            </div>
-                            {/* Phone */}
-                            <div>
-                                <label htmlFor="phone" className="block text-lapis_lazuli-500 font-medium mb-2">Phone Number *</label>
-                                <input
-                                    type="tel"
-                                    id="phone"
-                                    name="phone"
-                                    value={formData.phone}
-                                    onChange={handleInputChange}
-                                    className="w-full px-4 py-2 border border-ash_gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-lapis_lazuli-500"
-                                    required
-                                    placeholder="Enter your phone number"
-                                />
-                            </div>
-                        </div>
-                        {/* Special Requests */}
-                        <div className="mb-6">
-                            <label htmlFor="specialRequests" className="block text-lapis_lazuli-500 font-medium mb-2">Special Requests (Optional)</label>
-                            <textarea
-                                id="specialRequests"
-                                name="specialRequests"
-                                value={formData.specialRequests}
-                                onChange={handleInputChange}
-                                className="w-full px-4 py-2 border border-ash_gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-lapis_lazuli-500 h-32"
-                                placeholder="Any specific dietary requirements, accessibility needs, or other requests..."
-                            ></textarea>
-                        </div>
-                        {/* Price Calculation */}
-                        <div className="border-t border-b border-ash_gray-200 py-4 mb-6">
-                            <div className="flex justify-between mb-2">
-                                <span className="text-lapis_lazuli-500">${activity.price} × {formData.guests} guests</span>
-                                <span className="font-medium">${activity.price * formData.guests}</span>
-                            </div>
-                            <div className="flex justify-between text-lapis_lazuli-500 font-bold">
-                                <span>Total</span>
-                                <span>${activity.price * formData.guests}</span>
-                            </div>
-                        </div>
-                        <div className="flex justify-between items-center">
-                            <button
-                                type="button"
-                                onClick={() => navigate(`/activities/${id}`)}
-                                className="px-6 py-3 border border-ash_gray-400 text-lapis_lazuli-500 rounded-lg hover:bg-platinum-400 transition-colors"
-                                disabled={submitting}
-                            >
-                                Back to Activity
-                            </button>
-                            <button
-                                type="submit"
-                                className={`px-6 py-3 bg-lapis_lazuli-500 text-white font-medium rounded-lg ${
-                                    submitting ? 'opacity-50 cursor-not-allowed' : 'hover:bg-lapis_lazuli-600'
-                                } transition-colors`}
-                                disabled={submitting}
-                            >
-                                {submitting ? 'Processing...' : (bookingType === 'inquiry' ? 'Send Inquiry' : 'Send Booking Request')}
-                            </button>
-                        </div>
-                        {error && (
-                            <div className="mt-4 p-3 bg-platinum-500 text-lapis_lazuli-500 rounded-md">
-                                {error}
-                            </div>
-                        )}
-                    </form>
                 </div>
             </div>
             {/* Confirmation Modal */}
             {isModalOpen && (
                 <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
                     <div className="bg-white rounded-lg shadow-lg p-8 max-w-md w-full">
-                        <h2 className="text-2xl font-bold text-lapis_lazuli-500 mb-4">
+                        <h2 className="text-2xl font-bold text-teal-300 mb-4">
                             {bookingType === 'inquiry' ? 'Inquiry Sent!' : 'Booking Request Confirmed!'}
                         </h2>
                         <p className="mb-2">Your reference is <span className="font-mono font-bold">{bookingReference}</span>.</p>
@@ -347,7 +361,7 @@ const ActivityBookingRequest = () => {
                         )}
                         <button
                             onClick={handleModalClose}
-                            className="w-full py-3 px-4 bg-lapis_lazuli-500 text-white rounded-lg font-medium hover:bg-lapis_lazuli-600 transition-colors focus:outline-none focus:ring-2 focus:ring-lapis_lazuli-500 focus:ring-offset-2"
+                            className="w-full py-3 px-4 bg-teal-500 text-white rounded-md font-medium hover:bg-white hover:text-black border-2 hover:border-teal-500 transition-colors focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2"
                         >
                             Go to Home
                         </button>

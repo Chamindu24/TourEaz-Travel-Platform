@@ -299,7 +299,7 @@ const TourBooking = ({ sidebarOpen }) => {
           
           {/* Header */}
           <div className="text-center mb-8">
-            <h1 className="text-4xl font-bold text-[#0A435C] mb-4">Secure Your Tour Spot</h1>
+            <h1 className="text-4xl font-bold text-teal-200 mb-4">Secure Your Tour Spot</h1>
             <p className="text-lg text-gray-600">Complete your booking for an unforgettable experience</p>
           </div>
 
@@ -412,7 +412,7 @@ const TourBooking = ({ sidebarOpen }) => {
                 </div>
 
                 {/* Price Summary */}
-                <div className="bg-gradient-to-r from-[#005E84] to-[#075375] text-white p-6 rounded-lg">
+                <div className="bg-emerald-100 text-gray-700 p-6 rounded-lg">
                   <h4 className="text-xl font-bold mb-4">Price Summary</h4>
                   <div className="space-y-2">
                     <div className="flex justify-between">
@@ -421,11 +421,11 @@ const TourBooking = ({ sidebarOpen }) => {
                     </div>
                     {calculateSavings() > 0 && (
                       <>
-                        <div className="flex justify-between text-gray-300 line-through">
+                        <div className="flex justify-between text-gray-500 line-through">
                           <span>Original Price:</span>
                           <span>{selectedCurrency} {convertPrice(finalOldPrice)}</span>
                         </div>
-                        <div className="flex justify-between font-bold text-green-300">
+                        <div className="flex justify-between font-bold text-teal-300">
                           <span>You Save:</span>
                           <span>{selectedCurrency} {convertPrice(calculateSavings())}</span>
                         </div>
@@ -457,7 +457,7 @@ const TourBooking = ({ sidebarOpen }) => {
                       name="clientName"
                       value={bookingData.clientName}
                       onChange={handleChange}
-                      className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[#005E84] focus:border-transparent ${
+                      className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:outline-none focus:border-transparent ${
                         errors.clientName ? 'border-red-300' : 'border-gray-300'
                       }`}
                       placeholder="Enter your full name"
@@ -474,7 +474,7 @@ const TourBooking = ({ sidebarOpen }) => {
                       name="clientEmail"
                       value={bookingData.clientEmail}
                       onChange={handleChange}
-                      className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[#005E84] focus:border-transparent ${
+                      className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:outline-none focus:border-transparent ${
                         errors.clientEmail ? 'border-red-300' : 'border-gray-300'
                       }`}
                       placeholder="Enter your email"
@@ -492,7 +492,7 @@ const TourBooking = ({ sidebarOpen }) => {
                       name="phoneCountryCode"
                       value={bookingData.phoneCountryCode}
                       onChange={handleChange}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#005E84] focus:border-transparent"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:outline-none focus:border-transparent"
                     >
                       {countryCodes.map((country) => (
                         <option key={country.code} value={country.code}>
@@ -511,7 +511,7 @@ const TourBooking = ({ sidebarOpen }) => {
                       name="clientPhone"
                       value={bookingData.clientPhone}
                       onChange={handleChange}
-                      className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[#005E84] focus:border-transparent ${
+                      className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:outline-none focus:border-transparent ${
                         errors.clientPhone ? 'border-red-300' : 'border-gray-300'
                       }`}
                       placeholder="Enter your phone number"
@@ -529,7 +529,7 @@ const TourBooking = ({ sidebarOpen }) => {
                     name="emergencyContact"
                     value={bookingData.emergencyContact}
                     onChange={handleChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#005E84] focus:border-transparent"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:outline-none focus:border-transparent"
                     placeholder="Name and phone number of emergency contact"
                   />
                 </div>
@@ -552,7 +552,7 @@ const TourBooking = ({ sidebarOpen }) => {
                       value={bookingData.travelDate}
                       onChange={handleChange}
                       min={new Date().toISOString().split('T')[0]}
-                      className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[#005E84] focus:border-transparent ${
+                      className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:outline-none focus:border-transparent ${
                         errors.travelDate ? 'border-red-300' : 'border-gray-300'
                       }`}
                     />
@@ -570,7 +570,7 @@ const TourBooking = ({ sidebarOpen }) => {
                       onChange={handleChange}
                       min="1"
                       max="20"
-                      className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[#005E84] focus:border-transparent ${
+                      className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:outline-none focus:border-transparent ${
                         errors.travellerCount ? 'border-red-300' : 'border-gray-300'
                       }`}
                     />
@@ -586,7 +586,7 @@ const TourBooking = ({ sidebarOpen }) => {
                     name="nationality"
                     value={bookingData.nationality}
                     onChange={handleChange}
-                    className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[#005E84] focus:border-transparent ${
+                    className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:outline-none focus:border-transparent ${
                       errors.nationality ? 'border-red-300' : 'border-gray-300'
                     }`}
                   >
@@ -609,7 +609,7 @@ const TourBooking = ({ sidebarOpen }) => {
                     value={bookingData.specialRequests}
                     onChange={handleChange}
                     rows="4"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#005E84] focus:border-transparent"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:outline-none focus:border-transparent"
                     placeholder="Any special requirements, dietary restrictions, accessibility needs, etc."
                   />
                 </div>
@@ -649,7 +649,7 @@ const TourBooking = ({ sidebarOpen }) => {
                 </div>
 
                 {/* Price Summary */}
-                <div className="bg-gradient-to-r from-[#005E84] to-[#075375] text-white p-6 rounded-lg">
+                <div className="bg-emerald-100 text-gray-800 p-6 rounded-lg">
                   <h3 className="text-lg font-semibold mb-4">Price Summary</h3>
                   <div className="space-y-2 text-sm">
                     <div className="flex justify-between">
@@ -657,7 +657,7 @@ const TourBooking = ({ sidebarOpen }) => {
                       <span className="text-xl font-bold">{selectedCurrency} {convertPrice(calculateTotal())}</span>
                     </div>
                     {calculateSavings() > 0 && (
-                      <div className="flex justify-between text-green-300">
+                      <div className="flex justify-between text-teal-100">
                         <span>You Save:</span>
                         <span>{selectedCurrency} {convertPrice(calculateSavings())}</span>
                       </div>
@@ -684,7 +684,7 @@ const TourBooking = ({ sidebarOpen }) => {
             {activeStep > 0 && (
               <button
                 onClick={handleBack}
-                className="px-6 py-3 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors font-medium"
+                className="px-6 py-3 bg-white text-black rounded-md hover:bg-teal-500 hover:text-white border-2 border-teal-500 hover:scale-105 duration-300 transition-colors font-medium"
               >
                 Back
               </button>
@@ -694,7 +694,7 @@ const TourBooking = ({ sidebarOpen }) => {
               {activeStep < 3 ? (
                 <button
                   onClick={handleNext}
-                  className="px-6 py-3 bg-[#005E84] text-white rounded-lg hover:bg-[#075375] transition-colors font-medium"
+                  className="px-6 py-3 bg-teal-500 text-white rounded-md hover:text-black border-2 hover:border-teal-500 hover:scale-105 duration-300 hover:bg-white transition-colors font-medium"
                 >
                   Continue
                 </button>
@@ -702,7 +702,7 @@ const TourBooking = ({ sidebarOpen }) => {
                 <button
                   onClick={handleSubmit}
                   disabled={loading}
-                  className="px-6 py-3 bg-[#005E84] text-white rounded-lg hover:bg-[#075375] transition-colors font-medium disabled:opacity-50"
+                  className="px-6 py-3 bg-teal-500 text-white rounded-md hover:text-black border-2 hover:border-teal-500 hover:scale-105 duration-300 hover:bg-white transition-colors font-medium disabled:opacity-50"
                 >
                   {loading ? 'Submitting...' : 'Confirm Booking'}
                 </button>

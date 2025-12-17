@@ -45,7 +45,7 @@ const ActivityDetail = () => {
                             act?._id !== foundActivity._id && 
                             (act?.type === foundActivity.type || act?.location === foundActivity.location)
                         )
-                        .slice(0, 4); // Limit to 4 related activities
+                        .slice(0, 4); // Limit to 3 related activities
                     
                     setRelatedActivities(related);
                 } else {
@@ -100,8 +100,6 @@ const ActivityDetail = () => {
             <ActivityImageGallery activity={activity} />
             
             <div className="container mx-auto px-4 py-8">
-                {/* Activity Info (Title, Rating, Location) */}
-                <ActivityInfo activity={activity} />
                 
                 <div className="mt-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
                     {/* Left Column - Details Tabs */}
