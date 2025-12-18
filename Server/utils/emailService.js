@@ -534,6 +534,52 @@ const sendResetSuccessEmail = async (email, firstName) => {
 };
 
 
+// Transportation booking status notification (Confirmed/Cancelled)
+const sendTransportationBookingStatusEmail = async (booking) => {
+  try {
+    const to = booking?.customerDetails?.email || booking?.user?.email;
+    if (!to) return false;
+
+    const vehicleName = booking?.vehicle?.name || 'Transportation';
+    const status = booking?.status || 'Updated';
+    const date = booking?.tripDetails?.date ? new Date(booking.tripDetails.date).toLocaleDateString() : 'N/A';
+    const days = booking?.tripDetails?.days || 1;
+    const pickup = booking?.tripDetails?.pickupLocation || 'Not specified';
+    const dropoff = booking?.tripDetails?.dropoffLocation || 'Not specified';
+    const total = booking?.pricing?.totalPrice ? `$${Number(booking.pricing.totalPrice).toFixed(2)}` : 'N/A';
+
+    const subject = `Your Transportation Booking ${booking.bookingReference} is ${status}`;
+    const html = `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+        <h2 style="color: #1976d2;">Transportation Booking ${status}</h2>
+        <p>Dear ${booking?.customerDetails?.fullName || booking?.user?.name || 'Customer'},</p>
+        <p>Your booking has been <strong>${status}</strong>.</p>
+        <div style="background:#f7fafc; padding:12px 16px; border-radius:8px; border:1px solid #e2e8f0;">
+          <p><strong>Reference:</strong> ${booking.bookingReference}</p>
+          <p><strong>Vehicle:</strong> ${vehicleName}</p>
+          <p><strong>Date:</strong> ${date} (${days} day${days>1?'s':''})</p>
+          <p><strong>Route:</strong> ${pickup} → ${dropoff}</p>
+          <p><strong>Total:</strong> ${total}</p>
+        </div>
+        <p style="margin-top:16px;">If you have any questions, reply to this email.</p>
+        <p style="color:#64748b; font-size:12px;">This is an automated notification from TourEaz.</p>
+      </div>
+    `;
+
+    await transporter.sendMail({
+      from: process.env.SMTP_USER,
+      to,
+      subject,
+      html
+    });
+    return true;
+  } catch (error) {
+    console.error('Error sending transportation booking status email:', error);
+    return false;
+  }
+};
+
+
 module.exports = {
   sendEmail,
   templates,
@@ -542,6 +588,7 @@ module.exports = {
   sendContactFormResponse,
   sendBookingNotification,
   sendBookingStatusUpdate,
+  sendTransportationBookingStatusEmail,
   sendVerificationEmail,
   sendWelcomeEmail,
   sendPasswordResetEmail,

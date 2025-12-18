@@ -341,7 +341,13 @@ function HotelProfile() {
               />
               
               {/* Gradient Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
+              <div className="absolute inset-0 
+                bg-gradient-to-t 
+                from-black/70 via-black/30 to-transparent
+                group-hover:from-black/85 
+                group-hover:via-black/45
+                transition-all duration-700">
+              </div>
               
               {/* Text overlay */}
               <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-8 md:p-12">
