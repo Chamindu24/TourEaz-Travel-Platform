@@ -120,7 +120,9 @@ const TransportationManagement = () => {
   const [driverDialogOpen, setDriverDialogOpen] = useState(false);
   const [editingTransportation, setEditingTransportation] = useState(null);
   const [editingDriver, setEditingDriver] = useState(null);
-  const [activeTab, setActiveTab] = useState(0); // 0 for transportations, 1 for drivers
+  const [activeTab, setActiveTab] = useState(0); // 0 vehicles, 1 drivers, 2 bookings
+  const [providerBookings, setProviderBookings] = useState([]);
+  const [bookingsLoading, setBookingsLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     type: 'car',
@@ -182,6 +184,13 @@ const TransportationManagement = () => {
     fetchDrivers();
   }, []);
 
+  // Lazy-load bookings when Bookings tab is opened
+  useEffect(() => {
+    if (activeTab === 2 && providerBookings.length === 0 && !bookingsLoading) {
+      fetchProviderBookings();
+    }
+  }, [activeTab]);
+
   const fetchTransportations = async () => {
     try {
       const endpoint = user?.role === 'admin' 
@@ -210,6 +219,31 @@ const TransportationManagement = () => {
     } catch (err) {
       console.error(err);
       setError('Failed to load drivers');
+    }
+  };
+
+  const fetchProviderBookings = async () => {
+    try {
+      setBookingsLoading(true);
+      const { data } = await axios.get('/transportation-bookings/provider/my', { withCredentials: true });
+      setProviderBookings(Array.isArray(data) ? data : []);
+    } catch (err) {
+      console.error('Failed to load transportation bookings', err);
+      setSnackbar({ open: true, message: 'Failed to load bookings', severity: 'error' });
+    } finally {
+      setBookingsLoading(false);
+    }
+  };
+
+  const updateBookingStatus = async (bookingId, newStatus) => {
+    try {
+      await axios.put(`/transportation-bookings/${bookingId}/provider-status`, { status: newStatus }, { withCredentials: true });
+      setProviderBookings(prev => prev.map(b => b._id === bookingId ? { ...b, status: newStatus } : b));
+      setSnackbar({ open: true, message: `Booking ${newStatus.toLowerCase()}`, severity: 'success' });
+    } catch (err) {
+      console.error('Failed to update booking status', err);
+      const msg = err.response?.data?.message || 'Failed to update booking status';
+      setSnackbar({ open: true, message: msg, severity: 'error' });
     }
   };
 
@@ -632,7 +666,7 @@ const TransportationManagement = () => {
             <Tab as={Fragment}>
               {({ selected }) => (
                 <button
-                  className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-2xl font-bold text-base transition-all ${
+                  className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-lg font-bold text-base transition-all ${
                     selected
                       ? 'bg-teal-500 text-white shadow-lg shadow-purple-500/30'
                       : 'text-gray-500 hover:bg-gray-50'
@@ -640,6 +674,20 @@ const TransportationManagement = () => {
                 >
                   <UserIcon className="w-5 h-5" />
                   Drivers ({activeDrivers})
+                </button>
+              )}
+            </Tab>
+            <Tab as={Fragment}>
+              {({ selected }) => (
+                <button
+                  className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-lg font-bold text-base transition-all ${
+                    selected
+                      ? 'bg-teal-500 text-white shadow-lg shadow-purple-500/30'
+                      : 'text-gray-500 hover:bg-gray-50'
+                  }`}
+                >
+                  <EyeIcon className="w-5 h-5" />
+                  Bookings ({providerBookings.length})
                 </button>
               )}
             </Tab>
@@ -658,7 +706,7 @@ const TransportationManagement = () => {
                 </button>
               </div>
 
-              <div className="bg-white rounded-3xl shadow-lg overflow-hidden">
+              <div className="bg-white rounded-lg shadow-lg overflow-hidden">
                 <table className="min-w-full divide-y divide-gray-200">
                   <thead className="bg-gradient-to-r from-teal-50 to-emerald-50">
                     <tr>
@@ -829,7 +877,7 @@ const TransportationManagement = () => {
                 </button>
               </div>
 
-              <div className="bg-white rounded-3xl shadow-2xl overflow-hidden">
+              <div className="bg-white rounded-lg shadow-2xl overflow-hidden">
                 <table className="min-w-full divide-y divide-gray-200">
                   <thead className="bg-gradient-to-r from-blue-50 to-purple-50">
                     <tr>
@@ -940,6 +988,85 @@ const TransportationManagement = () => {
                     )}
                   </tbody>
                 </table>
+              </div>
+            </Tab.Panel>
+
+            {/* Bookings Panel */}
+            <Tab.Panel>
+              <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+                {bookingsLoading ? (
+                  <div className="p-6">Loading bookings…</div>
+                ) : providerBookings.length === 0 ? (
+                  <div className="p-12 text-center text-gray-500">No bookings yet.</div>
+                ) : (
+                  <table className="min-w-full divide-y divide-gray-200">
+                    <thead className="bg-gradient-to-r from-teal-50 to-emerald-50">
+                      <tr>
+                        <th className="px-6 py-4 text-left text-xs font-bold text-gray-900 uppercase tracking-wider">Reference</th>
+                        <th className="px-6 py-4 text-left text-xs font-bold text-gray-900 uppercase tracking-wider">Vehicle</th>
+                        <th className="px-6 py-4 text-left text-xs font-bold text-gray-900 uppercase tracking-wider">Customer</th>
+                        <th className="px-6 py-4 text-left text-xs font-bold text-gray-900 uppercase tracking-wider">Trip</th>
+                        <th className="px-6 py-4 text-left text-xs font-bold text-gray-900 uppercase tracking-wider">Status</th>
+                        <th className="px-6 py-4 text-right text-xs font-bold text-gray-900 uppercase tracking-wider">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody className="bg-white divide-y divide-gray-200">
+                      {providerBookings.map(b => {
+                        const d = b.tripDetails?.date ? new Date(b.tripDetails.date).toLocaleDateString() : 'N/A';
+                        return (
+                          <tr key={b._id} className="hover:bg-gray-50 transition-colors">
+                            <td className="px-6 py-4 font-semibold text-gray-800">{b.bookingReference}</td>
+                            <td className="px-6 py-4">
+                              <div className="font-semibold text-gray-800">{b.vehicle?.name || 'Vehicle'}</div>
+                              <div className="text-xs text-gray-500">{b.vehicle?.type} · {b.vehicle?.capacity} seats</div>
+                            </td>
+                            <td className="px-6 py-4">
+                              <div className="font-semibold text-gray-800">{b.customerDetails?.fullName || b.user?.name || 'Customer'}</div>
+                              <div className="text-xs text-gray-500">{b.customerDetails?.email || b.user?.email}</div>
+                            </td>
+                            <td className="px-6 py-4">
+                              <div className="font-semibold text-gray-800">{d} · {b.tripDetails?.days || 1} day(s)</div>
+                              <div className="text-xs text-gray-500">{b.tripDetails?.pickupLocation || '-'} → {b.tripDetails?.dropoffLocation || '-'}</div>
+                            </td>
+                            <td className="px-6 py-4">
+                              <span className={`inline-flex px-2 py-1 rounded-lg text-xs font-semibold ${
+                                b.status === 'Confirmed' ? 'bg-green-100 text-green-800' : b.status === 'Cancelled' ? 'bg-red-100 text-red-700' : 'bg-yellow-100 text-yellow-800'
+                              }`}>
+                                {b.status}
+                              </span>
+                            </td>
+                            <td className="px-6 py-4 text-right">
+                              <div className="flex justify-end gap-2">
+                                <button
+                                  onClick={() => updateBookingStatus(b._id, 'Confirmed')}
+                                  className={`px-3 py-1.5 rounded-md text-sm font-semibold transition-all ${
+                                    b.status === 'Confirmed'
+                                      ? 'bg-gray-400 text-gray-600 cursor-not-allowed opacity-60'
+                                      : 'bg-green-600 text-white hover:bg-green-700'
+                                  }`}
+                                  disabled={b.status === 'Confirmed'}
+                                >
+                                  Confirm
+                                </button>
+                                <button
+                                  onClick={() => updateBookingStatus(b._id, 'Cancelled')}
+                                  className={`px-3 py-1.5 rounded-md text-sm font-semibold transition-all ${
+                                    b.status === 'Cancelled'
+                                      ? 'bg-gray-400 text-gray-600 cursor-not-allowed opacity-60'
+                                      : 'bg-red-600 text-white hover:bg-red-700'
+                                  }`}
+                                  disabled={b.status === 'Cancelled'}
+                                >
+                                  Cancel
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                )}
               </div>
             </Tab.Panel>
           </Tab.Panels>

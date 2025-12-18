@@ -76,6 +76,7 @@ app.use('/api/service-providers', require('./routes/serviceProviderRoutes'));
 app.use('/api/category-approvals', require('./routes/categoryApprovalRoutes'));
 app.use('/api/transportations', require('./routes/transportationRoutes'));
 app.use('/api/drivers', require('./routes/driverRoutes'));
+app.use('/api/transportation-bookings', require('./routes/transportationBookingRoutes'));
 
 app.listen(process.env.PORT || 5001, () => {
   console.log(`Server running on port ${process.env.PORT || 5001}`);

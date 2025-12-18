@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from '../axios';
+import { useAuthCheck } from '../hooks/useAuthCheck';
+import transportationBookingsAPI from '../services/transportationBookingsAPI';
 import { 
   Car, 
   Users, 
@@ -38,6 +40,24 @@ const TransportationDetail = () => {
   const [relatedTransportations, setRelatedTransportations] = useState([]);
   const [mainTab, setMainTab] = useState('vehicle');
   const [driverTab, setDriverTab] = useState('info');
+  const [reviewRating, setReviewRating] = useState(5);
+  const [reviewComment, setReviewComment] = useState('');
+  const [submittingReview, setSubmittingReview] = useState(false);
+  const [reviewError, setReviewError] = useState('');
+  const { user, requireAuthForBooking } = useAuthCheck();
+  const [showBooking, setShowBooking] = useState(false);
+  const [submittingBooking, setSubmittingBooking] = useState(false);
+  const [bookingError, setBookingError] = useState('');
+  const [bookingForm, setBookingForm] = useState({
+    date: '',
+    days: 1,
+    passengers: 1,
+    pickupLocation: '',
+    dropoffLocation: '',
+    fullName: '',
+    email: '',
+    phone: ''
+  });
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
@@ -55,13 +75,7 @@ const TransportationDetail = () => {
 
       // Fetch driver if available
       if (transportData.assignedDrivers && transportData.assignedDrivers.length > 0) {
-        try {
-          const driverId = transportData.assignedDrivers[0];
-          const driverResponse = await axios.get(`/drivers/${driverId}`);
-          setDriver(driverResponse.data);
-        } catch (error) {
-          console.error('Error fetching driver details:', error);
-        }
+        await fetchDriver(transportData.assignedDrivers[0]);
       }
 
       // Fetch related transportations
@@ -76,6 +90,85 @@ const TransportationDetail = () => {
       console.error('Error fetching transportation details:', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchDriver = async (driverId) => {
+    try {
+      const driverResponse = await axios.get(`/drivers/${driverId}`);
+      setDriver(driverResponse.data);
+    } catch (error) {
+      console.error('Error fetching driver details:', error);
+    }
+  };
+
+  const handleSubmitReview = async (e) => {
+    e.preventDefault();
+    if (!driver?._id) return;
+    setSubmittingReview(true);
+    setReviewError('');
+    try {
+      await axios.post(
+        `/drivers/${driver._id}/reviews`,
+        { rating: Number(reviewRating), comment: reviewComment },
+        { withCredentials: true }
+      );
+      setReviewComment('');
+      setReviewRating(5);
+      await fetchDriver(driver._id);
+    } catch (error) {
+      const msg = error.response?.data?.msg || 'Failed to submit review. Please try again.';
+      setReviewError(msg);
+    } finally {
+      setSubmittingReview(false);
+    }
+  };
+
+  const openBooking = () => {
+    if (!transportation) return;
+    const ok = requireAuthForBooking('transportation-booking', { vehicleId: transportation._id });
+    if (!ok) return;
+    setBookingError('');
+    setBookingForm((prev) => ({
+      ...prev,
+      fullName: user ? `${user.firstName || ''} ${user.lastName || ''}`.trim() : prev.fullName,
+      email: user?.email || prev.email,
+      phone: user?.phoneNumber || prev.phone
+    }));
+    setShowBooking(true);
+  };
+
+  const handleBookingSubmit = async (e) => {
+    e.preventDefault();
+    if (!transportation) return;
+    setSubmittingBooking(true);
+    setBookingError('');
+    try {
+      const payload = {
+        vehicleId: transportation._id,
+        customerDetails: {
+          fullName: bookingForm.fullName,
+          email: bookingForm.email,
+          phone: bookingForm.phone
+        },
+        tripDetails: {
+          date: bookingForm.date,
+          days: Number(bookingForm.days) || 1,
+          passengers: Number(bookingForm.passengers) || 1,
+          pickupLocation: bookingForm.pickupLocation,
+          dropoffLocation: bookingForm.dropoffLocation,
+          specialRequests: ''
+        }
+      };
+      const res = await transportationBookingsAPI.create(payload);
+      if (res?.booking) {
+        setShowBooking(false);
+        navigate('/account', { state: { activeTab: 'transportation' } });
+      }
+    } catch (err) {
+      setBookingError(err.response?.data?.message || 'Failed to create booking');
+    } finally {
+      setSubmittingBooking(false);
     }
   };
 
@@ -110,6 +203,7 @@ const TransportationDetail = () => {
   }
 
   return (
+    <>
     <div className="bg-white px-20 mt-6 min-h-screen">
       
 
@@ -484,8 +578,8 @@ const TransportationDetail = () => {
                       onClick={() => setDriverTab('reviews')}
                       className={`px-6 py-3 mb-4 font-bold transition-all ${
                         driverTab === 'reviews'
-                          ? 'text-white bg-teal-500 rounded-md  shadow-lg '
-                          : 'text-gray-600 hover:text-gray-800 border-2 border-gray-300 rounded-md '
+                          ? 'text-white bg-teal-500 rounded-md shadow-lg'
+                          : 'text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200'
                       }`}
                     >
                       <MessageSquare className="inline w-4 h-4 mr-2" />
@@ -493,13 +587,12 @@ const TransportationDetail = () => {
                     </button>
                   </div>
 
-                  {/* Driver Info Tab */}
                   {driverTab === 'info' && (
                     <div className="space-y-6">
                       {/* Driver Header */}
                       <div className="flex items-start gap-6 pb-6 border-b border-gray-200">
-                        <div className="w-24 h-24 bg-gradient-to-br from-purple-200 to-indigo-200 rounded-full flex items-center justify-center flex-shrink-0">
-                          <User className="w-12 h-12 text-purple-600" />
+                        <div className="w-24 h-24 bg-gradient-to-br from-yellow-100 to-amber-100 rounded-full flex items-center justify-center flex-shrink-0">
+                          <User className="w-12 h-12 text-yellow-600" />
                         </div>
                         <div className="flex-1">
                           <h3 className="text-2xl font-bold text-gray-800 mb-2">
@@ -576,36 +669,88 @@ const TransportationDetail = () => {
                     </div>
                   )}
 
-                  {/* Reviews Tab */}
                   {driverTab === 'reviews' && (
-                    <div className="space-y-4">
-                      {driver.reviews && driver.reviews.length > 0 ? (
-                        driver.reviews.map((review, idx) => (
-                          <div key={idx} className="bg-gray-50 p-5 rounded-xl border border-gray-200 hover:border-teal-200 transition-colors">
-                            <div className="flex items-start justify-between mb-3">
-                              <div className="flex-1">
-                                <div className="flex items-center gap-2 mb-2">
-                                  <div className="flex items-center gap-1">
+                    <div>
+                      <div className="grid grid-cols-1 gap-4">
+                        {driver?.reviews && driver.reviews.length > 0 ? (
+                          driver.reviews.map((review, index) => (
+                            <div key={index} className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
+                              <div className="mb-2 flex items-center justify-between">
+                                <div className="flex items-center">
+                                  <div className="flex items-center">
                                     {[...Array(5)].map((_, i) => (
-                                      <Star
+                                      <svg
                                         key={i}
-                                        className={`w-4 h-4 ${i < (review.rating || 0) ? 'text-yellow-500 fill-current' : 'text-gray-300'}`}
-                                      />
+                                        className={`h-5 w-5 ${i < review.rating ? 'text-yellow-400' : 'text-gray-300'}`}
+                                        viewBox="0 0 20 20"
+                                        fill="currentColor"
+                                      >
+                                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.785.57-1.84-.197-1.54-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                      </svg>
                                     ))}
                                   </div>
-                                  <span className="text-sm font-semibold text-gray-600">{review.rating || 0}/5</span>
+                                  <span className="ml-2 text-sm text-gray-600">{review.rating.toFixed(1)}</span>
                                 </div>
-                                {review.comment && <p className="text-gray-700">{review.comment}</p>}
+                                <span className="text-xs text-gray-400">{new Date(review.createdAt).toLocaleDateString()}</span>
                               </div>
+                              <p className="text-gray-700">{review.comment}</p>
+                              {review.user && (
+                                <p className="mt-2 text-sm text-gray-500">
+                                  By {review.user.name || review.user.email || 'Anonymous'}
+                                </p>
+                              )}
                             </div>
+                          ))
+                        ) : (
+                          <p className="text-gray-500">No reviews yet.</p>
+                        )}
+                      </div>
+
+                      <form onSubmit={handleSubmitReview} className="mt-6 space-y-4 rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
+                        <h4 className="text-lg font-semibold text-gray-800">Add a Review</h4>
+
+                      <div className="flex flex-col items-start">
+                          <label className="mb-1 text-sm font-medium text-gray-700">Rating</label>
+                          <div className="flex space-x-1">
+                            {[1, 2, 3, 4, 5].map((star) => (
+                              <button
+                                key={star}
+                                type="button"
+                                onClick={() => setReviewRating(star)}
+                                disabled={submittingReview}
+                                className={`text-2xl transition-colors ${
+                                  reviewRating >= star ? 'text-yellow-500' : 'text-gray-300'
+                                } hover:text-yellow-600`}
+                              >
+                                ★
+                              </button>
+                            ))}
                           </div>
-                        ))
-                      ) : (
-                        <div className="text-center py-8">
-                          <MessageCircle className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-                          <p className="text-gray-600">No reviews yet</p>
+                      </div>
+
+                        <div>
+                          <label className="mb-1 block text-sm font-medium text-gray-700">Comment</label>
+                          <textarea
+                            className="w-full rounded-md border border-gray-300 p-2 focus:border-indigo-500 focus:outline-none"
+                            rows="3"
+                            value={reviewComment}
+                            onChange={(e) => setReviewComment(e.target.value)}
+                            placeholder="Share your experience with this driver"
+                            disabled={submittingReview}
+                            required
+                          />
                         </div>
-                      )}
+
+                        {reviewError && <p className="text-sm text-red-600">{reviewError}</p>}
+
+                        <button
+                          type="submit"
+                          className="w-full rounded-md bg-teal-300 px-4 py-2 text-white transition hover:bg-white hover:text-black border-2 border-teal-500 disabled:cursor-not-allowed disabled:bg-teal-500"
+                          disabled={submittingReview || !reviewComment.trim()}
+                        >
+                          {submittingReview ? 'Submitting...' : 'Submit Review'}
+                        </button>
+                      </form>
                     </div>
                   )}
                 </div>
@@ -691,6 +836,7 @@ const TransportationDetail = () => {
                     : 'bg-gray-300 text-gray-500 cursor-not-allowed opacity-50'
                 }`}
                 disabled={transportation.availability !== 'available'}
+                onClick={openBooking}
               >
                 {transportation.availability === 'available' ? (
                   <span className="flex items-center justify-center gap-2">
@@ -772,6 +918,80 @@ const TransportationDetail = () => {
         )}
       </div>
     </div>
+
+    {/* Booking Modal */}
+    {showBooking && (
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+        <div className="bg-white w-full max-w-xl rounded-2xl shadow-2xl p-6">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-xl font-semibold">Book {transportation.name}</h3>
+            <button onClick={() => setShowBooking(false)} className="text-gray-500 hover:text-gray-700">✕</button>
+          </div>
+          <form onSubmit={handleBookingSubmit} className="grid grid-cols-1 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Pickup Date</label>
+                <input type="date" required value={bookingForm.date}
+                  onChange={(e)=>setBookingForm({...bookingForm, date: e.target.value})}
+                  className="mt-1 w-full border rounded-md p-2"/>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Days</label>
+                <input type="number" min="1" value={bookingForm.days}
+                  onChange={(e)=>setBookingForm({...bookingForm, days: e.target.value})}
+                  className="mt-1 w-full border rounded-md p-2"/>
+              </div>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Passengers</label>
+                <input type="number" min="1" value={bookingForm.passengers}
+                  onChange={(e)=>setBookingForm({...bookingForm, passengers: e.target.value})}
+                  className="mt-1 w-full border rounded-md p-2"/>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Pickup Location</label>
+                <input type="text" value={bookingForm.pickupLocation}
+                  onChange={(e)=>setBookingForm({...bookingForm, pickupLocation: e.target.value})}
+                  className="mt-1 w-full border rounded-md p-2"/>
+              </div>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Dropoff Location</label>
+              <input type="text" value={bookingForm.dropoffLocation}
+                onChange={(e)=>setBookingForm({...bookingForm, dropoffLocation: e.target.value})}
+                className="mt-1 w-full border rounded-md p-2"/>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Full Name</label>
+                <input type="text" required value={bookingForm.fullName}
+                  onChange={(e)=>setBookingForm({...bookingForm, fullName: e.target.value})}
+                  className="mt-1 w-full border rounded-md p-2"/>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Email</label>
+                <input type="email" required value={bookingForm.email}
+                  onChange={(e)=>setBookingForm({...bookingForm, email: e.target.value})}
+                  className="mt-1 w-full border rounded-md p-2"/>
+              </div>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Phone</label>
+              <input type="tel" required value={bookingForm.phone}
+                onChange={(e)=>setBookingForm({...bookingForm, phone: e.target.value})}
+                className="mt-1 w-full border rounded-md p-2"/>
+            </div>
+            {bookingError && <p className="text-sm text-red-600">{bookingError}</p>}
+            <button type="submit" disabled={submittingBooking}
+              className="w-full py-3 rounded-md bg-teal-500 text-white font-semibold hover:bg-white hover:text-black border-2 border-teal-500 transition">
+              {submittingBooking ? 'Submitting...' : 'Confirm Booking'}
+            </button>
+          </form>
+        </div>
+      </div>
+    )}
+    </>
   );
 };
 
