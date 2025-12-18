@@ -612,11 +612,24 @@ const TransportationManagement = () => {
   }
 
   return (
-    <div className="py-10 px-6 bg-white min-h-screen">
+    <div className="py-10 px-10  bg-white min-h-screen">
       {/* Header */}
-      <div className=" flex flex-col mb-6 items-center justify-center">
-        <h1 className="text-4xl font-bold text-gray-700">Transportation & Driver Management</h1>
-        <p className="text-gray-600 mt-2">Keep your fleet, drivers, and assignments organized from one modern view.</p>
+      <div className="flex flex-col mb-8 items-center text-center">
+
+
+        {/* Clean, Bold Title */}
+        <h1 className="text-4xl md:text-5xl font-black text-slate-900 tracking-tight">
+          Transportation & <span className="text-teal-500">Driver Management</span>
+        </h1>
+
+        {/* Sophisticated Subtext */}
+        <p className="mt-4 text-lg md:text-xl text-slate-500 max-w-2xl font-medium leading-relaxed">
+          Keep your fleet, drivers, and assignments organized from 
+          <span className="text-slate-900"> one unified modern view.</span>
+        </p>
+
+        {/* Minimalist Underline Accent */}
+        <div className="mt-4 h-1 w-12 bg-slate-200 rounded-full" />
       </div>
 
       {/* Stats Cards - Admin Only */}

@@ -115,7 +115,7 @@ const Account = () => {
   return (
     <div className="min-h-screen bg-gray-100 mt-4 py-10">
       <div className="max-w-6xl mx-auto px-2 sm:px-6 lg:px-8">
-        <div className="bg-white border border-black/10 shadow-xl rounded-2xl overflow-hidden">
+        <div className="bg-white border border-black/10 shadow-md rounded-xl overflow-hidden">
           <div className="px-8 py-6 border-b border-[#B7C5C7] flex items-center gap-3">
             <span className="inline-flex border border-teal-500 items-center justify-center h-12 w-12 rounded-full bg-teal-50 text-teal-500 text-2xl font-bold mr-2">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8">
@@ -361,35 +361,74 @@ const Account = () => {
                   </div>
                 ) : (
                   <div className="space-y-4">
-                    {transportationBookings.map(booking => (
-                      <div key={booking._id} className="bg-gradient-to-br from-white to-teal-50 shadow-md rounded-lg p-6 border border-teal-100 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-                        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                          <div className="flex-1">
-                            <h4 className="text-lg font-bold text-teal-700">
-                              {booking.vehicle?.name || 'Transportation Service'}
-                            </h4>
-                            <p className="text-sm text-gray-600 mt-1">
-                              Type: {booking.vehicle?.type || 'N/A'}
-                            </p>
-                            <div className="mt-3 text-sm text-gray-700 space-y-1">
-                              <p>📅 Date: {booking.tripDetails?.date ? new Date(booking.tripDetails.date).toLocaleDateString() : 'N/A'}</p>
-                              <p>⏰ Duration: {booking.tripDetails?.days ? `${booking.tripDetails.days} day(s)` : 'N/A'}</p>
-                              <p>Status: <span className={`font-semibold ${
-                                booking.status === 'Confirmed' ? 'text-green-600' :
-                                booking.status === 'Pending' ? 'text-yellow-600' :
-                                booking.status === 'Cancelled' ? 'text-red-600' : 'text-gray-600'
-                              }`}>{booking.status || 'Pending'}</span></p>
+                    {transportationBookings.map((booking) => (
+                      <div 
+                        key={booking._id} 
+                        className="group relative bg-white border border-gray-200 rounded-2xl p-6 mb-4 hover:border-teal-500/50 hover:shadow-xl hover:shadow-gray-200/40 transition-all duration-300"
+                      >
+                        {/* Status Badge - Floating Top Right */}
+                        <div className="absolute top-6 right-6">
+                          <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold tracking-wide uppercase border ${
+                            booking.status === 'Confirmed' ? 'bg-emerald-50 text-emerald-700 border-emerald-100' :
+                            booking.status === 'Pending' ? 'bg-amber-50 text-amber-700 border-amber-100' :
+                            'bg-rose-50 text-rose-700 border-rose-100'
+                          }`}>
+                            {booking.status || 'Pending'}
+                          </span>
+                        </div>
+
+                        <div className="flex flex-col lg:flex-row lg:items-center gap-8">
+                          
+                          {/* 1. Vehicle Icon & Main Info */}
+                          <div className="flex items-center gap-5 flex-1">
+                            <div className="flex-shrink-0 w-16 h-16 bg-gray-50 rounded-2xl flex items-center justify-center group-hover:bg-teal-50 transition-colors">
+                              {/* Replace with a real Lucide Icon if available */}
+                              <span className="text-3xl">
+                                {booking.vehicle?.type === 'Car' ? '🚗' : '🚐'}
+                              </span>
+                            </div>
+                            
+                            <div className="space-y-1">
+                              <p className="text-[10px] font-black uppercase tracking-[0.15em] text-gray-400">
+                                {booking.vehicle?.type || 'Vehicle'}
+                              </p>
+                              <h4 className="text-xl font-bold text-gray-900 leading-none">
+                                {booking.vehicle?.name || 'Standard Service'}
+                              </h4>
+                              <p className="text-sm font-medium text-gray-500">
+                                Ref: <span className="text-gray-900">#{booking.bookingReference}</span>
+                              </p>
                             </div>
                           </div>
-                          <div className="text-right min-w-[140px]">
-                            <p className="text-xs text-gray-500">Booking Ref</p>
-                            <p className="text-sm font-bold text-teal-600">{booking.bookingReference}</p>
-                            {booking.pricing?.totalPrice && (
-                              <p className="text-2xl font-bold text-teal-700 mt-2">
-                                ${booking.pricing.totalPrice}
+
+                          {/* 2. Trip Details Grid */}
+                          <div className="flex flex-wrap items-center gap-x-12 gap-y-4 border-t border-gray-100 pt-6 lg:border-t-0 lg:pt-0 lg:px-8 lg:border-x lg:border-gray-100">
+                            <div className="space-y-1">
+                              <p className="text-[10px] font-bold uppercase text-gray-400">Date</p>
+                              <p className="text-sm font-semibold text-gray-800">
+                                {booking.tripDetails?.date ? new Date(booking.tripDetails.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) : 'N/A'}
                               </p>
-                            )}
+                            </div>
+                            <div className="space-y-1">
+                              <p className="text-[10px] font-bold uppercase text-gray-400">Duration</p>
+                              <p className="text-sm font-semibold text-gray-800">
+                                {booking.tripDetails?.days ? `${booking.tripDetails.days} Full Day(s)` : 'N/A'}
+                              </p>
+                            </div>
                           </div>
+
+                          {/* 3. Pricing & Actions */}
+                          <div className="flex items-center justify-between lg:flex-col lg:items-end lg:justify-center min-w-[120px] gap-2">
+                            <div className="text-left lg:text-right">
+                              <p className="text-[10px] font-bold uppercase text-gray-400 leading-none mb-1">Total Amount</p>
+                              <p className="text-2xl font-black text-gray-900 tracking-tight">
+                                ${booking.pricing?.totalPrice?.toLocaleString() || '0'}
+                              </p>
+                            </div>
+                            
+
+                          </div>
+
                         </div>
                       </div>
                     ))}
@@ -503,106 +542,97 @@ const Account = () => {
                   </div>
                 ) : (
                   <div className="space-y-4">
-                    {activityBookings.map(booking => (
-                      <div key={booking._id} className="bg-[#B7C5C7]/60 shadow-sm rounded-lg p-4 border border-[#B7C5C7]">
-                        <div className="flex flex-col md:flex-row gap-4 md:h-32">
-                          {/* Activity Image */}
-                          <div className="md:w-48 flex-shrink-0 h-32 md:h-full flex items-stretch">
+                    {activityBookings.map((booking) => (
+                      <div 
+                        key={booking._id} 
+                        className="group bg-white border border-gray-100 rounded-3xl overflow-hidden mb-6 hover:shadow-2xl hover:shadow-gray-200/50 transition-all duration-500"
+                      >
+                        <div className="flex flex-col md:flex-row">
+                          
+                          {/* 1. High-Quality Image Section */}
+                          <div className="md:w-64 h-48 md:h-auto relative overflow-hidden">
                             {booking.activity?.image ? (
                               <img 
                                 src={booking.activity.image} 
-                                alt={booking.activity.title || 'Activity'} 
-                                className="w-full h-full object-cover rounded" 
-                                onError={(e) => {
-                                  e.target.style.display = 'none';
-                                }}
+                                alt={booking.activity.title} 
+                                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                               />
                             ) : (
-                              <div className="w-full h-full bg-gray-200 rounded flex items-center justify-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8 text-gray-400">
-                                  <path strokeLinecap="round" strokeLinejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+                              <div className="w-full h-full bg-gray-50 flex flex-col items-center justify-center text-gray-300">
+                                <svg className="w-12 h-12 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.581-1.581a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                 </svg>
+                                <span className="text-[10px] font-bold uppercase tracking-widest">No Image</span>
                               </div>
                             )}
+                            {/* Floating Category Tag */}
+                            <div className="absolute top-4 left-4">
+                              <span className="px-3 py-1 bg-white/90 backdrop-blur-md text-gray-900 text-[10px] font-black uppercase tracking-widest rounded-lg shadow-sm">
+                                {booking.activity?.type || 'Adventure'}
+                              </span>
+                            </div>
                           </div>
-                          
-                          {/* Activity Details */}
-                          <div className="flex-1 flex flex-col md:flex-row justify-between">
-                            <div className="flex-1">
-                              <h4 className="text-lg font-semibold text-[#0A435C] mb-2">
-                                {booking.activity?.title || booking.customerDetails?.fullName || 'Activity Booking'}
-                              </h4>
-                              
-                              {booking.activity?.location && (
-                                <p className="text-sm text-[#075375] mb-2">
-                                  📍 {booking.activity.location}
-                                </p>
-                              )}
-                              
-                              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm text-[#075375]">
-                                <div>
-                                  <span className="font-medium">Date:</span> {booking.bookingDetails?.date ? new Date(booking.bookingDetails.date).toLocaleDateString() : 'N/A'}
-                                </div>
-                                <div>
-                                  <span className="font-medium">Guests:</span> {booking.bookingDetails?.guests || 'N/A'}
-                                </div>
-                                {booking.activity?.duration && (
-                                  <div>
-                                    <span className="font-medium">Duration:</span> {booking.activity.duration} hours
-                                  </div>
-                                )}
-                                <div>
-                                  <span className="font-medium">Status:</span> 
-                                  <span className={`ml-1 font-medium ${
-                                    booking.status === 'Confirmed' ? 'text-green-600' :
-                                    booking.status === 'Pending' ? 'text-yellow-600' :
-                                    booking.status === 'Cancelled' ? 'text-red-600' : 'text-[#0A435C]'
-                                  }`}>
-                                    {booking.status || 'Pending'}
-                                  </span>
-                                </div>
-                                <div>
-                                  <span className="font-medium">Type:</span> {booking.type || 'inquiry'}
-                                </div>
-                                {booking.activity?.type && (
-                                  <div>
-                                    <span className="font-medium">Category:</span> {booking.activity.type}
-                                  </div>
-                                )}
+
+                          {/* 2. Content Section */}
+                          <div className="flex-1 p-6 flex flex-col justify-between">
+                            <div>
+                              <div className="flex justify-between items-start mb-2">
+                                <h4 className="text-xl font-extrabold text-gray-900 leading-tight group-hover:text-teal-600 transition-colors">
+                                  {booking.activity?.title || 'Exclusive Experience'}
+                                </h4>
+                                <span className={`px-3 py-1 rounded-full text-[10px] font-bold tracking-tighter uppercase border ${
+                                  booking.status === 'Confirmed' ? 'bg-green-50 text-green-600 border-green-100' : 
+                                  'bg-amber-50 text-amber-600 border-amber-100'
+                                }`}>
+                                  {booking.status || 'Processing'}
+                                </span>
                               </div>
                               
-                              {booking.bookingDetails?.specialRequests && (
-                                <div className="mt-2">
-                                  <span className="text-sm font-medium text-[#075375]">Special Requests:</span>
-                                  <p className="text-sm text-[#0A435C] mt-1">{booking.bookingDetails.specialRequests}</p>
+                              <p className="flex items-center text-sm text-gray-500 font-medium mb-4">
+                                <span className="mr-1">📍</span> {booking.activity?.location || 'Location Pending'}
+                              </p>
+
+                              {/* Data Grid */}
+                              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 py-4 border-y border-gray-50">
+                                <div className="space-y-1">
+                                  <p className="text-[10px] font-bold text-gray-400 uppercase">Scheduled Date</p>
+                                  <p className="text-sm font-semibold text-gray-800">
+                                    {booking.bookingDetails?.date ? new Date(booking.bookingDetails.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'Flexible'}
+                                  </p>
                                 </div>
-                              )}
-                              
-                              {!booking.activity && (
-                                <div className="mt-2 p-2 bg-yellow-50 border border-yellow-200 rounded text-xs text-yellow-700">
-                                  ⚠️ Activity details not available. This booking might be for a deleted activity.
+                                <div className="space-y-1">
+                                  <p className="text-[10px] font-bold text-gray-400 uppercase">Group Size</p>
+                                  <p className="text-sm font-semibold text-gray-800">{booking.bookingDetails?.guests || '1'} Person(s)</p>
                                 </div>
-                              )}
+                                <div className="space-y-1">
+                                  <p className="text-[10px] font-bold text-gray-400 uppercase">Duration</p>
+                                  <p className="text-sm font-semibold text-gray-800">{booking.activity?.duration || '2'} Hours</p>
+                                </div>
+                                <div className="space-y-1">
+                                  <p className="text-[10px] font-bold text-gray-400 uppercase">Booking ID</p>
+                                  <p className="text-sm font-mono font-bold text-teal-600">{booking.bookingReference}</p>
+                                </div>
+                              </div>
                             </div>
-                            
-                            {/* Price and Booking Reference */}
-                            <div className="text-right min-w-[140px] mt-4 md:mt-0">
-                              <div className="text-xs text-[#8b9482] mb-1">Booking Ref</div>
-                              <div className="text-sm font-medium text-[#005E84] mb-2">{booking.bookingReference}</div>
+
+                            {/* 3. Pricing Footer Area */}
+                            <div className="mt-6 flex items-center justify-between">
+                              <div className="flex items-center gap-2 text-xs font-medium text-amber-600 bg-amber-50 px-3 py-1.5 rounded-lg">
+                                <span className="text-base">⚡</span> Instant Confirmation
+                              </div>
                               
-                              {booking.pricing?.totalPrice && (
-                                <div className="text-2xl font-bold text-[#0A435C]">
-                                  ${booking.pricing.totalPrice}
+                              <div className="text-right">
+                                <p className="text-[10px] font-bold text-gray-400 uppercase mb-1">Total Paid</p>
+                                <div className="flex items-baseline gap-1">
+                                  <span className="text-sm font-bold text-gray-900">$</span>
+                                  <span className="text-2xl font-black text-gray-900 leading-none">
+                                    {booking.pricing?.totalPrice?.toLocaleString()}
+                                  </span>
                                 </div>
-                              )}
-                              
-                              {booking.pricing?.pricePerPerson && (
-                                <div className="text-xs text-[#8b9482] mt-1">
-                                  ${booking.pricing.pricePerPerson} per person
-                                </div>
-                              )}
+                              </div>
                             </div>
                           </div>
+
                         </div>
                       </div>
                     ))}
