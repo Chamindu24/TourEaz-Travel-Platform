@@ -585,66 +585,96 @@ const servicesData = [
         </div>
       </div>
 
-      {/* About Section */}
-      <section className="py-20  bg-white relative overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            <div className="space-y-8">
-              <div className="inline-flex items-center px-4 py-1 bg-white text-[#005E84] rounded-full text-sm font-semibold tracking-widest uppercase mb-8 border-2 border-[#0A435C] relative overflow-hidden group cursor-pointer">
-                <span className="w-2 h-2 bg-[#0A435C] rounded-full mr-2 "></span>
-                Get Started
-                <span className="absolute top-0 left-0 w-full h-full border-1 border-[#0A435C] rounded-full "></span>
-              </div>
-              <h2 className="text-4xl md:text-5xl font-bold text-black animate-fade-in-left animate-delay-1">
-                Your Gateway to <span className="text-teal-500">Paradise</span>
-              </h2>
-              <p className="text-xl text-teal-200 leading-relaxed animate-fade-in-left animate-delay-2">
-                We specialize in creating unforgettable experiences in the
-                Maldives. From luxury resorts to exclusive villas, we bring your
-                dream vacation to life.
-              </p>
-              <div className="grid grid-cols-2 gap-6">
-                <div className="p-6 bg-white rounded-2xl shadow-xl hover:shadow-2xl 
-                    hover:-translate-y-2 hover:rotate-1 transition duration-500 text-center">
-                  <div className="text-4xl font-extrabold text-[#005E84]">500+</div>
-                  <p className="text-[#0A435C]">Happy Guests</p>
-                </div>
+    <section className="relative py-32 bg-white overflow-hidden">
+        {/* BACKGROUND TEXT DECOR (THE "ELITE" TOUCH) */}
+        <div className="absolute top-20 left-10 select-none pointer-events-none">
+          <h1 className="text-[15rem] font-black text-teal-900 leading-none tracking-tighter">
+            ESCAPE
+          </h1>
+        </div>
 
-                <div className="p-6 bg-white rounded-2xl shadow-xl hover:shadow-2xl 
-                    hover:-translate-y-2 hover:-rotate-1 transition duration-500 text-center">
-                  <div className="text-4xl font-extrabold text-[#005E84]">50+</div>
-                  <p className="text-[#0A435C]">Premium Resorts</p>
-                </div>
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
+          <div className="flex flex-col lg:flex-row items-center gap-24">
+            
+            {/* IMAGE COMPOSITION (LEFT SIDE) */}
+            <div className="w-full lg:w-1/2 relative">
+              {/* The Main Frame */}
+              <div className="relative z-20 rounded-2xl overflow-hidden shadow-2xl aspect-[4/5] max-w-md mx-auto lg:ml-0">
+                <img 
+                  src="/travel-services/travel5.jpg" 
+                  alt="Luxury Resort" 
+                  className="w-full h-full object-cover transition-transform duration-[3s] hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-gradient-to-tr from-[#005E84]/40 to-transparent"></div>
               </div>
+
+              {/* Floating Info Card (Glassmorphism) */}
+              <div className="absolute -bottom-10 -right-6 lg:right-0 z-30 p-8 backdrop-blur-2xl bg-white/90 border border-white rounded-3xl shadow-2xl max-w-[280px]">
+                <div className="flex items-center space-x-4 mb-4">
+                  <div className="w-12 h-12 bg-[#005E84] rounded-full flex items-center justify-center text-white font-bold italic">S</div>
+                    <div>
+                      <h4 className="font-bold text-slate-900">Sri Lanka</h4>
+                      <p className="text-xs text-slate-700 uppercase tracking-widest">Top Destination</p>
+                    </div>
+
+                </div>
+                <p className="text-sm text-slate-600 leading-relaxed italic">
+                  "The most secluded luxury villas we have ever experienced."
+                </p>
+              </div>
+
+              {/* Decorative Geometric Element */}
+              <div className="absolute top-10 -left-10 w-32 h-32 border-[16px] border-teal-50 rounded-full -z-10"></div>
             </div>
-            <div className="relative animate-fade-in-right animate-delay-2">
-              <div className="relative z-10 rounded-3xl overflow-hidden shadow-2xl transform hover:scale-105 transition-all duration-700 shine-effect">
 
+            {/* CONTENT (RIGHT SIDE) */}
+            <div className="w-full lg:w-1/2 space-y-12">
+              <div className="space-y-6">
+                <div className="flex items-center space-x-4">
+                  <div className="h-[1px] w-12 bg-teal-500"></div>
+                  <span className="text-sm font-bold tracking-[0.3em] text-teal-600 uppercase">Est. 2010</span>
+                </div>
                 
-                <div className="absolute inset-0 flex items-end justify-center z-20 mb-16">
-                  <div className="backdrop-blur-md bg-black/10 border border-white/50
-                      shadow-lg drop-shadow-2xl rounded-2xl px-10 py-5
-                      flex flex-col items-center animate-fade-in-up">
-                    <p className="text-white  text-lg font-semibold tracking-wide">
-                     Where Dreams Meet the Ocean
-                    </p>
-                    <span className="text-white/80 text-sm tracking-widest">Sri Lanka</span>
+                <h2 className="text-6xl font-bold text-slate-900 leading-[0.95] tracking-tighter">
+                  Crafting <span className="italic font-light">Infinite</span> <br />
+                  <span className="text-[#005E84]">Moments.</span>
+                </h2>
+                
+                <p className="text-lg text-slate-700 max-w-md leading-relaxed">
+                  We don't just book trips; we architect memories. Our portfolio of 
+                  private islands represents the pinnacle of global hospitality.
+                </p>
+              </div>
+
+              {/* HIGH-END FEATURE LIST */}
+              <div className="space-y-8">
+                <div className="flex items-start space-x-6 group">
+                  <div className="text-3xl font-light text-teal-200 group-hover:text-teal-500 transition-colors">01</div>
+                  <div>
+                    <h5 className="font-bold text-slate-900 text-lg uppercase tracking-tight">Private Aviation</h5>
+                    <p className="text-slate-600 text-sm">Seamless transit from doorstep to dock.</p>
                   </div>
                 </div>
 
-                <div className="absolute inset-0 bg-gradient-to-r from-teal-500/10 via-transparent to-[#005E84]/10 animate-shimmer"></div>
-                
-                <img
-                  src="/travel-services/travel5.jpg"
-                  alt="Mirissa Srilanka"
-                  className="w-full h-96 object-cover shadow-2xl"
-                />
-
-                <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
+                <div className="flex items-start space-x-6 group border-t border-slate-100 pt-8">
+                  <div className="text-3xl font-light text-teal-200 group-hover:text-teal-500 transition-colors">02</div>
+                  <div>
+                    <h5 className="font-bold text-slate-900 text-lg uppercase tracking-tight">Vetted Resorts</h5>
+                    <p className="text-slate-600 text-sm">Only the top 1% of Maldivian properties.</p>
+                  </div>
+                </div>
               </div>
 
-              <div className="absolute -bottom-6 -right-6 w-24 h-24 bg-gradient-to-br from-teal-200 to-teal-300 rounded-2xl shadow-lg animate-pulse-slow animate-glow"></div>
-              <div className="absolute -top-6 -left-6 w-16 h-16 bg-gradient-to-br from-teal-300 to-teal-200 rounded-full opacity-70 animate-bounce-slow"></div>
+              {/* CTA BUTTON */}
+              <div className="pt-6">
+                <a href="#contact" className="inline-block group relative">
+                  <span className="relative z-10 px-10 py-5 bg-teal-500 text-white hover:bg-white hover:text-black border-2 hover:border-teal-500 duration-500 rounded-full font-bold overflow-hidden flex items-center gap-3 transition-transform group-hover:-translate-y-1">
+                    Plan Your Escape
+                    <svg className="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                  </span>
+                  <div className="absolute inset-0 bg-teal-400 rounded-full translate-y-2 blur-lg opacity-30 group-hover:opacity-60 transition-opacity"></div>
+                </a>
+              </div>
             </div>
 
           </div>
@@ -654,19 +684,48 @@ const servicesData = [
       {/* Property Types Section */}
       <section className="py-14 bg-white relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-          <div className="text-center mb-16">
-              <div className="inline-flex items-center px-4 py-1 bg-white text-[#005E84] rounded-full text-sm font-semibold tracking-widest uppercase mb-8 border-2 border-[#0A435C] relative overflow-hidden group cursor-pointer">
-                <span className="w-2 h-2 bg-[#0A435C] rounded-full mr-2 "></span>
-                  Property Types
-                <span className="absolute top-0 left-0 w-full h-full border-1 border-[#0A435C] rounded-full "></span>
+          <div className="relative text-center mb-24 overflow-visible">
+            
+            {/* 1. ARCHITECTURAL BACKGROUND TEXT (The "Elite" Touch) */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 select-none pointer-events-none z-0">
+              <span className="text-[8rem] md:text-[12rem] font-black text-teal-900 tracking-tighter opacity-80 uppercase leading-none">
+                Reside
+              </span>
+            </div>
+
+            <div className="relative z-10">
+              {/* 2. REFINED BADGE COMPONENT */}
+              <div className="inline-flex items-center space-x-3 px-5 py-2 bg-white/80 backdrop-blur-sm rounded-full shadow-sm border border-slate-400 mb-8 hover:border-teal-200 transition-colors duration-500 group cursor-default">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-teal-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-teal-500"></span>
+                </span>
+                <span className="text-xs font-bold tracking-[0.2em] text-slate-500 uppercase">
+                  Curation Portfolio
+                </span>
               </div>
-            <h2 className="text-4xl md:text-5xl font-bold text-black mb-6 animate-fade-in-up animate-delay-1">
-              Choose Your <span className="text-teal-500">Perfect Stay</span>
-            </h2>
-            <p className="text-xl text-[#0A435C] max-w-3xl mx-auto animate-fade-in-up animate-delay-2">
-              From overwater bungalows to beachfront villas, find your ideal
-              accommodation
-            </p>
+
+              {/* 3. TYPOGRAPHY WITH PURPOSEFUL SPACING */}
+              <h2 className="text-5xl md:text-7xl font-bold text-slate-900 mb-8 tracking-tight">
+                Choose Your <br className="hidden md:block" />
+                <span className="relative inline-block">
+                  <span className="relative z-10 text-transparent bg-clip-text bg-gradient-to-r from-[#005E84] to-teal-500">
+                    Perfect Stay
+                  </span>
+                  {/* Subtle decorative underline */}
+                  <span className="absolute bottom-2 left-0 w-full h-3 bg-teal-100/50 -z-10 rotate-1"></span>
+                </span>
+              </h2>
+
+              {/* 4. THE DESCRIPTIVE BLOCK */}
+              <div className="flex flex-col items-center">
+                <div className="h-12 w-[1px] bg-gradient-to-b from-teal-500 to-transparent mb-6"></div>
+                <p className="text-xl md:text-xl text-slate-700 max-w-2xl mx-auto leading-relaxed font-light">
+                  Discover a handpicked collection of the Maldives’ most <span className="text-slate-900 font-semibold">prestigious dwellings</span>. 
+                  From architectural marvels over the ocean to secluded jungle sanctuaries.
+                </p>
+              </div>
+            </div>
           </div>
 
           <HoverEffect className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -774,20 +833,53 @@ const servicesData = [
 
       {/* Services Navigation Section */}
       <section className="py-20 bg-white relative overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-          <div className="text-center mb-16">
-              <div className="inline-flex items-center px-4 py-1 bg-white text-[#005E84] rounded-full text-sm font-semibold tracking-widest uppercase mb-8 border-2 border-[#0A435C] relative overflow-hidden group cursor-pointer">
-                <span className="w-2 h-2 bg-[#0A435C] rounded-full mr-2 "></span>
-                  Our Services
-                <span className="absolute top-0 left-0 w-full h-full border-1 border-[#0A435C] rounded-full "></span>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 relative">
+            <div className="relative mb-24">
+              {/* 1. SECTION LABEL - ULTRA REFINED */}
+              <div className="flex items-center space-x-4 mb-10 group">
+                <div className="h-[1px] w-12 bg-[#005E84] transition-all duration-500 group-hover:w-20"></div>
+                <span className="text-lg font-black tracking-[0.4em] text-teal-500 uppercase">
+                  Our Expertise
+                </span>
               </div>
-            <h2 className="text-4xl md:text-5xl font-bold text-black mb-6 animate-fade-in-up animate-delay-1">
-              Discover Our <span className="text-teal-500">Expertise</span>
-            </h2>
-            <p className="text-xl text-[#0A435C] max-w-3xl mx-auto animate-fade-in-up animate-delay-2">
-              Comprehensive solutions tailored to your Maldives journey
-            </p>
-          </div>
+
+              {/* 2. SPLIT COMPOSITION */}
+              <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 lg:gap-20">
+                
+                {/* Left Side: Bold Typography */}
+                <div className="max-w-2xl">
+                  <h2 className="text-6xl md:text-8xl font-bold text-slate-900 tracking-tighter leading-[0.9]">
+                    Bespoke <br />
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#005E84] to-teal-400">
+                      Solutions.
+                    </span>
+                  </h2>
+                </div>
+
+                {/* Right Side: Refined Description & Vertical Accent */}
+                <div className="lg:max-w-md relative pl-10 border-l border-slate-100">
+                  {/* Decorative floating dot */}
+                  <div className="absolute top-0 -left-[5px] w-2 h-2 bg-teal-500 rounded-full shadow-[0_0_10px_rgba(20,184,166,0.6)]"></div>
+                  
+                  <p className="text-lg text-slate-600 leading-relaxed font-medium italic">
+                    "Beyond booking, we curate. Every service is a thread in the tapestry of your 
+                    perfect Maldivian escape, woven with <span className="text-slate-900 font-bold not-italic">precision and local soul.</span>"
+                  </p>
+                  
+                  <div className="mt-6 flex items-center space-x-6">
+                    <div className="flex -space-x-3">
+                        {[1,2,3].map((i) => (
+                            <div key={i} className="w-8 h-8 rounded-full border-2 border-white bg-slate-300"></div>
+                        ))}
+                    </div>
+                    <span className="text-xs font-bold text-slate-500 uppercase tracking-widest">Trusted by 500+</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* 3. BACKGROUND ACCENT */}
+              <div className="absolute -top-10 -right-20 w-64 h-64 bg-teal-500 rounded-full blur-[100px] -z-10 opacity-100"></div>
+            </div>
 
           <div className="mt-6 relative overflow-hidden">
             {/* Desktop / Tablet marquee: hidden on small screens */}
@@ -988,89 +1080,66 @@ const servicesData = [
       </section>
 
       {/* Call to Action Section */}
-      <section 
-        className="py-24  relative overflow-hidden animate-gradient-flow"
-        style={{
-          backgroundImage: "url('/travel-services/travel2.jpg')",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-      >
-        <div className="absolute inset-0 bg-black/10"></div>
-        <div className="absolute inset-0 bg-gradient-to-r from-[#005E84]/30 to-[#0A435C]/30"></div>
+      <section className="relative py-32 lg:py-28 overflow-hidden group">
+        {/* 1. CINEMATIC BACKGROUND */}
+        <div className="absolute inset-0 z-0">
+          <img 
+            src="/travel-services/travel2.jpg" 
+            className="w-full h-full object-cover scale-110 transition-transform duration-[10s] group-hover:scale-100" 
+            alt="Paradise"
+          />
+          {/* High-end gradient overlay: Darker at bottom for text legibility */}
+          <div className="absolute inset-0 bg-gradient-to-b from-slate-900/40 via-slate-900/20 to-slate-900/80"></div>
+          <div className="absolute inset-0 bg-[#005E84]/20 mix-blend-multiply"></div>
+        </div>
 
-        {/* Animated particles */}
-        <div
-          className="absolute top-20 left-20 w-32 h-32 bg-white/15 rounded-full animate-float"
-          style={{ animationDelay: "0s" }}
-        ></div>
-        <div
-          className="absolute top-40 right-40 w-20 h-20 bg-white/15 rounded-full animate-float"
-          style={{ animationDelay: "0.5s" }}
-        ></div>
-        <div
-          className="absolute bottom-20 left-1/3 w-24 h-24 bg-white/15 rounded-full animate-float"
-          style={{ animationDelay: "1s" }}
-        ></div>
-        <div
-          className="absolute top-1/3 right-1/4 w-16 h-16 bg-white/15 rounded-full animate-float"
-          style={{ animationDelay: "1.5s" }}
-        ></div>
-
-        {/* Shimmering overlay */}
-        <div className="absolute inset-0 animate-shimmer opacity-40"></div>
-
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+        <div className="max-w-7xl mx-auto px-6 relative z-10 text-center">
           <div className="max-w-4xl mx-auto">
-            <div className="inline-flex items-center px-4 py-1 bg-white text-[#005E84] rounded-full text-sm font-semibold tracking-widest uppercase mb-8 border-2 border-[#0A435C] relative overflow-hidden group cursor-pointer">
-              <span className="w-2 h-2 bg-[#0A435C] rounded-full mr-2 "></span>
-              Get Started
-              <span className="absolute top-0 left-0 w-full h-full border-1 border-[#0A435C] rounded-full "></span>
+            
+            {/* 2. REFINED FLOATING BADGE */}
+            <div className="inline-flex items-center px-4 py-1.5 backdrop-blur-md bg-white/10 border border-white/20 text-white rounded-full text-xs font-bold tracking-[0.3em] uppercase mb-10 transition-all hover:bg-white/20 cursor-default">
+              <span className="w-1.5 h-1.5 bg-yellow-400 rounded-full mr-3 animate-pulse"></span>
+              Final Boarding Call
             </div>
-              <h2 className="text-4xl md:text-6xl font-black text-white mb-8 leading-tight animate-fade-in-up animate-delay-1">
-                <span className="relative inline-block">
-                  Ready to Experience
-                  <span className="absolute left-0 -bottom-1 w-full h-1 bg-yellow-300" style={{ clipPath: "polygon(0 50%, 10% 0%, 20% 50%, 30% 0%, 40% 50%, 50% 0%, 60% 50%, 70% 0%, 80% 50%, 90% 0%, 100% 50%)" }}></span>
-                </span>{" "}
-                <span className="text-yellow-300">Paradise?</span>
-              </h2>
 
-            <p className="text-xl md:text-2xl text-white/90 mb-12 max-w-3xl mx-auto font-light animate-fade-in-up animate-delay-2">
-              Start planning your dream <span className="text-yellow-300 font-semibold tracking-wider">Sri Lanka</span>  vacation today
+            {/* 3. MASSIVE IMPACT TYPOGRAPHY */}
+            <h2 className="text-6xl md:text-8xl font-black text-white mb-10 tracking-tighter leading-none">
+              Ready to <span className="italic font-light">Experience</span><br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 via-yellow-400 to-yellow-200">
+                Paradise?
+              </span>
+            </h2>
+
+            <p className="text-xl md:text-2xl text-slate-100/80 mb-14 max-w-2xl mx-auto font-light leading-relaxed">
+              Join the <span className="text-white font-medium border-b border-yellow-400/50">exclusive circle</span> of travelers who have discovered the true soul of Sri Lanka.
             </p>
-            <div className="flex flex-col sm:flex-row gap-6 justify-center items-center animate-fade-in-up animate-delay-3">
+
+            {/* 4. LUXURY BUTTONS (Glassmorphism) */}
+            <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
               <Link
                 to="/travel-services"
-                className="group bg-teal-300 text-white font-bold py-2 px-10 rounded-lg shadow-2xl hover:shadow-3xl transition-all transform hover:scale-105 hover:bg-transparent/20 hover:text-white hover:border-white border-2 shine-effect "
-                onClick={scrollToTop}
+                className="relative px-12 py-5 bg-white text-slate-900 font-black rounded-full overflow-hidden transition-all duration-300 hover:scale-105 active:scale-95 shadow-[0_20px_50px_rgba(255,255,255,0.2)] group/btn"
               >
-                <span className="flex items-center">
-                  Start Planning
-                  <svg
-                    className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M13 7l5 5m0 0l-5 5m5-5H6"
-                    />
+                <span className="relative z-10 flex items-center">
+                  START PLANNING
+                  <svg className="w-5 h-5 ml-2 transition-transform duration-300 group-hover/btn:translate-x-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                   </svg>
                 </span>
               </Link>
+
               <Link
                 to="/contact"
-                className="group border-2 border-white text-white font-bold py-2 px-10 rounded-lg hover:bg-[#E7E9E5] hover:text-black  transition-all transform hover:scale-105 shine-effect"
-                onClick={scrollToTop}
+                className="px-12 py-5 backdrop-blur-md bg-white/5 border border-white/30 text-white font-bold rounded-full transition-all duration-300 hover:bg-white/10 hover:border-white"
               >
-                Contact Us
+                CONTACT CONCIERGE
               </Link>
             </div>
           </div>
         </div>
+
+        {/* 5. VIGNETTE EFFECT (Adds "Huge Site" Polishing) */}
+        <div className="absolute inset-0 pointer-events-none shadow-[inset_0_0_150px_rgba(0,0,0,0.5)]"></div>
       </section>
     </div>
   );

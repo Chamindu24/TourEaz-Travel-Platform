@@ -1,8 +1,11 @@
 // src/components/SearchBanner.jsx
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform } from "framer-motion";
 
 const SearchBanner = () => {
+  const { scrollY } = useScroll();
+  // This creates a subtle parallax effect
+  const yRange = useTransform(scrollY, [0, 500], [0, 200]);
   return (
     <header
       className="bg-cover bg-center mt-2 h-32 sm:h-40 lg:h-80 shadow-lg  overflow-hidden"

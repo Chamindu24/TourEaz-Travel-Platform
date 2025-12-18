@@ -437,164 +437,292 @@ const AboutUs = () => (
       </div>
     </section>
 
-    {/* Mission Section */}
-    <section className="py-20 bg-white relative overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          <div className="space-y-8 animate-fade-in-left">
-            <div className="inline-flex items-center px-4 py-1.5 bg-white text-[#005E84] rounded-full text-sm font-semibold tracking-widest uppercase mb-1 border-2 border-[#0A435C] relative overflow-hidden group cursor-pointer">
-              <span className="w-2 h-2 bg-[#0A435C] rounded-full mr-2 "></span>
-              Our Mission
-              <span className="absolute top-0 left-0 w-full h-full border-1 border-[#0A435C] rounded-full "></span>
+    <section className="py-24 bg-white relative overflow-hidden">
+      {/* Subtle Background Pattern */}
+      <div className="absolute inset-0 opacity-[0.4] pointer-events-none">
+        <svg className="h-full w-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+          <path d="M0 100 C 20 0 50 0 100 100 Z" fill="currentColor" className="text-teal-900"></path>
+        </svg>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-6 lg:px-8 relative">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+          
+          {/* Left Column: Text Content */}
+          <div className="space-y-10">
+            <div>
+              <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#0A435C]/5 text-[#0A435C] text-xs font-bold tracking-[0.2em] uppercase mb-6 border border-[#0A435C]/10">
+                <span className="w-1.5 h-1.5 bg-[#0A435C] rounded-full animate-pulse" />
+                Our Mission
+              </span>
+              <h2 className="text-4xl lg:text-6xl font-serif font-medium text-slate-900 leading-[1.1]">
+                To be the premier <br />
+                <span className="text-[#0A435C] italic">international bridge</span>
+              </h2>
             </div>
-            <h2 className="text-4xl md:text-5xl font-bold text-[#075375]">
-              To be the premier <span className="text-[#0A435C]">bridge</span>
-            </h2>
-            <p className="text-xl text-[#075375] leading-relaxed">
-              Between international opportunities and the Maldivian paradise,
-              delivering exceptional service in travel, real estate, investment,
-              and brand partnerships while maintaining the highest standards of
-              integrity and local expertise.
+
+            <p className="text-lg text-slate-600 leading-relaxed max-w-xl">
+              Connecting global opportunities with Sri Lankan excellence. We deliver 
+              unrivaled expertise in real estate and investment through a lens of 
+              <span className="text-slate-900 font-medium"> absolute integrity.</span>
             </p>
-            <div className="grid grid-cols-2 gap-6">
-              <div className="text-center p-4 bg-gradient-to-br from-teal-500/10 to-teal-700/50 rounded-2xl shadow-xl hover:shadow-2xl transition-all transform hover:-translate-y-1 duration-500 shine-effect">
-                <div className="text-3xl font-bold text-teal-200 mb-2">
-                  500+
-                </div>
-                <div className="text-teal-300">Happy Clients</div>
+
+            {/* Stats Grid: Minimalist Style */}
+            <div className="grid grid-cols-2 gap-12 pt-4 border-t border-slate-200">
+              <div>
+                <div className="text-4xl font-light text-[#0A435C] mb-1">500<span className="text-xl text-slate-400">+</span></div>
+                <div className="text-sm uppercase tracking-widest text-slate-500 font-semibold">Global Clients</div>
               </div>
-              <div className="text-center p-4 bg-gradient-to-br from-teal-500/10 to-teal-700/50 rounded-2xl shadow-xl hover:shadow-2xl transition-all transform hover:-translate-y-1 duration-500 shine-effect">
-                <div className="text-3xl font-bold text-teal-300 mb-2">8+</div>
-                <div className="text-teal-400">Years Experience</div>
+              <div>
+                <div className="text-4xl font-light text-[#0A435C] mb-1">08<span className="text-xl text-slate-400">+</span></div>
+                <div className="text-sm uppercase tracking-widest text-slate-500 font-semibold">Years of Trust</div>
               </div>
             </div>
           </div>
-          <div className="relative animate-fade-in-right animate-delay-2">
-            <div className="relative z-10 rounded-3xl overflow-hidden shadow-2xl transform hover:scale-105 transition-all duration-700 shine-effect">
-              <div className="absolute inset-0 bg-gradient-to-r from-[#005E84]/10 via-transparent to-[#005E84]/10 animate-shimmer"></div>
+
+          {/* Right Column: Visuals */}
+          <div className="relative group">
+            {/* Main Image Container */}
+            <div className="relative z-10 rounded-[2rem] overflow-hidden shadow-2xl">
               <img
-                src="/travel-services/mike-swigunski-k9Zeq6EH_bk-unsplash.jpg"
-                alt="Luxury Maldives Resort"
-                className="w-full h-96 object-cover"
+                src="/travel-services/activity2.jpg"
+                alt="Luxury Maldives"
+                className="w-full h-[500px] object-cover transition-transform duration-1000 group-hover:scale-110"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+              {/* Subtle Overlay Gradient */}
+              <div className="absolute inset-0 bg-gradient-to-tr from-[#0A435C]/20 to-transparent mix-blend-multiply" />
             </div>
-            <div className="absolute -bottom-6 -right-6 w-24 h-24 bg-gradient-to-br from-[#005E84] to-[#0A435C] rounded-2xl shadow-lg animate-pulse-slow animate-glow"></div>
-            <div className="absolute -top-6 -left-6 w-16 h-16 bg-gradient-to-br from-[#0A435C] to-[#005E84] rounded-full opacity-70 animate-bounce-slow"></div>
+
+            {/* The "Floating" Element - High End Detail */}
+            <div className="absolute -bottom-10 -left-10 bg-white p-8 rounded-2xl shadow-xl z-20 hidden md:block border border-slate-100">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-full bg-teal-500 flex items-center justify-center text-white shadow-lg shadow-teal-200">
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>
+                <div>
+                  <p className="text-slate-900 font-bold leading-none">Verified Expertise</p>
+                  <p className="text-slate-500 text-sm mt-1">Sri lankan Licensed</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Abstract Background Shapes */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-[#0A435C]/5 rounded-full blur-3xl -z-10" />
           </div>
+
         </div>
       </div>
     </section>
 
     {/* Values Section */}
-    <section className="py-12 bg-white relative overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-        <div className="text-center mb-10">
-        <div className="inline-flex items-center px-4 py-1.5 bg-white text-[#005E84] rounded-full text-sm font-semibold tracking-widest uppercase mb-5 border-2 border-[#0A435C] relative overflow-hidden group cursor-pointer">
-          <span className="w-2 h-2 bg-[#0A435C] rounded-full mr-2 "></span>
-          Our Values
-          <span className="absolute top-0 left-0 w-full h-full border-1 border-[#0A435C] rounded-full "></span>
-        </div>
-
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4 leading-tight">
-            Our Core <span className="text-teal-500">Values</span>
+    <section className="py-24 bg-white relative overflow-hidden">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8 relative">
+        
+        {/* Refined Header */}
+        <div className="text-center mb-16">
+          <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#0A435C]/5 text-[#0A435C] text-xs font-bold tracking-[0.2em] uppercase mb-6 border border-[#0A435C]/10">
+            <span className="w-1.5 h-1.5 bg-[#0A435C] rounded-full animate-pulse" />
+            Our Values
+          </span>
+          <h2 className="text-4xl md:text-5xl font-serif font-medium text-slate-900 mb-6 leading-tight">
+            Principles that <span className="text-[#0A435C] italic">guide us</span>
           </h2>
-          <p className="text-lg md:text-xl text-teal-200 max-w-3xl mx-auto animate-fade-in-up animate-delay-2">
-            The principles that guide everything we do
+          <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+            The foundation of our commitment to delivering excellence across the Maldivian archipelago.
           </p>
         </div>
 
-        <HoverEffect items={values} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        {/* The Modern Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {values.map((value, index) => (
             <div
-          key={index}
-          className="group relative bg-white rounded-xl shadow-lg transition-all duration-500 border border-slate-100 hover:shadow-2xl hover:shadow-orange-100/50 flex flex-col h-full cursor-pointer overflow-hidden"
-        >
-          
-          <div className="relative bg-gradient-to-r from-teal-600 to-teal-800 p-6 py-4 flex justify-between items-start">
-            {/* Sequential Number (Large, Muted) */}
-            <div className="text-4xl md:text-5xl font-bold text-white/90 transition-colors duration-300 group-hover:text-white/95 tracking-tighter">
-              {String(index + 1).padStart(2, '0')}
-            </div>
-            
-            {/* Icon (Foreground) */}
-            <div className="rounded-full p-3 w-12 h-12 flex items-center justify-center bg-teal-600 text-white   transition-transform duration-300 transform group-hover:scale-110">
-              {value.icon} 
-            </div>
-          </div>
-          
-          {/* Bottom Block: Text Content */}
-          <div className="p-6 md:p-8 flex flex-col h-full flex-grow">
-            {/* Title */}
-            <h3 className="text-xl font-bold text-gray-600 mb-3 group-hover:text-teal-400 transition-colors">
-              {value.title}
-            </h3>
-            
-            {/* Description */}
-            <p className="text-gray-600 text-base leading-relaxed flex-grow">
-              {value.description}
-            </p>
+              key={index}
+              className="group relative h-full"
+            >
+              {/* Subtle Outer Glow (Visible on Hover) */}
+              <div className="absolute -inset-2 bg-gradient-to-b from-teal-500/50 to-transparent rounded-[2.5rem] opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl" />
+              
+              <div className="relative h-full bg-white rounded-[2rem] border border-slate-400 p-8 shadow-sm transition-all duration-500 hover:-translate-y-2 hover:shadow-xl hover:shadow-slate-200/50">
+                
+                {/* Top Row: Icon & Number */}
+                <div className="flex items-start justify-between mb-10">
+                  <div className="w-14 h-14 rounded-2xl bg-teal-600 flex items-center justify-center text-[#0A435C] transition-all duration-500 group-hover:bg-500 group-hover:text-white group-hover:scale-110 group-hover:rotate-3 shadow-sm">
+                    {value.icon}
+                  </div>
+                  <span className="text-4xl font-black text-slate-400 transition-colors duration-500 group-hover:text-teal-600">
+                    {String(index + 1).padStart(2, '0')}
+                  </span>
+                </div>
 
+                {/* Content */}
+                <div className="space-y-4">
+                  <h3 className="text-xl font-bold text-slate-900 tracking-tight">
+                    {value.title}
+                  </h3>
+                  <p className="text-slate-500 text-sm leading-relaxed">
+                    {value.description}
+                  </p>
+                </div>
 
-          </div>
-        </div>
+                {/* Bottom Interactive Element */}
+                <div className="mt-8 pt-6 border-t border-slate-50 flex items-center justify-between">
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400 group-hover:text-[#0A435C] transition-colors">
+                    Core Pillar
+                  </span>
+                  <div className="w-2 h-2 rounded-full bg-slate-100 group-hover:bg-teal-500 transition-colors" />
+                </div>
+              </div>
+            </div>
           ))}
-        </HoverEffect>
+        </div>
       </div>
     </section>
 
 
 
     {/* Journey Timeline Section - Enhanced Design */}
-    <section className="py-16 px-6 bg-[#E7E9E5]">
-      <div className="max-w-4xl mx-auto">
-        <h2 className="text-3xl md:text-4xl font-bold text-[#075375] mb-12 text-center">
-          Our Journey
-        </h2>
+      <section className="py-16 bg-white relative">
+        <div className="max-w-5xl mx-auto px-6">
+          {/* Section Header */}
+          <div className="relative text-center mb-12 group">
+            {/* 1. THE BACKGROUND WATERMARK (The "History" Layer) */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 select-none pointer-events-none">
+              <span className="text-[10rem] md:text-[15rem] font-black text-teal-900 tracking-[0.2em] uppercase opacity-60">
+                {new Date().getFullYear()}
+              </span>
+            </div>
 
-        <div className="relative">
-          <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-gradient-to-b from-[#005E84] to-[#0A435C] animate-pulse-slow"></div>
-
-          {journey.map((item, index) => (
-            <div
-              key={index}
-              className="relative flex items-start mb-12 group animate-fade-in-left"
-              style={{ animationDelay: `${index * 0.2}s` }}
-            >
-              <div className="flex-shrink-0 w-16 h-16 bg-gradient-to-br from-[#005E84] to-[#0A435C] rounded-full flex items-center justify-center text-[#E7E9E5] font-bold text-sm shadow-md group-hover:scale-110 transition-transform duration-300 relative z-10 animate-glow">
-                {item.year}
+            <div className="relative z-10">
+              {/* 2. REFINED SUBTITLE BADGE */}
+              <div className="flex items-center justify-center space-x-4 mb-6">
+                <span className="h-[1px] w-8 bg-teal-500"></span>
+                <span className="text-md font-black tracking-[0.5em] text-[#0A435C] uppercase">
+                  Established 2015
+                </span>
+                <span className="h-[1px] w-8 bg-teal-500"></span>
               </div>
-              <div className="ml-8 flex-1">
-                <div className="bg-gradient-to-br from-[#B7C5C7] to-[#E7E9E5] rounded-lg p-6 hover:shadow-xl transform group-hover:-translate-y-1 transition-all duration-300 shine-effect">
-                  <h3 className="text-xl font-bold text-[#075375] mb-2">
-                    {item.title}
-                  </h3>
-                  <p className="text-[#0A435C] leading-relaxed">{item.event}</p>
+
+              {/* 3. EDITORIAL TYPOGRAPHY */}
+              <h2 className="text-6xl md:text-8xl font-serif text-slate-900 tracking-tighter leading-none mb-10">
+                Our <span className="italic font-light text-[#0A435C] relative">
+                  Evolution
+                  {/* Subtle decorative "ink bleed" underline */}
+                  <svg className="absolute -bottom-4 left-0 w-full h-2 text-teal-200" viewBox="0 0 100 10" preserveAspectRatio="none">
+                    <path d="M0 5 Q 50 0, 100 5" stroke="currentColor" strokeWidth="2" fill="none" />
+                  </svg>
+                </span>
+              </h2>
+
+              {/* 4. THE "CHRONICLE" PROGRESS BAR (Professional Standard) */}
+              <div className="relative max-w-xs mx-auto mt-16">
+                <p className="text-md font-bold text-slate-500 uppercase tracking-widest mb-6">
+                  A Decade of Excellence
+                </p>
+                
+                {/* The Track */}
+                <div className="relative h-[2px] w-full bg-slate-100 rounded-full overflow-hidden">
+                  {/* The Animated Flow */}
+                  <div className="absolute top-0 left-0 h-full w-full bg-gradient-to-r from-transparent via-[#0A435C] to-transparent animate-infinite-scroll" />
+                </div>
+
+                {/* Pulsing Anchor Point */}
+                <div className="absolute -bottom-[5px] left-1/2 -translate-x-1/2 w-3 h-3 bg-white border-2 border-[#0A435C] rounded-full shadow-lg">
+                  <span className="absolute inset-0 rounded-full bg-[#0A435C] animate-ping opacity-20"></span>
                 </div>
               </div>
             </div>
-          ))}
+          </div>
+          <div className="relative">
+            {/* Central Line - Refined to a soft dash or solid slate */}
+            <div className="absolute left-0 md:left-1/2 top-0 bottom-0 w-px bg-teal-500 -translate-x-1/2 hidden md:block" />
+
+            {journey.map((item, index) => (
+              <div
+                key={index}
+                className={`relative flex flex-col md:flex-row items-center mb-24 last:mb-0 ${
+                  index % 2 === 0 ? "md:flex-row-reverse" : ""
+                }`}
+              >
+                {/* 1. Year Indicator (The Node) */}
+                <div className="absolute left-0 md:left-1/2 -translate-x-1/2 z-10 flex flex-col items-center">
+                  <div className="w-6 h-6 rounded-full border-4 border-white bg-teal-500 shadow-sm group-hover:scale-125 transition-transform" />
+                  <span className="mt-2 text-xl font-bold text-[#0A435C] bg-teal-50 px-2 py-1 rounded">
+                    {item.year}
+                  </span>
+                </div>
+
+                {/* 2. Content Card */}
+                <div className="w-full md:w-[45%] ml-8 md:ml-0 group">
+                  <div className="relative p-8 rounded-3xl border border-slate-300 bg-white transition-all duration-500 hover:border-teal-500/20 hover:shadow-[0_20px_50px_rgba(13,148,136,0.05)]">
+                    
+                    {/* Decorative Index */}
+                    <span className="absolute -top-4 right-8 text-5xl font-black text-slate-400 group-hover:text-teal-600 transition-colors">
+                      {String(index + 1).padStart(2, '0')}
+                    </span>
+
+                    <h3 className="text-xl font-bold text-slate-900 mb-3 relative z-10">
+                      {item.title}
+                    </h3>
+                    
+                    <p className="text-slate-600 leading-relaxed text-sm md:text-base relative z-10">
+                      {item.event}
+                    </p>
+
+                    {/* Sophisticated "End-of-Card" Accent */}
+                    <div className="mt-6 flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.3em] text-teal-600/80">
+                      <div className="h-px w-8 bg-teal-600/20" />
+                      Milestone Reached
+                    </div>
+                  </div>
+                </div>
+                
+                {/* Spacer for the other side of the timeline */}
+                <div className="hidden md:block md:w-[45%]" />
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
 
 
 
     {/* Statistics Section - Modern Design */}
-    <section className="py-16 bg-white relative overflow-hidden">
+    <section className="py-20 bg-white relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-        <div className="text-center mb-16">
-        <div className="inline-flex items-center px-4 py-1.5 bg-white text-[#005E84] rounded-full text-sm font-semibold tracking-widest uppercase mb-5 border-2 border-[#0A435C] relative overflow-hidden group cursor-pointer">
-            <span className="w-2 h-2 bg-[#0A435C] rounded-full mr-2 "></span>
+        <div className="text-center mb-20">
+          {/* The Premium Badge */}
+          <div className="inline-flex items-center gap-3 px-4 py-2 bg-slate-50 rounded-full border border-slate-200 mb-8 hover:bg-white hover:border-[#0A435C]/30 transition-all duration-300 group cursor-default">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#0A435C] opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-[#0A435C]"></span>
+            </span>
+            <span className="text-[10px] md:text-xs font-bold tracking-[0.25em] uppercase text-slate-500 group-hover:text-[#0A435C] transition-colors">
               Our Impact
-            <span className="absolute top-0 left-0 w-full h-full border-1 border-[#0A435C] rounded-full "></span>
-        </div>
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4 leading-tight">
-           Numbers That <span className="text-teal-500">Matter</span>
+            </span>
+          </div>
+
+          {/* Main Heading */}
+          <h2 className="text-4xl md:text-6xl font-serif font-medium text-slate-900 mb-6 tracking-tight">
+            Numbers That <span className="text-[#0A435C] italic">Matter</span>
           </h2>
-          <p className="text-lg md:text-xl text-teal-200 max-w-3xl mx-auto animate-fade-in-up animate-delay-2">
-            TOur achievements and impact in the Maldives market
-          </p>
+
+          {/* Refined Subtext */}
+          <div className="flex justify-center">
+            <p className="text-base md:text-lg text-slate-600 max-w-2xl leading-relaxed">
+              A reflection of our commitment to excellence and our 
+              <span className="text-slate-900 font-semibold"> proven track record</span> in the 
+              Maldivian luxury market.
+            </p>
+          </div>
+
+          {/* Subtle Decorative Underline */}
+          <div className="mt-8 flex justify-center gap-1">
+            <div className="h-1 w-12 rounded-full bg-[#0A435C]"></div>
+            <div className="h-1 w-2 rounded-full bg-teal-400"></div>
+            <div className="h-1 w-1 rounded-full bg-teal-200"></div>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -682,20 +810,30 @@ const AboutUs = () => (
           ].map((stat, index) => (
             <div
               key={index}
-              className="group rounded-lg border-2 border-teal-200 bg-gradient-to-r from-white to-teal-900/30 p-8 
-                        shadow-[4px_4px_0px_#0A435C]  
-                        hover:shadow-[6px_6px_0px_#005E84] hover:-translate-y-3 
-                        transition-all duration-500"
+              className="group relative rounded-2xl border border-slate-300 bg-white p-8 
+                        shadow-sm hover:shadow-xl hover:-translate-y-2 
+                        transition-all duration-300 ease-out overflow-hidden"
             >
-              <div className="w-16 h-16 mb-4 bg-teal-200 rounded-xl flex items-center justify-center 
-                              text-white group-hover:bg-teal-300 transition">
-                {stat.icon}
-              </div>
+              {/* Subtle Background Accent */}
+              <div className="absolute top-0 right-0 -mr-16 -mt-16 h-32 w-32 rounded-full bg-teal-800 transition-transform group-hover:scale-150 duration-700" />
 
-              <h3 className="text-4xl font-black text-teal-200 group-hover:text-teal-300 transition">
-                {stat.number}
-              </h3>
-              <p className="text-teal-300 text-lg font-semibold">{stat.label}</p>
+              <div className="relative z-10">
+                {/* Icon Container */}
+                <div className="w-14 h-14 mb-6 bg-teal-600 rounded-xl flex items-center justify-center 
+                                text-teal-600 group-hover:bg-teal-500 group-hover:text-white transition-colors duration-300">
+                  {stat.icon}
+                </div>
+
+                {/* Text Content */}
+                <div className="space-y-1">
+                  <h3 className="text-4xl font-bold text-slate-900 tracking-tight">
+                    {stat.number}
+                  </h3>
+                  <p className="text-slate-500 font-medium text-sm uppercase tracking-wider">
+                    {stat.label}
+                  </p>
+                </div>
+              </div>
             </div>
 
           ))}
@@ -704,70 +842,92 @@ const AboutUs = () => (
     </section>
 
     {/* Call to Action Section */}
-  <section 
-      className="py-24  relative overflow-hidden"
-      style={{
-          backgroundImage: "url('/travel-services/brand.jpg')",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-    >
-              <div className="absolute inset-0 bg-black/20"></div>
-        <div className="absolute inset-0 bg-gradient-to-r from-[#005E84]/40 to-[#0A435C]/35"></div>
+    <section className="relative py-32 lg:py-48 bg-white overflow-hidden">
+      {/* 1. BACKGROUND GHOST TEXT (The Signature of Premium Design) */}
+      <div className="absolute top-10 left-0 w-full flex justify-center select-none pointer-events-none z-0">
+        <h1 className="text-[18rem] font-black text-teal-900 leading-none tracking-tighter">
+          TOUREAZ
+        </h1>
+      </div>
 
-        {/* Animated particles */}
-        <div
-          className="absolute top-20 left-20 w-32 h-32 bg-white/15 rounded-full animate-float"
-          style={{ animationDelay: "0s" }}
-        ></div>
-        <div
-          className="absolute top-40 right-40 w-20 h-20 bg-white/15 rounded-full animate-float"
-          style={{ animationDelay: "0.5s" }}
-        ></div>
-        <div
-          className="absolute bottom-20 left-1/3 w-24 h-24 bg-white/15 rounded-full animate-float"
-          style={{ animationDelay: "1s" }}
-        ></div>
-        <div
-          className="absolute top-1/3 right-1/4 w-16 h-16 bg-white/15 rounded-full animate-float"
-          style={{ animationDelay: "1.5s" }}
-        ></div>
+      <div className="max-w-7xl mx-auto px-6 relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          
+          {/* 2. IMAGE COMPOSITION (LEFT) - The "Layered" Look */}
+          <div className="lg:col-span-5 relative group">
+            {/* Main Image */}
+            {/* 1. The Container: Handles the 3D lift */}
+            <div className="relative z-20 aspect-[3/4] rounded-2xl overflow-hidden shadow-2xl 
+                            perspective-1000 group cursor-pointer transition-all duration-700 
+                            hover:shadow-[0_40px_80px_-15px_rgba(0,0,0,0.5)] hover:-translate-y-4">
+              
+              {/* 2. The Image: Handles the "Depth" zoom */}
+              <img 
+                src="/travel-services/brand.jpg" 
+                className="w-full h-full object-cover grayscale-[30%] brightness-90
+                          transition-all duration-[1.5s] ease-out
+                          group-hover:scale-125 group-hover:grayscale-0 group-hover:brightness-110" 
+                alt="Luxury"
+              />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative">
-        <div className="inline-flex items-center px-4 py-1.5 bg-white text-[#005E84] rounded-full text-sm font-semibold tracking-widest uppercase mb-5 border-2 border-[#0A435C] relative overflow-hidden group cursor-pointer">
-            <span className="w-2 h-2 bg-[#0A435C] rounded-full mr-2 "></span>
-              Get Started
-            <span className="absolute top-0 left-0 w-full h-full border-1 border-[#0A435C] rounded-full "></span>
-        </div>
-        <h2 className="text-4xl md:text-5xl font-bold text-white mb-6 animate-fade-in-up animate-delay-1">
-          Ready to Start Your <span className="text-yellow-300">Journey?</span>
-        </h2>
-        <p className="text-xl text-gray-200 mb-12 max-w-3xl mx-auto animate-fade-in-up animate-delay-2">
-          Let us help you discover the endless possibilities that await in the
-          Maldives. Contact us today to begin your adventure.
-        </p>
-        <div className="flex flex-col sm:flex-row gap-6 justify-center items-center ">
-          <MagicButton text="Contact Us Today" className="px-4 md:px-10 py-2 md:py-3 bg-teal-400 text-white hover:bg-white hover:ring-1 hover:ring-teal-400 hover:text-black shadow-md transition-all transform hover:scale-105 duration-300 ">
-            <span className="flex items-center">
-              Contact Us Today
-              <svg
-                className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M13 7l5 5m0 0l-5 5m5-5H6"
-                />
-              </svg>
-            </span>
-          </MagicButton>
-          <MagicButton text="View Our Services" className="px-4 md:px-10 py-2 md:py-3 hover:bg-teal-400 text-black bg-white ring-1 ring-teal-400 hover:text-white shadow-md transition-all transform hover:scale-105 duration-300 shine-effect">
-            View Our Services
-          </MagicButton>
+              {/* 3. The Depth Overlay: Adds a subtle "passing through clouds/mist" feel */}
+              <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/20 
+                              opacity-0 group-hover:opacity-100 transition-opacity duration-1000"></div>
+            </div>
+            
+            {/* Secondary Overlapping Image (The "Pro" Touch) */}
+            <div className="absolute -bottom-12 -right-12 z-30 w-1/2 aspect-square rounded-2xl overflow-hidden shadow-2xl border-8 border-white hidden md:block transform transition-transform duration-1000 group-hover:translate-x-4">
+              <img 
+                src="/travel-services/travel2.jpg" 
+                className="w-full h-full object-cover" 
+                alt="Detail"
+              />
+            </div>
+          </div>
+
+          {/* 3. CONTENT (RIGHT) */}
+          <div className="lg:col-span-6 lg:col-start-8 space-y-12">
+            <div className="space-y-6">
+              <div className="flex items-center gap-4">
+                <span className="w-12 h-[1px] bg-slate-900"></span>
+                <p className="text-sm font-bold tracking-[0.5em] text-slate-400 uppercase">Since 2010</p>
+              </div>
+              
+              <h2 className="text-6xl lg:text-8xl font-light text-slate-900 leading-[0.85] tracking-tighter">
+                Where <span className="font-serif italic text-teal-300">Legacy</span> <br /> 
+                Meets the <span className="font-black">Deep.</span>
+              </h2>
+
+              <p className="text-xl text-slate-600 font-mono leading-relaxed">
+                We curate the <span className="text-slate-900 font-semibold underline decoration-teal-300 decoration-2 underline-offset-4">unobtainable</span>. Every itinerary is a bespoke masterpiece, hand-drawn by our local concierges.
+              </p>
+            </div>
+
+            {/* 4. THE INTERACTIVE FEATURE LIST */}
+            <ul className="space-y-6">
+              {['Private Atolls', 'Deep Sea Exploration', 'Aerial Transfers'].map((item, idx) => (
+                <li key={idx} className="group cursor-pointer flex items-center justify-between border-b border-slate-200 pb-4 hover:border-slate-900 transition-colors duration-500">
+                  <span className="text-slate-400 text-xl font-bold mr-6">0{idx + 1}</span>
+                  <span className="text-xl font-bold text-slate-800 group-hover:translate-x-2 transition-transform duration-300">{item}</span>
+                  <div className="w-10 h-10 rounded-full border border-slate-200 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all group-hover:bg-slate-900 group-hover:text-white">
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+                  </div>
+                </li>
+              ))}
+            </ul>
+
+            {/* 5. THE CTA */}
+            <div className="pt-6">
+              <button className="relative group overflow-hidden bg-teal-500 hover:text-black border-2 hover:border-teal-500  text-white px-12 py-5 rounded-full font-bold transition-all">
+                <div className="absolute inset-0 w-0 bg-white transition-all duration-[400ms] group-hover:w-full"></div>
+                <span className="relative z-10 flex items-center gap-3">
+                  BEGIN YOUR JOURNEY
+                  <span className="text-lg">→</span>
+                </span>
+              </button>
+            </div>
+          </div>
+
         </div>
       </div>
     </section>
