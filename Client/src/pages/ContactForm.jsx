@@ -165,191 +165,224 @@ const Contact = () => {
           {/* Contact Form */}
             <div 
               id="contact-form" 
-              className={`lg:w-2/3 transform transition-all duration-700 ${isVisible.contactForm ? 'slide-in-left opacity-100' : 'opacity-0 -translate-x-6'}`}
+              className={`lg:w-2/3 transform transition-all duration-1000 ${
+                isVisible.contactForm ? 'translate-x-0 opacity-100' : '-translate-x-20 opacity-0'
+              }`}
             >
-              <div className="bg-gray-100 rounded-lg shadow-lg border-t-4 border-teal-700  p-4 md:p-8 border ">
-                <h2 className="text-xl md:text-2xl font-bold text-dark_teal_blue mb-4 md:mb-6 flex justify-center">Send us a Message</h2>
+              <div className="relative group">
                 
-                {submitted && (
-                  <div className="bg-primary_blue border border-hover_blue text-white px-3 md:px-4 py-2 md:py-3 rounded relative mb-4 md:mb-6 text-xs md:text-sm" role="alert">
-                    <strong className="font-bold">Thank you!</strong>
-                    <span className="block sm:inline"> Your message has been sent successfully. We'll get back to you soon.</span>
-                  </div>
-                )}
-                
-                <form onSubmit={handleSubmit}>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-4 md:mb-6">
-                    <div>
-                      <label htmlFor="name" className="block text-sm md:text-base text-dark_teal_blue mb-1 md:mb-2 font-medium">Your Name</label>
-                      <input
-                        type="text"
-                        id="name"
-                        name="name"
-                        value={formData.name}
-                        onChange={handleChange}
-                        className={`w-full px-3 md:px-4 py-1.5 md:py-2 bg-transparent border-0 border-b-2 border-teal-500 focus:border-teal-600 focus:ring-0 text-gray-900 placeholder-teal-200/70 transition-all text-sm md:text-base ${errors.name ? 'border-red-500' : 'border-gray-300'}`}
-                        placeholder="Enter your full name"
-                      />
-                      {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}
-                    </div>
-                    
-                    <div>
-                      <label htmlFor="email" className="block text-sm md:text-base text-dark_teal_blue mb-1 md:mb-2 font-medium">Email Address</label>
-                      <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        className={`w-full px-3 md:px-4 py-1.5 md:py-2 bg-transparent border-0 border-b-2 border-teal-500 focus:border-teal-600 focus:ring-0 text-gray-900 placeholder-teal-200/70 transition-all text-sm md:text-base ${errors.email ? 'border-red-500' : 'border-gray-300'}`}
-                        placeholder="Enter your email"
-                      />
-                      {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
-                    </div>
-                  </div>
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-4 md:mb-6">
-                    <div>
-                      <label htmlFor="phone" className="block text-sm md:text-base text-dark_teal_blue mb-1 md:mb-2 font-medium">Phone Number</label>
-                      <input
-                        type="text"
-                        id="phone"
-                        name="phone"
-                        value={formData.phone}
-                        onChange={handleChange}
-                        className={`w-full px-3 md:px-4 py-1.5 md:py-2 bg-transparent border-0 border-b-2 border-teal-500 focus:border-teal-600 focus:ring-0 text-gray-900 placeholder-teal-200/70 transition-all text-sm md:text-base ${errors.phone ? 'border-red-500' : 'border-gray-300'}`}
-                        placeholder="Enter your phone number"
-                      />
-                      {errors.phone && <p className="text-red-500 text-xs mt-1">{errors.phone}</p>}
-                    </div>
-                    
-                    <div>
-                      <label htmlFor="subject" className="block text-sm md:text-base text-dark_teal_blue mb-1 md:mb-2 font-medium">Subject</label>
-                      <select
-                        id="subject"
-                        name="subject"
-                        value={formData.subject}
-                        onChange={handleChange}
-                        className={`w-full px-3 md:px-4 py-1.5 md:py-2 bg-transparent border-0 border-b-2 border-teal-500 focus:border-teal-600 focus:ring-0 text-gray-900 placeholder-teal-200/70 transition-all text-sm md:text-base ${errors.subject ? 'border-red-500' : 'border-gray-300'}`}
-                      >
-                        <option value="">Select a subject</option>
-                        <option value="Account Issues">Account Issues</option>
-                        <option value="Payment Questions">Payment Questions</option>
-                        <option value="Profile Verification">Profile Verification</option>
-                        <option value="Success Story">Success Story</option>
-                        <option value="Feature Suggestion">Feature Suggestion</option>
-                        <option value="Other">Other</option>
-                      </select>
-                      {errors.subject && <p className="text-red-500 text-xs mt-1">{errors.subject}</p>}
-                    </div>
-                  </div>
-                  
-                  <div className="mb-4 md:mb-6">
-                    <label htmlFor="message" className="block text-sm md:text-base text-dark_teal_blue mb-1 md:mb-2 font-medium">Your Message</label>
-                    <textarea
-                      id="message"
-                      name="message"
-                      value={formData.message}
-                      onChange={handleChange}
-                      rows="4 md:rows-5"
-                      className={`w-full px-3 md:px-4 py-1.5 md:py-2 bg-transparent border-0 border-b-2 border-teal-500 focus:border-teal-600 focus:ring-0 text-gray-900 placeholder-teal-200/70 transition-all text-sm md:text-base ${errors.message ? 'border-red-500' : 'border-gray-300'}`}
-                      placeholder="Tell us how we can help you..."
-                    ></textarea>
-                    {errors.message && <p className="text-red-500 text-xs mt-1">{errors.message}</p>}
-                  </div>
-                  
-                  <div className="flex justify-center mt-1">
-                    <MagicButton
-                      type="submit"
-                      disabled={isSubmitting}
-                      onClick={() => {}}
-                      className={`px-4 md:px-10 py-2 md:py-2 bg-teal-400 text-white hover:bg-white hover:ring-1 hover:ring-teal-400 hover:text-black shadow-md transition-all duration-300 transform hover:scale-105 disabled:opacity-70 disabled:cursor-not-allowed font-semibold text-sm md:text-base`}
-                      text={isSubmitting ? (
-                        <span className="flex items-center justify-center gap-2">
-                          <svg
-                            className="animate-spin h-4 w-4 text-white"
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                          >
-                            <circle
-                              className="opacity-25"
-                              cx="12"
-                              cy="12"
-                              r="10"
-                              stroke="currentColor"
-                              strokeWidth="4"
-                            />
-                            <path
-                              className="opacity-75"
-                              fill="currentColor"
-                              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                            />
-                          </svg>
-                          Sending...
-                        </span>
-                      ) : "Send Message"}
-                    />
-                  </div>
+                {/* Decorative Accent */}
+                <div className="absolute -top-16 -left-16 w-40 h-40 bg-[#005E84]/5 rounded-full blur-2xl"></div>
 
-                </form>
+                {/* Main Premium Form Card */}
+                <div className="relative z-10 bg-white shadow-[0_40px_100px_-20px_rgba(0,0,0,0.12)] rounded-3xl p-10 border border-gray-50 overflow-hidden">
+                  
+                  {/* Header */}
+                  <header className="mb-12">
+                    <h2 className="text-3xl font-bold text-gray-900 tracking-tight">
+                      Send Us <br />
+                      <span className="font-serif italic font-light text-[#005E84]">
+                        A Message
+                      </span>
+                    </h2>
+                  </header>
+
+                  {/* Success Message */}
+                  {submitted && (
+                    <div className="mb-10 rounded-2xl bg-emerald-50 border border-emerald-200 p-4 text-emerald-700 text-sm">
+                      <strong className="font-semibold">Thank you!</strong>
+                      <span className="block mt-1">
+                        Your message has been sent successfully. We'll get back to you soon.
+                      </span>
+                    </div>
+                  )}
+
+                  {/* FORM */}
+                  <form onSubmit={handleSubmit} className="space-y-10">
+                    
+                    {/* Row 1 */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                      <div>
+                        <label className="block text-md font-medium uppercase tracking-[0.2em] text-gray-900 mb-2">
+                          Your Name
+                        </label>
+                        <input
+                          type="text"
+                          name="name"
+                          value={formData.name}
+                          onChange={handleChange}
+                          placeholder="Enter your full name"
+                          className={`w-full bg-transparent border-b-2 pb-2 text-gray-900 text-sm focus:outline-none transition-all ${
+                            errors.name ? 'border-red-500' : 'border-gray-200 focus:border-[#005E84]'
+                          }`}
+                        />
+                        {errors.name && <p className="text-red-500 text-xs mt-2">{errors.name}</p>}
+                      </div>
+
+                      <div>
+                        <label className="block text-md font-medium uppercase tracking-[0.2em] text-gray-900 mb-2">
+                          Email Address
+                        </label>
+                        <input
+                          type="email"
+                          name="email"
+                          value={formData.email}
+                          onChange={handleChange}
+                          placeholder="Enter your email"
+                          className={`w-full bg-transparent border-b-2 pb-2 text-gray-900 text-sm focus:outline-none transition-all ${
+                            errors.email ? 'border-red-500' : 'border-gray-200 focus:border-[#005E84]'
+                          }`}
+                        />
+                        {errors.email && <p className="text-red-500 text-xs mt-2">{errors.email}</p>}
+                      </div>
+                    </div>
+
+                    {/* Row 2 */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                      <div>
+                        <label className="block text-md font-medium uppercase tracking-[0.2em] text-gray-900 mb-2">
+                          Phone Number
+                        </label>
+                        <input
+                          type="text"
+                          name="phone"
+                          value={formData.phone}
+                          onChange={handleChange}
+                          placeholder="Enter your phone number"
+                          className={`w-full bg-transparent border-b-2 pb-2 text-gray-900 text-sm focus:outline-none transition-all ${
+                            errors.phone ? 'border-red-500' : 'border-gray-200 focus:border-[#005E84]'
+                          }`}
+                        />
+                        {errors.phone && <p className="text-red-500 text-xs mt-2">{errors.phone}</p>}
+                      </div>
+
+                      <div>
+                        <label className="block text-md font-medium uppercase tracking-[0.2em] text-gray-900 mb-2">
+                          Subject
+                        </label>
+                        <select
+                          name="subject"
+                          value={formData.subject}
+                          onChange={handleChange}
+                          className={`w-full bg-transparent border-b-2 pb-2 text-gray-900 text-sm focus:outline-none transition-all ${
+                            errors.subject ? 'border-red-500' : 'border-gray-200 focus:border-[#005E84]'
+                          }`}
+                        >
+                          <option value="">Select a subject</option>
+                          <option>Account Issues</option>
+                          <option>Payment Questions</option>
+                          <option>Profile Verification</option>
+                          <option>Success Story</option>
+                          <option>Feature Suggestion</option>
+                          <option>Other</option>
+                        </select>
+                        {errors.subject && <p className="text-red-500 text-xs mt-2">{errors.subject}</p>}
+                      </div>
+                    </div>
+
+                    {/* Message */}
+                    <div>
+                      <label className="block text-md font-medium uppercase tracking-[0.2em] text-gray-900 mb-2">
+                        Your Message
+                      </label>
+                      <textarea
+                        name="message"
+                        rows={4}
+                        value={formData.message}
+                        onChange={handleChange}
+                        placeholder="Tell us how we can help you..."
+                        className={`w-full bg-transparent border-b-2 pb-2 text-gray-900 text-sm focus:outline-none transition-all ${
+                          errors.message ? 'border-red-500' : 'border-gray-200 focus:border-[#005E84]'
+                        }`}
+                      />
+                      {errors.message && <p className="text-red-500 text-xs mt-2">{errors.message}</p>}
+                    </div>
+
+                    {/* CTA */}
+                    <div className="pt-6">
+                      <button
+                        type="submit"
+                        disabled={isSubmitting}
+                        className="w-full py-4 bg-gray-900 text-white rounded-2xl font-bold tracking-widest uppercase text-[10px] transition-all hover:bg-teal-500 hover:shadow-xl hover:shadow-[#005E84]/20 active:scale-95 disabled:opacity-60"
+                      >
+                        {isSubmitting ? "Sending..." : "Send Message"}
+                      </button>
+                    </div>
+
+                  </form>
+                </div>
               </div>
             </div>
-            
-
             {/* Contact Form and Info */}
-          
+              <div 
+                id="contact-info" 
+                className={`lg:w-1/3 transform transition-all duration-1000 ${
+                  isVisible.contactInfo ? 'translate-x-0 opacity-100' : 'translate-x-20 opacity-0'
+                }`}
+              >
+                <div className="relative group">
+                  {/* The Main High-End Card */}
+                  <div className="relative z-10 bg-white shadow-[0_40px_100px_-20px_rgba(0,0,0,0.1)] rounded-3xl p-10 border border-gray-50 overflow-hidden">
+                    
+                    {/* Background Decorative Pattern (Subtle) */}
+                    <div className="absolute top-0 right-0 w-32 h-32 bg-[#005E84]/5 rounded-full -mr-16 -mt-16 transition-transform group-hover:scale-150 duration-700"></div>
 
-            <div 
-              id="contact-info" 
-              className={`lg:w-1/3 transform transition-all duration-700 ${isVisible.contactInfo ? 'slide-in-right opacity-100' : 'opacity-0 translate-x-6'}`}
-            >
-              <div className="bg-gray-100 rounded-lg shadow-lg p-8  border-t-4 border-teal-700 border ">
-                <h2 className="text-2xl font-bold text-dark_teal_blue mb-6 flex justify-center ">Contact Information</h2>
-                
-                <div className="space-y-6 ">
-                  <div className="flex items-start">
-                    <div className="w-12 h-12 bg-teal-400 hover:bg-teal-500 hover:scale-105 transition duration-700 rounded-full flex items-center justify-center mr-4">
-                      <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
-                      </svg>
+                    <header className="mb-12">
+                      <h2 className="text-3xl font-bold text-gray-900 tracking-tight">
+                        Let’s Start <br />
+                        <span className="font-serif italic font-light text-[#005E84]">Your Story</span>
+                      </h2>
+                    </header>
+
+                    <div className="space-y-8">
+                      {/* Contact Block: Digital */}
+                      <div className="relative pb-8 border-b border-gray-100 group/item">
+                        <p className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 mb-4">Electronic Mail</p>
+                        <a href="mailto:concierge@toureaz.com" className="text-xl font-medium text-gray-900 hover:text-[#005E84] transition-colors duration-300 flex justify-between items-center">
+                          concierge@toureaz.com
+                          <span className="opacity-0 group-hover/item:opacity-100 transition-opacity transform translate-x-2 group-hover/item:translate-x-0">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                              <path d="M7 17L17 7M17 7H7M17 7V17" />
+                            </svg>
+                          </span>
+                        </a>
+                      </div>
+
+                      {/* Contact Block: Direct Line */}
+                      <div className="relative pb-8 border-b border-gray-100">
+                        <p className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 mb-4">Private Line</p>
+                        <p className="text-xl font-medium text-gray-900">+1 (888) 456-7890</p>
+                        <span className="absolute right-0 bottom-8 text-[10px] font-bold text-emerald-500 flex items-center gap-1">
+                          <span className="w-1 h-1 bg-emerald-500 rounded-full animate-pulse"></span>
+                          Online Now
+                        </span>
+                      </div>
+
+                      {/* Contact Block: Presence */}
+                      <div className="relative">
+                        <p className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 mb-4">Our Presence</p>
+                        <p className="text-xl font-medium text-gray-900 leading-tight">
+                          The Executive Suite, 123 <br />
+                          Luxe Way, London
+                        </p>
+                      </div>
                     </div>
-                    <div>
-                      <h3 className="text-lg font-semibold text-dark_teal_blue">Phone</h3>
-                      <p className="text-dark_teal_blue"> +123 456 7890</p>
+
+                    {/* Modern Interaction: Floating "Message Me" Button */}
+                    <div className="mt-12">
+                      <button className="w-full py-4 bg-gray-900 text-white rounded-2xl font-bold tracking-widest uppercase text-[10px] transition-all hover:bg-teal-500 hover:shadow-xl hover:shadow-[#005E84]/20 active:scale-95">
+                        Send a Direct Message
+                      </button>
                     </div>
                   </div>
-                  
-                  <div className="flex items-start">
-                    <div className="w-12 h-12 bg-teal-400 hover:bg-teal-500 hover:scale-105 transition duration-700 rounded-full flex items-center justify-center mr-4">
-                      <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
-                      </svg>
-                    </div>
-                    <div>
-                      <h3 className="text-lg font-semibold text-dark_teal_blue">Email</h3>
-                      <p className="text-dark_teal_blue">contact@dummyemail.com</p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-start">
-                    <div className="w-12 h-12 bg-teal-400 hover:bg-teal-500 hover:scale-105 transition duration-700 rounded-full flex items-center justify-center mr-4">
-                      <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                      </svg>
-                    </div>
-                    <div>
-                      <h3 className="text-lg font-semibold text-dark_teal_blue">Address</h3>
-                      <p className="text-dark_teal_blue">123 Dummy Street,</p>
-                      <p className="text-dark_teal_blue">Faketown, Country</p>
-                    </div>
+
+                  {/* Floating "Experience" Tag (Offset behind card) */}
+                  <div className="absolute -bottom-6 -left-6 z-20 bg-teal-300 text-white p-6 rounded-2xl shadow-2xl hidden lg:block transform group-hover:-rotate-3 transition-transform duration-500">
+                    <div className="text-2xl font-bold leading-none">99%</div>
+                    <p className="text-[8px] uppercase tracking-widest mt-1 opacity-80">Guest Satisfaction</p>
                   </div>
                 </div>
               </div>
-            
-            
-          </div>
           </div>
         </main>
     </div>

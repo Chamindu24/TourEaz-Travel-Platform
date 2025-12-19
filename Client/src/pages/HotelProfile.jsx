@@ -29,6 +29,9 @@ import Footer from "../Components/Footer"
 import RoomCard from "../Components/RoomCard"
 import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css"
+import { motion, AnimatePresence } from "framer-motion";
+import { HiOutlineX } from "react-icons/hi"; // or any X icon
+
 
 function HotelProfile() {
   const { hotelId } = useParams()
@@ -46,6 +49,7 @@ function HotelProfile() {
   const [mainImageIndex, setMainImageIndex] = useState(0)
   const [imageTransition, setImageTransition] = useState(false)
   const [usersData, setUsersData] = useState({})
+  const [selectedImg, setSelectedImg] = useState(null);
   const [bookingData, setBookingData] = useState({
     checkIn: null,
     checkOut: null,
@@ -208,17 +212,19 @@ function HotelProfile() {
               .catch(() => null),
           ),
         )
-        const newUsers = { ...usersData }
-        results.forEach((u) => {
-          if (u) newUsers[u.id] = u.name
+        setUsersData(prev => {
+          const newUsers = { ...prev }
+          results.forEach((u) => {
+            if (u) newUsers[u.id] = u.name
+          })
+          return newUsers
         })
-        setUsersData(newUsers)
       } catch (err) {
         console.error("Error fetching users:", err)
       }
     }
     fetchUsers()
-  }, [hotelData?.reviews, usersData])
+  }, [hotelData?.reviews])
 
   const submitReview = async () => {
     try {
@@ -330,72 +336,88 @@ function HotelProfile() {
     <>
       <div className="min-h-screen bg-slate-50 mt-4  font-['Inter',sans-serif]">
         {/* Image Gallery Section */}
-        <div className="container mx-auto px-20 pb-8">
-          <div className="bg-white rounded-3xl shadow-xl overflow-hidden hover:shadow-3xl transition-shadow duration-300">
-            {/* Main Image */}
-            <div className="relative h-[500px] overflow-hidden group">
-              <img
-                src={gallery[mainImageIndex] || "/placeholder.svg"}
-                alt={name}
-                className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
-              />
-              
-              {/* Gradient Overlay */}
-              <div className="absolute inset-0 
-                bg-gradient-to-t 
-                from-black/70 via-black/30 to-transparent
-                group-hover:from-black/85 
-                group-hover:via-black/45
-                transition-all duration-700">
+        <div className="container mx-auto mt-4 px-4 md:px-20 pb-12">
+          <div className="relative group rounded-[2rem] overflow-hidden shadow-2xl bg-black">
+            
+            {/* Main Image with Framer Motion Transition */}
+            <div className="relative h-[600px] w-full overflow-hidden">
+              <AnimatePresence mode="wait">
+                <motion.img
+                  key={mainImageIndex}
+                  src={gallery[mainImageIndex]}
+                  initial={{ opacity: 0, scale: 1.1 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.8, ease: "easeOut" }}
+                  className="absolute inset-0 w-full h-full object-cover"
+                />
+              </AnimatePresence>
+
+              {/* Luxury Gradient Overlay - darker at bottom for text readability */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+
+              {/* Floating Info Badge */}
+              <div className="absolute top-8 left-8 flex gap-3">
+                <span className="glass-effect px-4 py-2 rounded-full text-white text-xs font-bold uppercase tracking-widest bg-white/10 backdrop-blur-md border border-white/80">
+                  Featured Property
+                </span>
               </div>
-              
-              {/* Text overlay */}
-              <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-8 md:p-12">
-                <div className="max-w-4xl">
-                  <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-3 leading-tight tracking-tight">{name}</h1>
-                  <div className="flex flex-wrap items-center gap-4 sm:gap-6 text-white/90 mb-4 text-sm sm:text-base">
-                    <div className="flex items-center bg-black/20 backdrop-blur-sm rounded-full px-3 py-1.5">
-                      <MdLocationOn className="text-white mr-2 w-4 h-4" />
-                      {location}
-                    </div>
-                    <div className="flex items-center bg-black/20 backdrop-blur-sm rounded-full px-3 py-1.5">
-                      {[...Array(starRating)].map((_, i) => (
-                        <AiFillStar key={i} className="text-yellow-400 w-4 h-4" />
-                      ))}
-                      <span className="ml-2 font-medium">{starRating} Star Hotel</span>
-                    </div>
+
+              {/* Bottom Text Content */}
+              <div className="absolute bottom-0 left-0 p-8 md:p-16 w-full">
+                <motion.h1 
+                  initial={{ y: 20, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  className="text-5xl md:text-7xl font-serif text-white mb-2"
+                >
+                  {name}
+                </motion.h1>
+                
+                <div className="flex gap-6 items-center text-white/80">
+                  <div className="flex items-center gap-2">
+                    <MdLocationOn size={32} className="text-teal-400" />
+                    <span className="text-lg tracking-wide uppercase">{location}</span>
                   </div>
+                  <div className="h-4 w-px bg-white/20" />
+                    <div className="flex items-center gap-1">
+                      <span className="text-yellow-400 font-bold">{starRating}</span>
+
+                      <div className="flex">
+                        {[...Array(5)].map((_, index) => (
+                          <AiFillStar
+                            key={index}
+                            className={
+                              index < Math.round(starRating)
+                                ? "text-yellow-400"
+                                : "text-yellow-400/30"
+                            }
+                          />
+                        ))}
+                      </div>
+
+                      <span className="text-xs ml-2 opacity-60 text-white/80">
+                        LUXURY STAY
+                      </span>
+                    </div>
+
                 </div>
               </div>
             </div>
 
-            {/* Thumbnail Gallery */}
-            {gallery && gallery.length > 1 && (
-              <div className="flex gap-3 p-6 overflow-x-auto bg-gradient-to-r from-gray-50 to-teal-50">
-                {gallery.map((img, idx) => (
-                  <div
-                    key={idx}
-                    className={`relative flex-shrink-0 cursor-pointer transition-all duration-300 ${
-                      mainImageIndex === idx
-                        ? 'ring-4 ring-teal-500 rounded-md scale-105 shadow-xl' 
-                        : 'opacity-70 hover:opacity-100 hover:scale-105 shadow-md'
-                    }`}
-                    onClick={() => handleImageSwap(idx)}
-                  >
-                    <img
-                      src={img}
-                      alt={`${name} ${idx + 1}`}
-                      className="w-28 h-28 object-cover rounded-md"
-                    />
-                    {mainImageIndex === idx && (
-                      <div className="absolute inset-0 bg-teal-500/20 rounded-md flex items-center justify-center">
-                        <IoIosCheckmarkCircle className="w-8 h-8 text-white" />
-                      </div>
-                    )}
-                  </div>
-                ))}
-              </div>
-            )}
+            {/* Thumbnail Navigation - Integrated Into the Card */}
+            <div className="absolute right-8 bottom-8 flex gap-2 p-2 bg-black/40 backdrop-blur-xl rounded-2xl border border-white/10">
+              {gallery.map((img, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => handleImageSwap(idx)}
+                  className={`relative w-16 h-16 rounded-xl overflow-hidden transition-all duration-500 ${
+                    mainImageIndex === idx ? 'ring-2 ring-white scale-110' : 'opacity-50 hover:opacity-100'
+                  }`}
+                >
+                  <img src={img} className="w-full h-full object-cover" />
+                </button>
+              ))}
+            </div>
           </div>
         </div>
 
@@ -525,45 +547,45 @@ function HotelProfile() {
             )}
             {activeTab === 0 && (
               <div className="w-full">
-              <div className="flex justify-between">
-                <div className="flex items-center mb-8">
-                  <div className="bg-lapis_lazuli/10 p-3 rounded-xl mr-4">
-                    <FaBed className="w-6 h-6 text-lapis_lazuli" />
-                  </div>
-                  <div>
-                    <h2 className="text-2xl sm:text-3xl font-bold text-slate-800 tracking-tight">Available Rooms</h2>
-                    <p className="text-slate-500">Find your perfect accommodation</p>
-                  </div>
-                </div>
-                <div>
-                  {roomsData.length > 0 && (
-                    <div className="mb-8 bg-gradient-to-r from-emerald-50 to-green-50 border border-emerald-200 rounded-xl p-6 text-center">
-                      <div className="flex items-center justify-center mb-3">
-                        <div className="bg-emerald-100 p-2 rounded-full mr-3">
-                          <IoIosCheckmarkCircle className="w-5 h-5 text-emerald-600" />
-                        </div>
-                        <h3 className="text-lg font-semibold text-emerald-800">
-                          {roomsData.length} Room{roomsData.length !== 1 ? "s" : ""} Available
-                        </h3>
-                      </div>
-                      <p className="text-sm text-emerald-600">
-                        for{" "}
-                        {bookingData.checkIn?.toLocaleDateString("en-US", {
-                          month: "short",
-                          day: "numeric",
-                          year: "numeric",
-                        })}{" "}
-                        to{" "}
-                        {bookingData.checkOut?.toLocaleDateString("en-US", {
-                          month: "short",
-                          day: "numeric",
-                          year: "numeric",
-                        })}
+                <div className="flex flex-col md:flex-row justify-between items-end gap-6 border-b border-slate-200 pb-10">
+                  {/* Left: Section Title */}
+                  <div className="flex items-start">
+                    <div className="bg-teal-500 p-4 rounded-2xl mr-5 shadow-lg">
+                      <FaBed className="w-6 h-6 text-white" />
+                    </div>
+                    <div>
+                      <h2 className="text-3xl md:text-4xl font-serif text-slate-900 tracking-tight">
+                        Available Rooms
+                      </h2>
+                      <p className="text-slate-500 mt-1 flex items-center gap-2">
+                        <span className="relative flex h-2 w-2">
+                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                          <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                        </span>
+                        Updated moments ago — Best prices guaranteed
                       </p>
+                    </div>
+                  </div>
+
+                  {/* Right: Stay Summary Badge */}
+                  {roomsData.length > 0 && (
+                    <div className="flex items-center gap-4 bg-white border border-slate-200 p-2 pr-6 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
+                      <div className="bg-emerald-500 text-white px-4 py-3 rounded-xl flex flex-col items-center justify-center min-w-[80px]">
+                        <span className="text-xl font-bold leading-none">{roomsData.length}</span>
+                        <span className="text-[10px] uppercase font-bold tracking-tighter">Rooms</span>
+                      </div>
+                      
+                      <div className="flex flex-col">
+                        <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">Your Stay</span>
+                        <div className="flex items-center gap-2 text-sm font-semibold text-slate-800">
+                          <span>{bookingData.checkIn?.toLocaleDateString("en-US", { month: "short", day: "numeric" })}</span>
+                          <span className="text-slate-300">—</span>
+                          <span>{bookingData.checkOut?.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}</span>
+                        </div>
+                      </div>
                     </div>
                   )}
                 </div>
-              </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                   {roomsData.length > 0 ? (
@@ -609,15 +631,48 @@ function HotelProfile() {
 
             {activeTab === 2 && (
               <div>
-                <div className="flex items-center mb-8">
-                  <div className="bg-lapis_lazuli/10 p-3 rounded-xl mr-4">
-                    <FaUtensils className="w-6 h-6 text-lapis_lazuli" />
-                  </div>
-                  <div>
-                    <h2 className="text-2xl sm:text-3xl font-bold text-slate-800 tracking-tight">Dining Experiences</h2>
-                    <p className="text-slate-500">Savor exceptional culinary delights</p>
-                  </div>
-                </div>
+<div className="relative mb-12 group">
+  {/* Left: Main Content */}
+  <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+    <div className="flex items-start">
+      {/* Refined Icon Treatment */}
+      <div className="relative mr-6">
+        <div className="absolute inset-0 bg-lapis_lazuli opacity-20 blur-xl rounded-full group-hover:opacity-40 transition-opacity" />
+        <div className="relative bg-white border border-slate-100 p-4 rounded-2xl shadow-sm">
+          <FaUtensils className="w-6 h-6 text-lapis_lazuli" />
+        </div>
+      </div>
+      
+      <div>
+        <div className="flex items-center gap-3 mb-2">
+          <span className="h-px w-8 bg-lapis_lazuli/40" />
+          <span className="text-[10px] uppercase tracking-[0.3em] font-black text-lapis_lazuli">Gastronomy</span>
+        </div>
+        <h2 className="text-3xl sm:text-5xl font-serif text-slate-900 tracking-tight leading-none">
+          Dining Experiences
+        </h2>
+        <p className="text-slate-500 mt-3 text-lg font-light italic">
+          From sunrise breakfasts to starlit gala dinners
+        </p>
+      </div>
+    </div>
+
+    {/* Right: Quick Stats/Tags (Professional sites love data-points) */}
+    <div className="hidden lg:flex items-center gap-8 border-l border-slate-200 pl-8">
+      <div className="text-center">
+        <p className="text-[10px] uppercase tracking-widest text-slate-400 font-bold mb-1">Cuisines</p>
+        <p className="text-sm font-bold text-slate-800">Global & Local</p>
+      </div>
+      <div className="text-center">
+        <p className="text-[10px] uppercase tracking-widest text-slate-400 font-bold mb-1">Atmosphere</p>
+        <p className="text-sm font-bold text-slate-800">Fine Dining</p>
+      </div>
+    </div>
+  </div>
+
+  {/* Bottom: Subtle Decorative Line */}
+  <div className="mt-8 h-px w-full bg-gradient-to-r from-lapis_lazuli/20 via-slate-200 to-transparent" />
+</div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {dinningOptions.map((option, index) => (
                     <div key={index} className="group relative overflow-hidden rounded-2xl shadow-sm border border-slate-200 hover:shadow-lg transition-all duration-300">
@@ -651,42 +706,113 @@ function HotelProfile() {
             )}
 
             {activeTab === 3 && (
-              <div>
-                <div className="flex items-center mb-8">
-                  <div className="bg-lapis_lazuli/10 p-3 rounded-xl mr-4">
-                    <FaImage className="w-6 h-6 text-lapis_lazuli" />
-                  </div>
-                  <div>
-                    <h2 className="text-2xl sm:text-3xl font-bold text-slate-800 tracking-tight">Photo Gallery</h2>
-                    <p className="text-slate-500">Explore our beautiful spaces</p>
-                  </div>
-                </div>
-                
-                {/* Masonry Grid Layout */}
-                <div className="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-4 space-y-4">
-                  {gallery.map((img, idx) => (
-                    <div key={idx} className="break-inside-avoid group relative overflow-hidden rounded-xl shadow-sm border border-slate-200 hover:shadow-lg transition-all duration-300 cursor-pointer">
-                      <img
-                        src={img || "/placeholder.svg"}
-                        alt={`Gallery ${idx + 1}`}
-                        className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-500"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <div className="absolute bottom-0 left-0 right-0 p-4">
-                          <div className="flex items-center justify-between text-white">
-                            <span className="text-sm font-medium">View {idx + 1}</span>
-                            <div className="bg-white/20 backdrop-blur-sm rounded-full p-2">
-                              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                              </svg>
-                            </div>
-                          </div>
-                        </div>
+            <section className="py-24 bg-white text-slate-900 overflow-hidden">
+                  <div className="container mx-auto px-6 md:px-20">
+                    
+                    {/* 1. Header: Minimalist Light Mode */}
+                    <div className="flex flex-col md:flex-row justify-between items-baseline mb-16 border-b border-slate-200 pb-8">
+                      <div>
+                        <h2 className="text-6xl md:text-8xl font-light tracking-tighter mb-4">
+                          Atmosphere<span className="text-lapis_lazuli">.</span>
+                        </h2>
+                        <p className="text-slate-400 uppercase tracking-[0.5em] text-xs font-bold">
+                          Visual Index // {gallery.length} Perspectives
+                        </p>
+                      </div>
+                      <div className="hidden md:block text-right">
+                        <p className="text-slate-500 text-sm max-w-[200px] leading-relaxed font-light italic">
+                          A curated collection of light, space, and architectural intent.
+                        </p>
                       </div>
                     </div>
-                  ))}
-                </div>
-              </div>
+
+                    {/* 2. The Liquid Grid */}
+                    <div className="grid grid-cols-12 gap-3 md:gap-6 auto-rows-[12vw]">
+                      {gallery.map((img, idx) => {
+                        const spans = [
+                          "col-span-8 row-span-4", "col-span-4 row-span-2", 
+                          "col-span-4 row-span-2", "col-span-4 row-span-3", 
+                          "col-span-5 row-span-3", "col-span-3 row-span-3",
+                        ];
+                        const spanClass = spans[idx % spans.length];
+
+                        return (
+                          <motion.div 
+                            key={idx}
+                            layoutId={`img-${idx}`} // Magic move transition
+                            onClick={() => setSelectedImg({ img, idx })}
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            className={`${spanClass} relative group overflow-hidden cursor-zoom-in bg-slate-100 rounded-sm`}
+                          >
+                            <img 
+                              src={img} 
+                              className="w-full h-full object-cover transition-transform duration-[1.5s] ease-[cubic-bezier(0.2,1,0.3,1)] group-hover:scale-110 grayscale group-hover:grayscale-0"                              alt="Atmosphere" 
+                            />
+
+                              {/* The Interactive Mask (Reveal on Hover) */}
+                              <div className="absolute inset-0 bg-lapis_lazuli/40 opacity-0 group-hover:opacity-100 transition-all duration-500 backdrop-blur-[2px] flex flex-col justify-end p-6">
+                                <motion.div 
+                                  initial={{ y: 20, opacity: 0 }}
+                                  whileHover={{ y: 0, opacity: 1 }}
+                                  className="space-y-1"
+                                >
+                                  <p className="text-[10px] font-mono uppercase tracking-widest text-white/70">Perspective</p>
+                                  <h4 className="text-lg font-bold">0{idx + 1} // Detail View</h4>
+                                </motion.div>
+                              </div>
+
+                            <div className="absolute bottom-4 right-4 z-10 text-[10px] font-mono text-slate-400 group-hover:opacity-0">
+                              {idx.toString().padStart(2, '0')}
+                            </div>
+                          </motion.div>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  {/* 3. LIGHTBOX PREVIEW */}
+                  <AnimatePresence>
+                    {selectedImg && (
+                      <motion.div 
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="fixed inset-0 z-[100] flex items-center justify-center bg-white/95 backdrop-blur-xl p-4 md:p-12"
+                        onClick={() => setSelectedImg(null)}
+                      >
+                        {/* Close Button */}
+                        <button className="absolute top-8 right-8 text-slate-900 p-2 hover:rotate-90 transition-transform duration-300">
+                          <HiOutlineX className="w-8 h-8" />
+                        </button>
+
+                        {/* Image Container */}
+                        <motion.div 
+                          layoutId={`img-${selectedImg.idx}`}
+                          className="relative max-w-5xl w-full h-full flex flex-col justify-center"
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          <img 
+                            src={selectedImg.img} 
+                            className="w-full max-h-[80vh] object-contain shadow-2xl rounded-sm"
+                            alt="Preview"
+                          />
+                          
+                          <div className="mt-8 flex justify-between items-end border-t border-slate-200 pt-6">
+                            <div>
+                              <h3 className="text-2xl font-serif italic">Atmosphere Perspective 0{selectedImg.idx + 1}</h3>
+                              <p className="text-slate-400 text-xs uppercase tracking-widest mt-2">Interior Architectural Photography // 2024</p>
+                            </div>
+                            <button className="bg-lapis_lazuli text-white px-8 py-3 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-slate-900 transition-colors">
+                              Enquire About Space
+                            </button>
+                          </div>
+                        </motion.div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </section>
             )}
 
             {activeTab === 4 && (

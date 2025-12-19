@@ -331,80 +331,100 @@ const LandingHeader = () => {
                 />
               </>
             ) : (
-              <div className="relative" ref={accountRef}>
-                <button
-                  className={`flex items-center space-x-3 px-4 py-3 rounded-full font-medium transition-all duration-300 transform hover:scale-105 bg-white/20 backdrop-blur-sm border border-white/30 hover:bg-white/30 hover:shadow-lg ${
-                    isActive("/account")
-                      ? "ring-2 ring-[#005E84] ring-opacity-50"
-                      : ""
-                  }`}
-                  onClick={() => setAccountDropdown((v) => !v)}
+            <div className="relative" ref={accountRef}>
+              {/* The Trigger Button - Clean & Compact */}
+              <button
+                onClick={() => setAccountDropdown((v) => !v)}
+                className="group flex items-center p-3 rounded-full border border-gray-200 bg-white/10 hover:border-[#005E84]/30 hover:shadow-md transition-all duration-300 active:scale-95"
+              >
+                <div className="h-8 w-8 rounded-full bg-gradient-to-tr from-[#005E84] to-[#0A435C] flex items-center justify-center text-white text-xs font-bold shadow-inner">
+                  {user?.firstName?.charAt(0) || 'U'}
+                </div>
+                <div className="ml-2 mr-1 hidden sm:block text-left pr-2">
+                  <p className="text-[10px] uppercase tracking-tighter text-gray-600 font-bold leading-none">Member</p>
+                  <p className="text-md font-bold text-gray-700 leading-tight truncate max-w-[80px]">
+                    {user?.firstName || 'User'}
+                  </p>
+                </div>
+                <svg 
+                  className={`h-4 w-4 mr-2 text-gray-400 transition-transform duration-500 ${accountDropdown ? 'rotate-180' : ''}`} 
+                  fill="none" stroke="currentColor" viewBox="0 0 24 24"
                 >
-                  <div className="h-8 w-8 rounded-full bg-gradient-to-r from-[#005E84] to-[#075375] flex items-center justify-center text-white font-semibold shadow-md">
-                    {user?.firstName?.charAt(0) || user?.email?.charAt(0) || 'U'}
-                  </div>
-                  <span className="text-[#0A435C] hidden sm:block">
-                    {user
-                      ? `${user.firstName || ""} ${
-                          user.lastName || ""
-                        }`.trim() || user.email
-                      : "Account"}
-                  </span>
-                  <svg
-                    className={`h-4 w-4 text-[#0A435C] transition-transform duration-300 ${accountDropdown ? 'rotate-180' : ''}`}
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M19 9l-7 7-7-7"
-                    />
-                  </svg>
-                </button>
-                {accountDropdown && (
-                  <div className="absolute right-0 mt-3 w-48 bg-gradient-to-br from-[#E7E9E5]/95 via-white/95 to-[#B7C5C7]/95 backdrop-blur-lg rounded-xl shadow-xl border border-[#005E84]/20 overflow-hidden animate-slideUp z-20">
-                    <div className="py-2">
-                      <Link
-                        to="/account"
-                        className="flex items-center space-x-3 px-4 py-3 text-sm font-medium hover:bg-gradient-to-r hover:from-[#E1F5FE] hover:to-white hover:text-[#005E84] transition-all duration-200 transform hover:translate-x-1"
-                        onClick={() => {
-                          setAccountDropdown(false);
-                          scrollToTop();
-                        }}
-                      >
-                        <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                        </svg>
-                        <span>My Account</span>
-                      </Link>
-                      {/* Service Provider Dashboard Button */}
-                      {user?.userType === 'service-provider' && (
-                        <button
-                          onClick={() => navigate('/service-provider/dashboard')}
-                          className="flex items-center space-x-2 px-4 py-3 text-sm font-medium hover:bg-gradient-to-r hover:from-[#E1F5FE] hover:to-white hover:text-[#005E84] transition-all duration-200 transform hover:translate-x-1"
-                        >
-                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z" />
-                          </svg>
-                          <span >My Dashboard</span>
-                        </button>
-                      )}
-                      <button
-                        className="flex items-center space-x-3 w-full text-left px-4 py-3 text-sm font-medium text-red-600 hover:bg-red-50 transition-all duration-200 transform hover:translate-x-1"
-                        onClick={handleSignOut}
-                      >
-                        <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                        </svg>
-                        <span>Sign Out</span>
-                      </button>
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+
+              {/* The Dropdown Menu */}
+              {accountDropdown && (
+                <div className="absolute right-0 mt-3 w-72 bg-white rounded-[24px] shadow-[0_20px_50px_rgba(0,0,0,0.15)] border border-gray-100 overflow-hidden z-50 animate-in fade-in slide-in-from-top-4 duration-300">
+                  
+                  {/* 1. Identity Section */}
+                  <div className="px-6 py-6 bg-gradient-to-br from-gray-50 to-white border-b border-gray-100">
+                    <div className="flex items-center space-x-3">
+                      <div className="h-12 w-12 rounded-2xl bg-[#005E84]/10 flex items-center justify-center text-[#005E84] font-bold text-xl">
+                        {user?.firstName?.charAt(0)}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-md font-bold text-gray-900 truncate">
+                          {user?.firstName} {user?.lastName}
+                        </p>
+                        <p className="text-xs text-gray-800 truncate">{user?.email}</p>
+                      </div>
                     </div>
                   </div>
-                )}
-              </div>
+
+                  {/* 2. Main Menu Actions */}
+                  <div className="p-2">
+                    <Link
+                      to="/account"
+                      className="flex items-center justify-between px-4 py-3 text-sm font-semibold text-gray-700 rounded-xl hover:bg-[#F8FAFC] hover:text-[#005E84] transition-all group"
+                      onClick={() => setAccountDropdown(false)}
+                    >
+                      <div className="flex items-center space-x-3">
+                        <div className="p-2 bg-gray-100 rounded-lg group-hover:bg-[#005E84]/10 transition-colors">
+                          <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                          </svg>
+                        </div>
+                        <span>Profile Settings</span>
+                      </div>
+                      <svg className="h-4 w-4 opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </Link>
+
+                    {user?.userType === 'service-provider' && (
+                      <button
+                        onClick={() => { navigate('/service-provider/dashboard'); setAccountDropdown(false); }}
+                        className="w-full flex items-center justify-between px-4 py-3 text-sm font-semibold text-gray-700 rounded-xl hover:bg-[#F8FAFC] hover:text-[#005E84] transition-all group"
+                      >
+                        <div className="flex items-center space-x-3">
+                          <div className="p-2 bg-gray-100 rounded-lg group-hover:bg-[#005E84]/10 transition-colors">
+                            <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                            </svg>
+                          </div>
+                          <span>Manage Services</span>
+                        </div>
+                      </button>
+                    )}
+                  </div>
+
+                  {/* 3. Decorative/Action Footer */}
+                  <div className="p-2 pt-0">
+                    <button
+                      onClick={handleSignOut}
+                      className="w-full flex items-center justify-center space-x-2 px-4 py-3 text-sm font-bold text-red-500 bg-red-50/50 hover:bg-red-50 rounded-xl transition-all active:scale-[0.98]"
+                    >
+                      <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                      </svg>
+                      <span>Logout</span>
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
             )}
           </div>
           <div className="md:hidden flex items-center">
@@ -423,7 +443,7 @@ const LandingHeader = () => {
         </div>
       </div>
       {isMenuOpen && (
-        <div className="md:hidden bg-gradient-to-r from-[#B7C5C7]/95 via-[#E7E9E5]/95 to-[#B7C5C7]/95 backdrop-blur-lg border-t border-[#005E84]/20 shadow-xl">
+        <div className="md:hidden bg-white backdrop-blur-lg border-t border-[#005E84]/20 shadow-xl">
           <div className="px-4 pt-4 pb-6 space-y-2">
             {/* Mobile menu items */}
             <Link
@@ -454,132 +474,7 @@ const LandingHeader = () => {
             >
               About Us
             </Link>
-            {/* Services dropdown for mobile */}
-            <div>
-              <button
-                className={`flex w-full items-center justify-between px-4 py-3 rounded-xl font-medium transition-all duration-300 hover:bg-gradient-to-r hover:from-[#E1F5FE] hover:to-white hover:shadow-md transform hover:translate-x-1 min-h-[44px] ${
-                  isInServicesSection()
-                    ? "bg-gradient-to-r from-[#E1F5FE] to-white text-[#005E84] font-semibold shadow-md"
-                    : "text-[#0A435C] hover:text-[#005E84]"
-                }`}
-                onClick={() => setServicesDropdown(!servicesDropdown)}
-              >
-                <span>Our Services</span>
-                <svg
-                  className={`h-5 w-5 transition-transform duration-300 ${servicesDropdown ? 'rotate-180' : ''}`}
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M19 9l-7 7-7-7"
-                  />
-                </svg>
-              </button>
-              {servicesDropdown && (
-                <div className="mt-2 ml-4 space-y-2">
-                  <Link
-                    to="/travel-services"
-                    className={`flex items-center space-x-3 px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 hover:bg-gradient-to-r hover:from-[#E1F5FE] hover:to-white hover:text-[#005E84] hover:shadow-md transform hover:translate-x-1 min-h-[44px] ${
-                      isActive("/travel-services")
-                        ? "bg-gradient-to-r from-[#E1F5FE] to-white text-[#005E84] font-semibold shadow-md"
-                        : "text-[#0A435C]"
-                    }`}
-                    onClick={() => {
-                      scrollToTop();
-                      setIsMenuOpen(false);
-                      setServicesDropdown(false);
-                    }}
-                  >
-                    <span className="text-lg">✈️</span>
-                    <span>Travel Services</span>
-                  </Link>
-                  <Link
-                    to="/real-estate"
-                    className={`flex items-center space-x-3 px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 hover:bg-gradient-to-r hover:from-[#E1F5FE] hover:to-white hover:text-[#005E84] hover:shadow-md transform hover:translate-x-1 min-h-[44px] ${
-                      isActive("/real-estate")
-                        ? "bg-gradient-to-r from-[#E1F5FE] to-white text-[#005E84] font-semibold shadow-md"
-                        : "text-[#0A435C]"
-                    }`}
-                    onClick={() => {
-                      scrollToTop();
-                      setIsMenuOpen(false);
-                      setServicesDropdown(false);
-                    }}
-                  >
-                    <span className="text-lg">🏡</span>
-                    <span>Real Estate</span>
-                  </Link>
-                  <Link
-                    to="/investment-support"
-                    className={`flex items-center space-x-3 px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 hover:bg-gradient-to-r hover:from-[#E1F5FE] hover:to-white hover:text-[#005E84] hover:shadow-md transform hover:translate-x-1 min-h-[44px] ${
-                      isActive("/investment-support")
-                        ? "bg-gradient-to-r from-[#E1F5FE] to-white text-[#005E84] font-semibold shadow-md"
-                        : "text-[#0A435C]"
-                    }`}
-                    onClick={() => {
-                      scrollToTop();
-                      setIsMenuOpen(false);
-                      setServicesDropdown(false);
-                    }}
-                  >
-                    <span className="text-lg">💼</span>
-                    <span>Investment Support</span>
-                  </Link>
-                  <Link
-                    to="/brand-representation"
-                    className={`flex items-center space-x-3 px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 hover:bg-gradient-to-r hover:from-[#E1F5FE] hover:to-white hover:text-[#005E84] hover:shadow-md transform hover:translate-x-1 min-h-[44px] ${
-                      isActive("/brand-representation")
-                        ? "bg-gradient-to-r from-[#E1F5FE] to-white text-[#005E84] font-semibold shadow-md"
-                        : "text-[#0A435C]"
-                    }`}
-                    onClick={() => {
-                      scrollToTop();
-                      setIsMenuOpen(false);
-                      setServicesDropdown(false);
-                    }}
-                  >
-                    <span className="text-lg">🏢</span>
-                    <span>Brand Representation</span>
-                  </Link>
-                  <Link
-                    to="/hulhumeedhoo"
-                    className={`flex items-center space-x-3 px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 hover:bg-gradient-to-r hover:from-[#E1F5FE] hover:to-white hover:text-[#005E84] hover:shadow-md transform hover:translate-x-1 min-h-[44px] ${
-                      isActive("/hulhumeedhoo")
-                        ? "bg-gradient-to-r from-[#E1F5FE] to-white text-[#005E84] font-semibold shadow-md"
-                        : "text-[#0A435C]"
-                    }`}
-                    onClick={() => {
-                      scrollToTop();
-                      setIsMenuOpen(false);
-                      setServicesDropdown(false);
-                    }}
-                  >
-                    <span className="text-lg">🏝️</span>
-                    <span>Hulhumeedhoo Island</span>
-                  </Link>
-                  <Link
-                    to="/token-program"
-                    className={`flex items-center space-x-3 px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 hover:bg-gradient-to-r hover:from-[#E1F5FE] hover:to-white hover:text-[#005E84] hover:shadow-md transform hover:translate-x-1 min-h-[44px] ${
-                      isActive("/token-program")
-                        ? "bg-gradient-to-r from-[#E1F5FE] to-white text-[#005E84] font-semibold shadow-md"
-                        : "text-[#0A435C]"
-                    }`}
-                    onClick={() => {
-                      scrollToTop();
-                      setIsMenuOpen(false);
-                      setServicesDropdown(false);
-                    }}
-                  >
-                    <span className="text-lg">🪙</span>
-                    <span>Token Program</span>
-                  </Link>
-                </div>
-              )}
-            </div>
+
             <Link
               to="/search"
               className={`px-4 py-3 rounded-xl font-medium transition-all duration-300 hover:bg-gradient-to-r hover:from-[#E1F5FE] hover:to-white hover:shadow-md transform hover:translate-x-1 min-h-[44px] flex items-center ${

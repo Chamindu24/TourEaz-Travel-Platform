@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import LandingHeader from "./LandingHeader";
 import { HoverEffect } from "../Components/ui/card-hover-effect";
+import { motion } from "framer-motion";
 
 // Add custom CSS animations
 const animationStyles = `
@@ -490,7 +491,7 @@ const servicesData = [
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
-    }, 6000);
+    }, 9000);
     return () => clearInterval(interval);
   }, [heroSlides.length]);
 
@@ -508,60 +509,59 @@ const servicesData = [
         {heroSlides.map((slide, index) => (
           <div
             key={index}
-            className={`absolute inset-0 w-full h-full transition-all duration-1000 ease-in-out ${
-              index === currentSlide
-                ? "opacity-100 scale-100"
-                : "opacity-0 scale-105"
+            className={`absolute inset-0 w-full h-full transition-all duration-[1000ms] ease-in-out ${
+              index === currentSlide ? "opacity-100 visible" : "opacity-0 invisible"
             }`}
           >
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
-            <img
-              src={slide.image}
-              alt={`Maldives resort ${index + 1}`}
-              className="w-full h-full object-cover"
-            />
-            <div className="absolute inset-0 flex flex-col items-center justify-center px-4 text-center">
-              <div className="max-w-4xl mx-auto">
-                <div className="inline-block bg-white/80 backdrop-blur-sm rounded-full px-6 py-2 mb-6 border border-white/20 animate-fade-in-up animate-delay-1 animate-glow">
-                  <span className="text-black/80 font-medium text-sm blur-[0.6px] drop-shadow-[0_0_10px_rgba(253,224,71,0.2)]">
-                    {slide.badge}
-                  </span>
-                </div>
-                <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-white mb-6 tracking-tight leading-tight animate-fade-in-up animate-delay-2">
-                  {renderTitleWithStyledLastWord(slide.title)}
-                </h1>
-                <p className="text-xl md:text-2xl text-white/90 mb-12 max-w-2xl mx-auto font-light animate-fade-in-up animate-delay-3">
-                  {slide.subtitle}
-                </p>
-                <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in-up animate-delay-4">
-                  <Link
-                    to="/explore"
-                    className="group bg-[#E7E9E5] text-[#075375] font-bold py-4 px-8 rounded-xl shadow-2xl hover:shadow-3xl transition-all transform hover:scale-105 hover:bg-[#B7C5C7] shine-effect"
-                    onClick={scrollToTop}
-                  >
-                    <span className="flex items-center">
-                      Start Your Journey
-                      <svg
-                        className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M13 7l5 5m0 0l-5 5m5-5H6"
-                        />
-                      </svg>
+            {/* The Background: Subtle "Slow-Zoom" effect used by luxury brands */}
+            <div className={`absolute inset-0 transition-transform duration-[6000ms] ease-linear ${
+              index === currentSlide ? "scale-105" : "scale-100"
+            }`}>
+              <img
+                src={slide.image}
+                className="w-full h-full object-cover"
+                alt="Resort View"
+              />
+              {/* Cinematic Vignette: Darkens edges to focus the eye on center text */}
+              <div className="absolute inset-0 bg-black/30 shadow-[inset_0_0_100px_rgba(0,0,0,0.5)]"></div>
+            </div>
+
+            <div className="relative h-full flex flex-col justify-end pb-24 px-8 md:px-20">
+              <div className="max-w-6xl w-full mx-auto flex flex-col md:flex-row items-end justify-between gap-8">
+                
+                {/* Text Group: Left Aligned for an editorial look */}
+                <div className="max-w-3xl animate-slide-up">
+                  <div className="flex items-center gap-3 mb-6">
+                    <div className="h-[2px] w-12 bg-white/80"></div>
+                    <span className="text-white text-sm uppercase tracking-[0.4em] font-medium">
+                      {slide.badge}
                     </span>
-                  </Link>
-                  <Link
-                    to="/travel-services"
-                    className="group border-2 border-[#E7E9E5] text-[#E7E9E5] font-bold py-4 px-8 rounded-xl hover:bg-[#E7E9E5] hover:text-[#075375] transition-all transform hover:scale-105 animate-glow shine-effect"
+                  </div>
+                  
+                  <h1 className="text-6xl md:text-8xl font-light text-white leading-tight tracking-tight mb-8">
+                    {slide.title.split(' ').map((word, i, arr) => (
+                      i === arr.length - 1 
+                      ? <span key={i} className="italic font-serif block mt-2 opacity-90 text-7xl md:text-9xl">{word}</span>
+                      : <span key={i}>{word} </span>
+                    ))}
+                  </h1>
+                  
+                  <p className="text-lg md:text-xl text-white max-w-lg font-light leading-relaxed border-l border-white/20 pl-6 mb-8">
+                    {slide.subtitle}
+                  </p>
+                </div>
+
+                {/* Primary Action: Minimalist but high-contrast */}
+                <div className="flex flex-col gap-4">
+                    <Link
+                    to="/explore"
+                    className="inline-block group relative px-12 py-4 overflow-hidden border border-white/90"
                     onClick={scrollToTop}
                   >
-                    Explore Services
+                    <div className="absolute inset-0 w-0 bg-white transition-all duration-[400ms] ease-out group-hover:w-full"></div>
+                    <span className="relative z-10 text-white group-hover:text-black font-bold text-sm uppercase tracking-[0.3em] transition-colors">
+                      Explore Destination
+                    </span>
                   </Link>
                 </div>
               </div>
@@ -569,18 +569,55 @@ const servicesData = [
           </div>
         ))}
 
-        {/* Modern Navigation Dots */}
-        <div className="absolute bottom-12 left-1/2 transform -translate-x-1/2 flex space-x-4 animate-bounce-slow">
+        {/* Modern Navigation Progress Bars */}
+        <div className="absolute bottom-12 left-1/2 transform -translate-x-1/2 flex space-x-3 z-50">
           {heroSlides.map((_, index) => (
             <button
               key={index}
               onClick={() => setCurrentSlide(index)}
-              className={`w-4 h-4 rounded-full transition-all duration-300 ${
-                index === currentSlide
-                  ? "bg-white scale-125 shadow-lg animate-glow"
-                  : "bg-white/50 hover:bg-white/75"
-              }`}
-            />
+              className="group relative h-1 w-12 bg-white/20 overflow-hidden transition-all"
+            >
+              {/* Background Track */}
+              <div className="absolute inset-0 bg-white/50 group-hover:bg-white/40 transition-colors" />
+              
+              {/* Active Fill Animation */}
+              {index === currentSlide && (
+                <motion.div
+                  initial={{ width: "0%" }}
+                  animate={{ width: "100%" }}
+                  transition={{ duration: 5, ease: "linear" }} // Match your auto-slide interval
+                  className="absolute h-full bg-yellow-300 shadow-[0_0_8px_rgba(250,204,21,0.8)]"
+                />
+              )}
+              
+              {/* If the slide is already "completed" (index < currentSlide), keep it full */}
+              {index < currentSlide && (
+                <div className="absolute h-full w-full bg-white/60" />
+              )}
+            </button>
+          ))}
+        </div>
+
+        {/* Professional Navigation Arrows */}
+        <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 flex justify-between px-4 md:px-10 z-50 pointer-events-none">
+          {[
+            { dir: 'left', icon: 'M15 19l-7-7 7-7', action: () => setCurrentSlide(prev => (prev === 0 ? heroSlides.length - 1 : prev - 1)) },
+            { dir: 'right', icon: 'M9 5l7 7-7 7', action: () => setCurrentSlide(prev => (prev === heroSlides.length - 1 ? 0 : prev + 1)) }
+          ].map((btn, idx) => (
+            <button
+              key={idx}
+              onClick={btn.action}
+              className="pointer-events-auto group p-4 rounded-full bg-black/5 hover:bg-black/20 backdrop-blur-sm border border-white/70 transition-all duration-500"
+            >
+              <svg 
+                className={`w-8 h-8 text-white/70 group-hover:text-white group-hover:scale-110 transition-all duration-300`}
+                fill="none" 
+                stroke="currentColor" 
+                viewBox="0 0 24 24"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d={btn.icon} />
+              </svg>
+            </button>
           ))}
         </div>
       </div>

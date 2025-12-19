@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuthCheck } from '../../hooks/useAuthCheck';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import { motion } from 'framer-motion';
 
 const BookingForm = ({ activity }) => {
     const navigate = useNavigate();
@@ -167,5 +168,6 @@ const BookingForm = ({ activity }) => {
         </div>
     );
 };
+
 
 export default BookingForm;

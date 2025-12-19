@@ -285,48 +285,67 @@ const Register = () => {
            
           }}
         >
-                    {/* Dark overlay */}
+          {/* Dark overlay */}
           <div className="absolute inset-0 bg-teal-500/20 z-10 pointer-events-none backdrop-blur-[1px]"></div>
           {/* Animated gradient pulse */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/5 z-20 pointer-events-none animate-pulse-slow"></div>
 
-          <div className={`max-w-md text-start mt-24 backdrop-blur-2xl shadow-xl p-8 bg-black/10 border-2 border-white/25 rounded-2xl z-30 text-white fixed ${animations.slideUp}`}>
-            
-            <div className="space-y-4 mb-6">
-              <p className={`text-3xl font-bold tracking-wide relative ${animations.slideUp}`}>
-                Explore <span className="text-yellow-300 drop-shadow-[0_0_10px_rgba(255,228,94,0.6)]">Sri Lanka</span>
-              </p>
-
-              <p className={`text-gray-100 text-lg  leading-relaxed ${animations.slideUp}`}>
-                Experience vibrant culture, exotic wildlife, and breathtaking views with personalized travel plans.
-              </p>
+          <div className={`max-w-md mt-16 fixed z-30 ${animations.slideUp}`}>
+            {/* The "Orbit" Label - A small detail that circles the main heading */}
+            <div className="flex items-center space-x-3 mb-6">
+              <div className="flex -space-x-1">
+                <div className="w-1.5 h-1.5 bg-yellow-400 rounded-full animate-ping"></div>
+                <div className="w-1.5 h-1.5 bg-yellow-400 rounded-full relative z-10"></div>
+              </div>
+              <span className="text-xs font-bold text-white/80 uppercase tracking-[0.5em]">
+                Current Discovery / 08
+              </span>
             </div>
 
-      
-            <div className={`grid grid-cols-1 gap-4 ${animations.slideUp}`}>
-              <div className="flex items-center space-x-3 text-teal-50 hover:text-yellow-300 font-medium">
-                <div className="w-8 h-8 bg-teal-400/80 rounded-lg flex items-center justify-center">
-                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                  </svg>
+            <div className="space-y-6">
+              {/* High-Impact Serif Heading */}
+              <h1 className="text-6xl font-serif text-white leading-tight tracking-tighter italic">
+                The <span className="not-italic font-sans font-black text-yellow-300">Pearl.</span>
+              </h1>
+
+              {/* The "Floating Node" Card */}
+              <div className="bg-gradient-to-br from-white/20 to-transparent backdrop-blur-3xl border border-white/20 p-1 rounded-3xl shadow-[0_30px_60px_-15px_rgba(0,0,0,0.5)]">
+                <div className="bg-zinc-950/40 rounded-[22px] p-6">
+                  <p className="text-zinc-300 text-sm leading-relaxed mb-6">
+                    Experience a curated selection of <span className="text-white border-b border-yellow-400/50 pb-1">secret villas</span> and uncharted wildlife trails across the southern plains.
+                  </p>
+
+                  {/* Feature Grid with "Glass" Buttons */}
+                  <div className="grid grid-cols-1 gap-3">
+                    {[
+                      { label: 'Private Aviation', icon: '✈️' },
+                      { label: 'UNESCO Heritage Tours', icon: '🏛️' }
+                    ].map((item, i) => (
+                      <div key={i} className="group flex items-center justify-between p-3 rounded-xl bg-white/10 border border-white/5 hover:bg-white/10 hover:border-white/20 transition-all cursor-pointer">
+                        <div className="flex items-center space-x-4">
+                          <span className="text-lg opacity-50 group-hover:opacity-100 transition-opacity">{item.icon}</span>
+                          <span className="text-xs font-bold text-white/80 group-hover:text-white uppercase tracking-widest">{item.label}</span>
+                        </div>
+                        <svg className="w-4 h-4 text-zinc-600 group-hover:text-yellow-400 transition-colors" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                        </svg>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-                <span>Exclusive Maldives Packages</span>
               </div>
-              <div className="flex items-center space-x-3 text-teal-50 hover:text-yellow-300 font-medium">
-                <div className="w-8 h-8 bg-teal-400/80 rounded-lg flex items-center justify-center">
-                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+
+              {/* The "CTA" Group */}
+              <div className="flex items-center space-x-4 pt-4">
+                <button className="px-8 py-4 bg-yellow-400 rounded-full text-black font-black uppercase text-[10px] tracking-widest shadow-lg shadow-yellow-400/20 hover:shadow-yellow-400/40 hover:-translate-y-1 transition-all">
+                  Start Journey
+                </button>
+                <button className="p-4 rounded-full border-2 border-white/40 text-white hover:bg-white/10 transition-colors">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
-                </div>
-                <span>24/7 Customer Support</span>
-              </div>
-              <div className="flex items-center space-x-3 text-teal-50 hover:text-yellow-300 font-medium">
-                <div className="w-8 h-8 bg-teal-400/80 rounded-lg flex items-center justify-center">
-                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                  </svg>
-                </div>
-                <span>Best Price Guarantee</span>
+                </button>
               </div>
             </div>
           </div>
@@ -338,8 +357,15 @@ const Register = () => {
             <div className={`bg-white/10 backdrop-blur-lg  py-8  ${animations.slideUp}`}>
               {/* Form Header */}
               <div className="text-start mb-8">
-                <h2 className="text-3xl font-bold text-black/80 mb-2 tracking-wide">Create Account</h2>
-                <p className="text-teal-200">Join thousands of happy travelers</p>
+                {/* The Heading: Bold and clear */}
+                <h2 className="text-4xl font-bold text-slate-900 tracking-tight mb-3">
+                  Get Started
+                </h2>
+                
+                {/* The Subtext: Dimmer color to create visual hierarchy */}
+                <p className="text-lg text-slate-500 font-medium">
+                  Join <span className="text-teal-600 font-bold">12,000+</span> travelers exploring the world today.
+                </p>
               </div>
 
               {/* Registration Form */}
@@ -620,11 +646,16 @@ const Register = () => {
                       {errors.services && (
                         <p className="text-red-300 text-sm">{errors.services}</p>
                       )}
-                      <div className="mt-2 p-3 bg-blue-600/10 border border-blue-400/30 rounded-lg">
-                        <p className="text-blue-100 text-sm">
-                          <strong>Note:</strong> Each service you select will require approval from our admin team before you can start offering it.
-                        </p>
-                      </div>
+<div className="mt-4 flex gap-3 p-4 bg-slate-50 border border-slate-200 rounded-xl">
+  {/* Info Icon */}
+  <svg className="w-5 h-5 text-blue-500 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+  </svg>
+  
+  <p className="text-sm text-slate-600 leading-relaxed">
+    <span className="font-bold text-slate-900">Admin Approval:</span> To maintain quality, new services are reviewed by our team before going live.
+  </p>
+</div>
                     </div>
                   </>
                 )}
@@ -715,7 +746,7 @@ const Register = () => {
                     </button>
                   </div>
                   {errors.repeatPassword && (
-                    <p className="text-red-300 text-sm">{errors.repeatPassword}</p>
+                    <p className="text-red-500 text-sm">{errors.repeatPassword}</p>
                   )}
                 </div>
 
