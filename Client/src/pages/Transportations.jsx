@@ -11,7 +11,10 @@ import {
   Filter,
   Search,
   X,
-  RefreshCw
+  RefreshCw,
+  Eye,
+  ShieldCheck,
+  ArrowRight
 } from 'lucide-react';
 
 
@@ -329,142 +332,107 @@ const Transportations = () => {
               <motion.div
                 key={transport._id}
                 initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3 }}
-                className={"rounded-lg bg-white shadow-xl overflow-hidden transition-all duration-300 hover:shadow-lg border border-gray-100 cursor-pointer"}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5 }}
+                className="flex flex-col bg-white border border-gray-400 hover:border-gray-100 rounded-2xl group cursor-pointer hover:shadow-[0_20px_50px_rgba(0,0,0,0.1)] transition-all duration-500 overflow-hidden"
                 onClick={() => handleViewDetails(transport._id)}
               >
-                {/* Image */}
-                <div className="relative h-64 sm:h-72 group">
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent z-10" />
+                {/* Image Section */}
+                <div className="relative h-64 overflow-hidden">
+                  {/* Image with Grayscale to Color transition */}
                   <img
                     src={transport.mainImage}
                     alt={transport.name}
-                    className="w-full h-full object-cover  "
+                    className="w-full h-full object-cover grayscale-[30%] group-hover:grayscale-0 transition-all duration-700 group-hover:scale-110"
                   />
-                   <div className="absolute bottom-0 left-0 right-0 h-full bg-black/0 group-hover:bg-gradient-to-t from-black/40 to-transparent transition-all duration-300 z-[15]"></div>
-                  {transport.availability !== 'available' && (
-                    <div className="absolute top-2 right-2 bg-yellow-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
-                      {transport.availability}
-                    </div>
-                  )}
 
-                  <motion.div 
-                    className="absolute top-0 left-0 z-20"
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    transition={{ delay: 0.6, type: "spring" }}
-                  >
-                    <span className="inline-flex items-center px-3 py-1  text-sm font-medium bg-teal-300 text-white backdrop-blur-sm">
-                      
-                      
-                        {getVehicleIcon(transport.type)}
-                      <span className="ml-1">{transport.type}</span>
-                   
-                    </span>
-                  </motion.div>
-                  <div className="absolute bottom-0 left-0 right-0 p-4 z-20 transform transition-all duration-300 hover:scale-105  group-hover:translate-x-3">
-                      <motion.h4 
-                        className="font-bold text-2xl text-white line-clamp-2 mb-1"
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.7, duration: 0.5 }}
-                      >
-                        {transport.name}
-                      </motion.h4>
-                      <motion.p 
-                        className="text-gray-100 text-sm flex items-center"
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.8, duration: 0.5 }}
-                      >
-                        {/* Capacity */}
-                      <div className="flex items-center text-sm text-gray-100">
-                        <Users className="w-4 h-4 mr-1 text-emerald-200" />
-                        <span>{transport.capacity} seats</span>
-                      </div>
-                      </motion.p>
-                    </div>
-                </div>
+                  {/* Hover Overlay: Darkens slightly to make "Check Availability" pop */}
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-500" />
 
-                {/* Content */}
-                <motion.div 
-                  className="p-5"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.9, duration: 0.5 }}
-                >
-                  
-                  <div className="flex justify-between items-center mb-1">                                      
-                  {transport.descriptionShort && (
-                    <p className="text-sm text-gray-700 mb-3 line-clamp-2">
-                      {transport.descriptionShort}
-                    </p>
-                  )}                 
-                    <div className="flex items-center text-sm text-gray-700">
-                      <MapPin className="w-4 h-4 mr-1 text-gray-500" />
-                      <span className="truncate">{transport.location}</span>
+                  {/* Floating Category Tag */}
+                  <div className="absolute top-4 left-0 z-10">
+                    <div className="bg-teal-600 text-white text-[10px] font-black tracking-[0.2em] uppercase py-2 px-4 pr-6 rounded-r-full shadow-lg">
+                      {transport.type}
                     </div>
                   </div>
 
-                  {/* Features */}
-                  {transport.features && transport.features.length > 0 && (
-                    <div className="flex flex-wrap gap-2 mb-3">
-                      {transport.features.slice(0, 3).map((feature, idx) => (
-                        <span
-                          key={idx}
-                          className="text-xs bg-teal-800/50 text-gray-900  ring-1 ring-teal-500 px-2 py-0.5 rounded-full"
-                        >
-                          {feature}
-                        </span>
-                      ))}
-                      {transport.features.length > 3 && (
-                        <span className="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded">
-                          +{transport.features.length - 3} more
-                        </span>
-                      )}
+                  {/* Glassmorphism Availability Bar - Slides up on hover */}
+                  <div className="absolute bottom-4 left-4 right-4 p-3 rounded-xl bg-white/20 backdrop-blur-md border border-white/30 flex justify-between items-center opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-500 z-20">
+                    <span className="text-white text-xs font-bold uppercase tracking-widest">Available Now</span>
+                    <div className="bg-white/20 p-1 rounded-full">
+                      <ArrowRight className="w-4 h-4 text-white" />
                     </div>
-                  )}
+                  </div>
+                </div>
 
-                  {/* Price and Rating */}
-                  <div className="flex items-center justify-between pt-1 border-t border-gray-300">
-                    <div className="flex flex-col">
-                      <div className="flex items-center">
-                        <DollarSign className="w-6 h-6 text-black font-bold" />
-                        <span className="text-3xl font-bold text-gray-900">
-                          {transport.pricePerDay}
-                        </span>
-                        <span className="text-sm text-gray-600 ml-1">/day</span>
-                      </div>
-                      {/* Rating */}
-                      {transport.rating > 0 && (
-                        <div className="flex items-center mr-3">
-                          <Star className="w-4 h-4 text-yellow-400 fill-current" />
-                          <span className="ml-1 text-sm font-semibold text-gray-700">
-                            {transport.rating.toFixed(1)}
-                          </span>
-                          {transport.reviewCount > 0 && (
-                            <span className="ml-1 text-xs text-gray-500">
-                              ({transport.reviewCount})
-                            </span>
-                          )}
-                        </div>
-                      )}
+                {/* Content Section */}
+                <div className="p-6 flex flex-col flex-grow">
+                  <div className="mb-2">
+                    <div className="flex items-center gap-2 mb-1">
+                      <MapPin className="w-3 h-3 text-teal-500" />
+                      <p className="text-teal-600 text-[10px] font-bold uppercase tracking-widest">
+                        {transport.location}
+                      </p>
                     </div>
-                   {/* View Details Button */}
+                    <h4 className="text-2xl font-semibold text-slate-900 group-hover:text-teal-200 transition-colors duration-300">
+                      {transport.name}
+                    </h4>
+                  </div>
+
+                  {/* Specs Row */}
+                  <div className="flex items-center gap-4 pb-4 border-b border-gray-50 mb-2">
+                    <div className="flex items-center gap-2 px-3 py-1 bg-slate-50 rounded-lg">
+                      <Users className="w-4 h-4 text-slate-500" />
+                      <span className="text-xs font-bold text-slate-700">{transport.capacity} Seats</span>
+                    </div>
+                    {transport.rating > 0 && (
+                      <div className="flex items-center gap-1">
+                        <Star className="w-3.5 h-3.5 text-amber-400 fill-current" />
+                        <span className="text-xs font-bold text-slate-700">{transport.rating.toFixed(1)}</span>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Features Section - Clean Pills */}
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    {transport.features?.slice(0, 3).map((feature, idx) => (
+                      <span 
+                        key={idx} 
+                        className="text-[10px] font-bold text-slate-500 bg-slate-100/50 border border-slate-200 px-2 py-1 rounded-md uppercase tracking-tighter"
+                      >
+                        {feature}
+                      </span>
+                    ))}
+                    {transport.features?.length > 3 && (
+                      <span className="text-[10px] font-bold text-teal-600 px-2 py-1 italic">
+                        +{transport.features.length - 3} more
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Final Row: Price and Primary Button */}
+                  <div className="mt-auto flex items-center justify-between pt-4 border-t border-gray-50">
+                    <div className="flex flex-col">
+                      <span className="text-[10px] text-slate-500 font-bold uppercase tracking-tighter">Daily Rate</span>
+                      <div className="flex items-baseline gap-1">
+                        <span className="text-3xl font-bold text-slate-900">${transport.pricePerDay}</span>
+                        <span className="text-xs text-slate-500 font-medium italic">/day</span>
+                      </div>
+                    </div>
+
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
                         handleViewDetails(transport._id);
                       }}
-                      className="w-32 mt-4 px-4 py-2 bg-teal-500 text-white rounded-md hover:bg-white hover:text-black border-2 hover:border-teal-500 transition-colors"
+                      className="flex items-center gap-2 bg-teal-500 hover:bg-white border-2 hover:border-teal-500 hover:text-black text-white px-5 py-3 rounded-xl transition-all duration-300 shadow-lg shadow-slate-200 active:scale-95 group/btn"
                     >
-                      View Details
+                      <span className="text-xs font-bold uppercase tracking-widest">Reserve</span>
+                      <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
                     </button>
                   </div>
-
-
-                </motion.div>
+                </div>
               </motion.div>
             ))}
           </div>

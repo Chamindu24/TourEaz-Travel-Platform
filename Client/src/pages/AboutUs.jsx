@@ -367,74 +367,78 @@ const AboutUs = () => (
     <style>{animationStyles}</style>
 
     {/* Modern Hero Section */}
-    <section 
-      className="relative py-24 mt-4 bg-gradient-to-br from-[#005E84] via-[#075375] to-[#0A435C] overflow-hidden animate-gradient-flow"
-          style={{
-          backgroundImage: "url('/travel-services/brand.jpg')",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-      >
-      <div className="absolute inset-0 bg-black/15"></div>
-      <div className="absolute inset-0 bg-gradient-to-r from-[#005E84]/50 to-[#0A435C]/50"></div>
+    <section className="relative h-screen mt-4 w-full flex items-center bg-[#FAF9F6] overflow-hidden">
+      
+      {/* Left Side: Massive Immersive Image */}
+      <div className="absolute inset-0 w-full lg:w-2/3 h-full">
+        <div 
+          className="absolute inset-0 bg-cover bg-center"
+          style={{ backgroundImage: "url('/travel-services/brand.jpg')" }}
+        />
+        {/* Sophisticated Light Vignette */}
+        <div className="absolute inset-0 bg-gradient-to-r from-white/10 via-transparent to-[#FAF9F6]"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-[#FAF9F6] via-transparent to-transparent opacity-40"></div>
+      </div>
 
-      {/* Floating Elements */}
-      <div className="absolute top-20 right-20 w-32 h-32 border-4 border-white/50 rounded-full animate-float animate-glow"></div>
-      <div className="absolute bottom-20 left-20 w-20 h-20 border-2 border-white/30 rounded-full animate-pulse-slow animate-glow"></div>
-      <div
-        className="absolute top-1/2 left-1/4 w-6 h-6 bg-white/40 rounded-full animate-float animate-glow"
-        style={{ animationDelay: "1s" }}
-      ></div>
+      {/* Right Side: Clean Typography Content */}
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-6 lg:px-12 flex justify-end">
+        <div className="w-full lg:w-1/2 text-left lg:pl-12">
+          
+ 
+          <header className="space-y-4 mb-10">
+            <span className="text-[#005E84] font-bold tracking-[0.3em] uppercase text-xs">
+              EST. 2015 — Trusted Excellence
+            </span>
+            <h1 className="text-6xl md:text-8xl font-light text-gray-900 leading-none tracking-tight">
+              Crafting <br />
+              <span className="font-serif italic text-teal-300">Memorable Journeys.</span>
+            </h1>
+          </header>
 
-      {/* Animated particles */}
-      <div
-        className="absolute top-40 right-40 w-16 h-16 bg-white/20 rounded-full animate-float"
-        style={{ animationDelay: "0.5s" }}
-      ></div>
-      <div
-        className="absolute bottom-40 left-1/3 w-20 h-20 bg-white/15 rounded-full animate-float"
-        style={{ animationDelay: "1.2s" }}
-      ></div>
-      <div
-        className="absolute top-1/3 right-1/4 w-12 h-12 bg-white/25 rounded-full animate-float"
-        style={{ animationDelay: "1.8s" }}
-      ></div>
+          <div className="space-y-6 max-w-lg">
+            <p className="text-gray-900 text-lg leading-relaxed font-light">
+              At <span className="text-gray-900 font-semibold">TourEaz</span>, we believe travel is an art form. We curate seamless transitions between the world's most breathtaking landscapes and your personal peace of mind.
+            </p>
+            
+          {/* CTA Button */}
+          <div className="mt-12">
+            <button className="group relative px-10 py-4 overflow-hidden border border-gray-900 text-gray-900 transition-all">
+              <span className="relative z-10 text-sm font-bold tracking-widest uppercase transition-colors group-hover:text-white">
+                Discover Our Story
+              </span>
+              {/* Fill effect on hover */}
+              <div className="absolute inset-0 bg-teal-500 translate-y-full transition-transform duration-300 group-hover:translate-y-0"></div>
+            </button>
+          </div>
+          </div>
 
-      {/* Shimmering overlay */}
-      <div className="absolute inset-0 animate-shimmer opacity-20"></div>
+          {/* Modern Interaction Grid */}
+          <div className="mt-12 grid grid-cols-2 gap-4 border-t border-gray-200 pt-10">
+            <div>
+              <h4 className="text-gray-900 text-sm font-bold uppercase tracking-tighter">01. Hotels & Tours</h4>
+              <p className="text-gray-500 text-[10px] uppercase tracking-widest mt-1">Curated Experiences</p>
+            </div>
+            <div>
+              <h4 className="text-gray-900 text-sm font-bold uppercase tracking-tighter">02. Transportation</h4>
+              <p className="text-gray-500 text-[10px] uppercase tracking-widest mt-1">Seamless Travel</p>
+            </div>
+          </div>
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <div className="inline-flex items-center px-4 py-2 bg-white backdrop-blur-sm rounded-full text-sm font-medium mb-8 border border-[#B7C5C7]/30 animate-fade-in-up animate-glow">
-          <span className="w-2 h-2 bg-[#70716f] rounded-full mr-2 animate-pulse-slow"></span>
-          About Us
-        </div>
-        <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-white mb-8 tracking-tight leading-tight animate-fade-in-up animate-delay-1">
-          About IsleKey{" "}
-          <span className="relative inline-block text-yellow-300 blur-[0.6px] drop-shadow-[0_0_10px_rgba(253,224,71,0.3)] ">
-            Holidays
-          </span>
-        </h1>
 
-        <p className="text-xl md:text-2xl text-gray-100 mb-12 max-w-4xl mx-auto font-light animate-fade-in-up animate-delay-2">
-          Your trusted gateway to the Maldives. We bridge travel, investment,
-          and opportunity in paradise, creating unforgettable experiences and
-          lasting partnerships.
-        </p>
-        <div className="flex flex-wrap justify-center gap-4 animate-fade-in-up animate-delay-3">
-          <span className="px-6 py-3 bg-white/50 backdrop-blur-sm rounded-full text-sm font-medium border border-[#B7C5C7]/30 hover:bg-[#B7C5C7]/30 transition-all shine-effect animate-glow">
-            Resorts
-          </span>
-          <span className="px-6 py-3 bg-white/50 backdrop-blur-sm rounded-full text-sm font-medium border border-[#B7C5C7]/30 hover:bg-[#B7C5C7]/30 transition-all shine-effect animate-glow">
-            Tours
-          </span>
-          <span className="px-6 py-3 bg-white/50   backdrop-blur-sm rounded-full text-sm font-medium border border-[#B7C5C7]/30 hover:bg-[#B7C5C7]/30 transition-all shine-effect animate-glow">
-            Activities
-          </span>
-          <span className="px-6 py-3 bg-white/55 backdrop-blur-sm rounded-full text-sm font-medium border border-[#B7C5C7]/30 hover:bg-[#B7C5C7]/30 transition-all shine-effect animate-glow">
-            Transportaions
-          </span>
         </div>
       </div>
+
+      {/* Minimalist Scroll Indicator */}
+      <div className="absolute bottom-10 left-10 flex items-center gap-4 text-gray-400">
+        <span className="text-[10px] tracking-[0.5em] uppercase vertical-text rotate-180">Scroll</span>
+        <div className="h-12 w-px bg-gray-200"></div>
+      </div>
+
+      <style dangerouslySetInnerHTML={{ __html: `
+        .vertical-text {
+          writing-mode: vertical-rl;
+        }
+      `}} />
     </section>
 
     <section className="py-24 bg-white relative overflow-hidden">
@@ -456,26 +460,26 @@ const AboutUs = () => (
                 Our Mission
               </span>
               <h2 className="text-4xl lg:text-6xl font-serif font-medium text-slate-900 leading-[1.1]">
-                To be the premier <br />
-                <span className="text-[#0A435C] italic">international bridge</span>
+                Your premier <br />
+                <span className="text-[#0A435C] italic">travel companion</span>
               </h2>
             </div>
 
             <p className="text-lg text-slate-600 leading-relaxed max-w-xl">
-              Connecting global opportunities with Sri Lankan excellence. We deliver 
-              unrivaled expertise in real estate and investment through a lens of 
-              <span className="text-slate-900 font-medium"> absolute integrity.</span>
+              Connecting travelers with extraordinary destinations worldwide. We deliver 
+              exceptional service and unforgettable experiences through 
+              <span className="text-slate-900 font-medium"> personalized attention and expertise.</span>
             </p>
 
             {/* Stats Grid: Minimalist Style */}
             <div className="grid grid-cols-2 gap-12 pt-4 border-t border-slate-200">
               <div>
                 <div className="text-4xl font-light text-[#0A435C] mb-1">500<span className="text-xl text-slate-400">+</span></div>
-                <div className="text-sm uppercase tracking-widest text-slate-500 font-semibold">Global Clients</div>
+                <div className="text-sm uppercase tracking-widest text-slate-500 font-semibold">Happy Travelers</div>
               </div>
               <div>
-                <div className="text-4xl font-light text-[#0A435C] mb-1">08<span className="text-xl text-slate-400">+</span></div>
-                <div className="text-sm uppercase tracking-widest text-slate-500 font-semibold">Years of Trust</div>
+                <div className="text-4xl font-light text-[#0A435C] mb-1">10<span className="text-xl text-slate-400">+</span></div>
+                <div className="text-sm uppercase tracking-widest text-slate-500 font-semibold">Years Experience</div>
               </div>
             </div>
           </div>
@@ -486,7 +490,7 @@ const AboutUs = () => (
             <div className="relative z-10 rounded-[2rem] overflow-hidden shadow-2xl">
               <img
                 src="/travel-services/activity2.jpg"
-                alt="Luxury Maldives"
+                alt="TourEaz Travel Experience"
                 className="w-full h-[500px] object-cover transition-transform duration-1000 group-hover:scale-110"
               />
               {/* Subtle Overlay Gradient */}
@@ -503,7 +507,7 @@ const AboutUs = () => (
                 </div>
                 <div>
                   <p className="text-slate-900 font-bold leading-none">Verified Expertise</p>
-                  <p className="text-slate-500 text-sm mt-1">Sri lankan Licensed</p>
+                  <p className="text-slate-500 text-sm mt-1">Licensed Travel Agency</p>
                 </div>
               </div>
             </div>
@@ -530,7 +534,7 @@ const AboutUs = () => (
             Principles that <span className="text-[#0A435C] italic">guide us</span>
           </h2>
           <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-            The foundation of our commitment to delivering excellence across the Maldivian archipelago.
+            The foundation of our commitment to delivering exceptional travel experiences worldwide.
           </p>
         </div>
 
@@ -713,7 +717,7 @@ const AboutUs = () => (
             <p className="text-base md:text-lg text-slate-600 max-w-2xl leading-relaxed">
               A reflection of our commitment to excellence and our 
               <span className="text-slate-900 font-semibold"> proven track record</span> in the 
-              Maldivian luxury market.
+              global travel industry.
             </p>
           </div>
 
@@ -769,7 +773,7 @@ const AboutUs = () => (
             },
             {
               number: "100+",
-              label: "Properties Managed",
+              label: "Destinations Covered",
               icon: (
                 <svg
                   className="w-8 h-8 text-white"
@@ -890,22 +894,22 @@ const AboutUs = () => (
             <div className="space-y-6">
               <div className="flex items-center gap-4">
                 <span className="w-12 h-[1px] bg-slate-900"></span>
-                <p className="text-sm font-bold tracking-[0.5em] text-slate-400 uppercase">Since 2010</p>
+                <p className="text-sm font-bold tracking-[0.5em] text-slate-400 uppercase">Since 2015</p>
               </div>
               
               <h2 className="text-6xl lg:text-8xl font-light text-slate-900 leading-[0.85] tracking-tighter">
-                Where <span className="font-serif italic text-teal-300">Legacy</span> <br /> 
-                Meets the <span className="font-black">Deep.</span>
+                Where <span className="font-serif italic text-teal-300">Dreams</span> <br /> 
+                Become <span className="font-black">Reality.</span>
               </h2>
 
               <p className="text-xl text-slate-600 font-mono leading-relaxed">
-                We curate the <span className="text-slate-900 font-semibold underline decoration-teal-300 decoration-2 underline-offset-4">unobtainable</span>. Every itinerary is a bespoke masterpiece, hand-drawn by our local concierges.
+                We curate the <span className="text-slate-900 font-semibold underline decoration-teal-300 decoration-2 underline-offset-4">extraordinary</span>. Every journey is a personalized experience, crafted with care by our travel experts.
               </p>
             </div>
 
             {/* 4. THE INTERACTIVE FEATURE LIST */}
             <ul className="space-y-6">
-              {['Private Atolls', 'Deep Sea Exploration', 'Aerial Transfers'].map((item, idx) => (
+              {['Luxury Hotels', 'Adventure Tours', 'Premium Transport'].map((item, idx) => (
                 <li key={idx} className="group cursor-pointer flex items-center justify-between border-b border-slate-200 pb-4 hover:border-slate-900 transition-colors duration-500">
                   <span className="text-slate-400 text-xl font-bold mr-6">0{idx + 1}</span>
                   <span className="text-xl font-bold text-slate-800 group-hover:translate-x-2 transition-transform duration-300">{item}</span>

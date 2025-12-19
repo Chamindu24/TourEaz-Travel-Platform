@@ -27,7 +27,15 @@ import {
   Navigation,
   Package,
   User,
-  MessageSquare
+  MessageSquare,
+  ArrowUpRight,
+  Zap,
+  ShieldCheck,
+  Gauge,
+  Check,
+  AlertCircle,
+  Share2,
+  Heart
 } from 'lucide-react';
 
 const TransportationDetail = () => {
@@ -207,76 +215,82 @@ const TransportationDetail = () => {
     <div className="bg-white px-20 mt-6 min-h-screen">
       
 
-      {/* Image Gallery */}
-      <div className="container mx-auto px-4 pb-8">
-        <div className="bg-white rounded-3xl shadow-xl overflow-hidden hover:shadow-3xl transition-shadow duration-300">
-          {/* Main Image */}
-          <div className="relative h-[500px] overflow-hidden group">
+      {/* Image Gallery Container */}
+      <div className="container mx-auto px-4 pb-12">
+
+
+        <div className="bg-white rounded-[2rem] shadow-2xl shadow-gray-200/50 overflow-hidden border border-gray-100">
+          {/* Main Image Section */}
+          <div className="relative h-[600px] overflow-hidden group">
             <img
               src={selectedImage || transportation.mainImage}
               alt={transportation.name}
-              className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
+              className="w-full h-full object-cover transition-transform duration-1000 ease-out group-hover:scale-110"
             />
             
-            {/* Gradient Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
+            {/* Premium Dark Gradient Overlay - Deeper at the bottom */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"></div>
             
-            {/* Availability Badge */}
-            {transportation.availability !== 'available' ? (
-              <div className="absolute top-6 right-6 bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-5 py-2.5 rounded-full font-bold shadow-xl animate-pulse">
-                <Clock className="inline w-4 h-4 mr-2" />
-                {transportation.availability}
-              </div>
-            ) : (
-              <div className="absolute top-6 right-6 bg-teal-500 text-white px-5 py-2.5 rounded-full font-bold shadow-xl">
-                <CheckCircle className="inline w-4 h-4 mr-2" />
-                Available Now
-              </div>
-            )}
+            {/* Action Buttons Top Left (Share/Save) */}
+            <div className="absolute top-6 left-6 flex gap-3">
+              <button className="p-3 bg-white/20 backdrop-blur-md rounded-full text-white hover:bg-white hover:text-gray-900 transition-all shadow-lg">
+                <Share2 className="w-5 h-5" />
+              </button>
+              <button className="p-3 bg-white/20 backdrop-blur-md rounded-full text-white hover:bg-red-500 transition-all shadow-lg">
+                <Heart className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Availability Badge - High contrast */}
+            <div className="absolute top-6 right-6">
+              {transportation.availability !== 'available' ? (
+                <div className="bg-amber-400 text-amber-950 px-6 py-2 rounded-2xl font-bold shadow-2xl flex items-center gap-2 animate-pulse">
+                  <Clock className="w-4 h-4" />
+                  {transportation.availability}
+                </div>
+              ) : (
+                <div className="bg-emerald-500 text-white px-6 py-2 rounded-2xl font-bold shadow-2xl flex items-center gap-2">
+                  <CheckCircle className="w-4 h-4" />
+                  Ready for Booking
+                </div>
+              )}
+            </div>
             
-            {/* Title and Basic Info Overlay */}
-            <div className="absolute bottom-0 left-0 right-0 p-8">
-              <div className="flex justify-between items-end">
-                <div className="flex-1">
-                  <div className="flex items-center gap-3 mb-3">
-                    <div className="bg-teal-500 p-2 rounded-lg">
-                      <Car className="w-6 h-6 text-white" />
-                    </div>
-                    <span className="text-emerald-200 text-sm font-semibold uppercase tracking-wider">
-                      Premium {transportation.type}
-                    </span>
-                  </div>
-                  <h1 className="text-5xl font-bold text-white mb-4 drop-shadow-2xl">
+            {/* Center Info Overlay */}
+            <div className="absolute bottom-0 left-0 right-0 p-10">
+              <div className="flex flex-col md:flex-row justify-between items-end gap-6">
+                <div className="flex-1 space-y-4">                
+                  <h1 className="text-6xl font-extrabold text-white tracking-tight drop-shadow-lg">
                     {transportation.name}
                   </h1>
-                  <div className="flex flex-wrap items-center gap-6 text-white/90">
-                    <span className="flex items-center gap-2 bg-white/10 backdrop-blur-md px-4 py-2 rounded-full">
-                      <MapPin className="w-5 h-5 text-emerald-300" />
-                      <span >{transportation.location}</span>
-                    </span>
-                    <span className="flex items-center gap-2 bg-white/10 backdrop-blur-md px-4 py-2 rounded-full">
-                      <Users className="w-5 h-5 text-emerald-300" />
-                      <span >{transportation.capacity} Seats</span>
-                    </span>
-                    {transportation.year && (
-                      <span className="flex items-center gap-2 bg-white/10 backdrop-blur-md px-4 py-2 rounded-full">
-                        <Calendar className="w-5 h-5 text-emerald-300" />
-                        <span >{transportation.year}</span>
-                      </span>
-                    )}
+
+                  <div className="flex flex-wrap items-center gap-4">
+                    <div className="flex items-center gap-2 text-white bg-white/15 border border-white/10 backdrop-blur-xl px-5 py-2.5 rounded-2xl">
+                      <MapPin className="w-5 h-5 text-teal-500" />
+                      <span className="font-medium">{transportation.location}</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-white bg-white/15 border border-white/10 backdrop-blur-xl px-5 py-2.5 rounded-2xl">
+                      <Users className="w-5 h-5 text-teal-500" />
+                      <span className="font-medium">{transportation.capacity} People</span>
+                    </div>
                   </div>
                 </div>
                 
-                {/* Rating Badge */}
+                {/* Enhanced Rating Card */}
                 {transportation.rating > 0 && (
-                  <div className="flex items-center gap-2 bg-white/95 backdrop-blur-sm px-5 py-3 rounded-2xl shadow-xl">
-                    <Star className="w-6 h-6 text-yellow-500 fill-current" />
+                  <div className="bg-white p-6 rounded-[2.5rem] shadow-2xl flex items-center gap-4 transform transition-transform hover:-translate-y-2">
+                    <div className="bg-yellow-50 p-3 rounded-2xl">
+                      <Star className="w-8 h-8 text-yellow-500 fill-current" />
+                    </div>
                     <div>
-                      <span className="font-bold text-2xl text-gray-800">
-                        {transportation.rating.toFixed(1)}
-                      </span>
-                      <p className="text-xs text-gray-500">
-                        {transportation.reviewCount} reviews
+                      <div className="flex items-baseline gap-1">
+                        <span className="font-black text-3xl text-gray-900">
+                          {transportation.rating.toFixed(1)}
+                        </span>
+                        <span className="text-gray-400 font-bold">/ 5</span>
+                      </div>
+                      <p className="text-sm font-semibold text-teal-600">
+                        {transportation.reviewCount}+ Happy Clients
                       </p>
                     </div>
                   </div>
@@ -285,36 +299,37 @@ const TransportationDetail = () => {
             </div>
           </div>
 
-          {/* Thumbnail Gallery */}
+          {/* Thumbnail Strip with Soft Background */}
           {transportation.images && transportation.images.length > 1 && (
-            <div className="flex gap-3 p-6 overflow-x-auto bg-gradient-to-r from-gray-50 to-teal-50">
-              {transportation.images.map((img, idx) => (
-                <div
-                  key={idx}
-                  className={`relative flex-shrink-0 cursor-pointer transition-all duration-300 ${
-                    selectedImage === img 
-                      ? 'ring-4 ring-teal-500 rounded-md scale-105 shadow-xl' 
-                      : 'opacity-70  hover:opacity-100 hover:scale-105 shadow-md'
-                  }`}
-                  onClick={() => setSelectedImage(img)}
-                >
-                  <img
-                    src={img}
-                    alt={`${transportation.name} ${idx + 1}`}
-                    className="w-28 h-28 object-cover rounded-md"
-                  />
-                  {selectedImage === img && (
-                    <div className="absolute inset-0 bg-teal-500/20 rounded-md flex items-center justify-center">
-                      <CheckCircle className="w-8 h-8 text-white" />
-                    </div>
-                  )}
-                </div>
-              ))}
+            <div className="p-8 bg-gray-50/50">
+              <div className="flex gap-4 overflow-x-auto p-4 pb-2 scrollbar-hide">
+                {transportation.images.map((img, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => setSelectedImage(img)}
+                    className={`relative min-w-[140px] h-24 rounded-2xl overflow-hidden transition-all duration-500 ${
+                      selectedImage === img 
+                        ? 'ring-4 ring-teal-500 scale-105 shadow-2xl' 
+                        : 'opacity-60 hover:opacity-100 grayscale hover:grayscale-0'
+                    }`}
+                  >
+                    <img
+                      src={img}
+                      alt="Gallery"
+                      className="w-full h-full object-cover"
+                    />
+                    {selectedImage === img && (
+                      <div className="absolute inset-0 bg-teal-500/10 flex items-center justify-center">
+                        <div className="w-2 h-2 bg-white rounded-full animate-ping" />
+                      </div>
+                    )}
+                  </button>
+                ))}
+              </div>
             </div>
           )}
         </div>
       </div>
-
       {/* Main Content */}
       <div className="container mx-auto px-4 pb-12">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -352,508 +367,477 @@ const TransportationDetail = () => {
 
             {/* Vehicle Tab Content */}
             {mainTab === 'vehicle' && (
-              <div className="space-y-6 shadow-md p-6 rounded-md border border-gray-100">
-            {/* Description */}
-            <div className="bg-white rounded-md  p-8  transition-all duration-300 border border-gray-100">
-              
-              <p className="text-gray-700 leading-relaxed text-lg">{transportation.description}</p>
-            </div>
+              <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+                
+                {/* Executive Description Card */}
+                <div className="relative overflow-hidden bg-white rounded-[2rem] p-8 md:p-10 border border-slate-300 shadow-[0_4px_20px_rgba(0,0,0,0.03)]">
+                  <div className="absolute top-0 left-0 w-2 h-full bg-teal-500" />
+                  <h2 className="text-md font-semibold uppercase tracking-[0.2em] text-teal-500 mb-4">About this vehicle</h2>
+                  <p className="text-slate-700 leading-relaxed text-xl  italic">
+                    "{transportation.description}"
+                  </p>
+                </div>
 
-            {/* Vehicle Specifications */}
-            <div className="bg-gradient-to-br from-teal-50/50 via-green-50/50 to-blue-50/50 rounded-md  p-8  transition-all duration-300 border border-teal-50/10">
-              <div className="flex items-center gap-3 mb-6">
-                <div className=" rounded-xl">
-                  <Settings className="w-6 h-6 text-teal-500" />
-                </div>
-                <h2 className="text-2xl font-semibold text-gray-800">Vehicle Specifications</h2>
-              </div>
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
-                <div className="bg-white/80 backdrop-blur-sm rounded-md p-4 shadow-sm hover:shadow-md transition-all hover:-translate-y-1 border border-gray-100">
-                  <div className="flex items-center gap-3 mb-2">
-                    <div className=" p-2 rounded-lg">
-                      <Users className="w-5 h-5 text-teal-600" />
+                {/* Vehicle Specifications - Technical Grid */}
+                <div className="bg-slate-50/50 rounded-[2.5rem] p-8 md:p-10 border border-slate-300">
+                  <div className="flex items-center gap-4 mb-10">
+                    <div className="w-12 h-12 bg-white rounded-2xl shadow-sm flex items-center justify-center border border-slate-100">
+                      <Settings className="w-6 h-6 text-slate-900" />
                     </div>
-                    <p className="text-sm font-medium text-gray-600">Capacity</p>
-                  </div>
-                  <p className="font-semibold text-xl text-gray-800">{transportation.capacity} persons</p>
-                </div>
-                
-                <div className="bg-white rounded-md p-4 shadow-sm hover:shadow-md transition-all hover:-translate-y-1 border border-gray-100">
-                  <div className="flex items-center gap-3 mb-2">
-                    <div className=" p-2 rounded-lg">
-                      <Fuel className="w-5 h-5 text-orange-600" />
+                    <div>
+                      <h2 className="text-2xl font-bold text-slate-900 tracking-tight">Technical Specifications</h2>
+                      <p className="text-md text-slate-500 font-medium">Core performance and comfort metrics</p>
                     </div>
-                    <p className="text-sm font-medium text-gray-600">Fuel Type</p>
                   </div>
-                  <p className="font-semibold text-xl text-gray-800 capitalize">{transportation.fuelType}</p>
-                </div>
-                
-                <div className="bg-white rounded-md p-4 shadow-sm hover:shadow-md transition-all hover:-translate-y-1 border border-gray-100">
-                  <div className="flex items-center gap-3 mb-2">
-                    <div className=" p-2 rounded-lg">
-                      <Settings className="w-5 h-5 text-purple-600" />
-                    </div>
-                    <p className="text-sm font-medium text-gray-600">Transmission</p>
-                  </div>
-                  <p className="font-semibold text-xl text-gray-800 capitalize">{transportation.transmission}</p>
-                </div>
-                
-                {transportation.year && (
-                  <div className="bg-white rounded-md p-4 shadow-sm hover:shadow-md transition-all hover:-translate-y-1 border border-gray-100">
-                    <div className="flex items-center gap-3 mb-2">
-                      <div className=" p-2 rounded-lg">
-                        <Calendar className="w-5 h-5 text-blue-600" />
+
+                  <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+                    {[
+                      { label: 'Capacity', val: `${transportation.capacity} Persons`, icon: Users, color: 'text-blue-600', bg: 'bg-blue-50' },
+                      { label: 'Fuel Type', val: transportation.fuelType, icon: Fuel, color: 'text-orange-600', bg: 'bg-orange-50' },
+                      { label: 'Transmission', val: transportation.transmission, icon: Gauge, color: 'text-purple-600', bg: 'bg-purple-50' },
+                      { label: 'Build Year', val: transportation.year || 'N/A', icon: Calendar, color: 'text-indigo-600', bg: 'bg-indigo-50' },
+                      { label: 'Insurance', val: transportation.insuranceIncluded ? 'Comprehensive' : 'Standard', icon: ShieldCheck, color: 'text-emerald-600', bg: 'bg-emerald-50' },
+                      { label: 'Climate Control', val: transportation.airConditioning ? 'A/C Available' : 'No A/C', icon: Wind, color: 'text-cyan-600', bg: 'bg-cyan-50' },
+                    ].map((spec, i) => (
+                      <div key={i} className="group bg-white p-6 rounded-3xl border border-slate-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                        <div className={`w-10 h-10 ${spec.bg} rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
+                          <spec.icon className={`w-5 h-5 ${spec.color}`} />
+                        </div>
+                        <p className="text-md font-semibold uppercase tracking-widest text-slate-400 mb-1">{spec.label}</p>
+                        <p className="text-xl font-bold text-slate-800 capitalize">{spec.val}</p>
                       </div>
-                      <p className="text-sm font-medium text-gray-600">Year</p>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Features & Amenities - Modern Pills */}
+                {transportation.features?.length > 0 && (
+                  <div className="bg-white rounded-[2.5rem] p-8 md:p-10 border border-slate-300 shadow-sm">
+                    <div className="flex items-center gap-4 mb-8">
+                      <div className="w-12 h-12 bg-pink-50 rounded-2xl flex items-center justify-center">
+                        <Award className="w-6 h-6 text-pink-500" />
+                      </div>
+                      <h2 className="text-2xl font-bold text-slate-800 tracking-tight">Included Amenities</h2>
                     </div>
-                    <p className="font-semibold text-xl text-gray-800">{transportation.year}</p>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                      {transportation.features.map((feature, idx) => (
+                        <div key={idx} className="flex items-center gap-3 bg-slate-50/80 p-4 rounded-2xl border border-transparent hover:border-teal-200 hover:bg-white transition-all">
+                          <div className="w-6 h-6 rounded-full bg-teal-500 flex items-center justify-center flex-shrink-0">
+                            <Check className="w-3.5 h-3.5 text-white stroke-[4]" />
+                          </div>
+                          <span className="text-slate-700 font-semibold text-md tracking-tight">{feature}</span>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 )}
-                
-                <div className="bg-white rounded-md p-4 shadow-sm hover:shadow-md transition-all hover:-translate-y-1 border border-gray-100">
-                  <div className="flex items-center gap-3 mb-2">
-                    <div className=" p-2 rounded-lg">
-                      <Shield className="w-5 h-5 text-green-600" />
-                    </div>
-                    <p className="text-sm font-medium text-gray-600">Insurance</p>
-                  </div>
-                  <p className="font-semibold text-lg text-gray-800">
-                    {transportation.insuranceIncluded ? '✓ Included' : '✗ Not Included'}
-                  </p>
-                </div>
-                
-                <div className="bg-white rounded-md p-4 shadow-sm hover:shadow-md transition-all hover:-translate-y-1 border border-gray-100">
-                  <div className="flex items-center gap-3 mb-2">
-                    <div className=" p-2 rounded-lg">
-                      <Wind className="w-5 h-5 text-cyan-600" />
-                    </div>
-                    <p className="text-sm font-medium text-gray-600">AC</p>
-                  </div>
-                  <p className="font-semibold text-lg text-gray-800">
-                    {transportation.airConditioning ? '✓ Available' : '✗ Not Available'}
-                  </p>
-                </div>
-              </div>
-            </div>
 
-            {/* Features */}
-            {transportation.features && transportation.features.length > 0 && (
-              <div className="bg-white rounded-md  p-8  transition-all duration-300 border border-gray-100">
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="  rounded-xl">
-                    <Award className="w-6 h-6 text-pink-500" />
-                  </div>
-                  <h2 className="text-2xl font-bold text-gray-800">Features & Amenities</h2>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {transportation.features.map((feature, idx) => (
-                    <div 
-                      key={idx} 
-                      className="flex items-center gap-3 bg-gradient-to-r from-green-50 to-teal-50 p-4 rounded-xl hover:shadow-md transition-all hover:-translate-y-0.5 border border-green-100"
-                    >
-                      <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0" />
-                      <span className="text-gray-800 font-medium">{feature}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Pickup & Dropoff Locations */}
-            {(transportation.pickupLocations?.length > 0 || transportation.dropoffLocations?.length > 0) && (
-              <div className="bg-white rounded-md  p-8  transition-all duration-300 border border-gray-100">
-                <div className="flex items-center gap-3 mb-6">
-                  <div className=" rounded-md">
-                    <Navigation className="w-6 h-6 text-blue-500" />
-                  </div>
-                  <h2 className="text-2xl font-bold text-gray-800">Pickup & Dropoff Locations</h2>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {transportation.pickupLocations?.length > 0 && (
-                    <div className="bg-gradient-to-br from-blue-50 to-indigo-50 p-6 rounded-xl border border-blue-100">
-                      <h3 className="font-bold text-lg text-gray-800 mb-4 flex items-center gap-2">
-                        <MapPin className="w-5 h-5 text-blue-600" />
-                        Pickup Locations
-                      </h3>
-                      <ul className="space-y-3">
-                        {transportation.pickupLocations.map((loc, idx) => (
-                          <li key={idx} className="flex items-start gap-3 bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition-all">
-                            <div className="bg-blue-100 p-1.5 rounded-lg mt-0.5">
-                              <MapPin className="w-4 h-4 text-blue-600" />
-                            </div>
-                            <span className="text-gray-700 font-medium">{loc}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-                  {transportation.dropoffLocations?.length > 0 && (
-                    <div className="bg-gradient-to-br from-teal-50 to-green-50 p-6 rounded-xl border ">
-                      <h3 className="font-bold text-lg text-gray-800 mb-4 flex items-center gap-2">
-                        <MapPin className="w-5 h-5 text-teal-600" />
-                        Dropoff Locations
-                      </h3>
-                      <ul className="space-y-3">
-                        {transportation.dropoffLocations.map((loc, idx) => (
-                          <li key={idx} className="flex items-start gap-3 bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition-all">
-                            <div className="bg-teal-900 p-1.5 rounded-lg mt-0.5">
-                              <MapPin className="w-4 h-4 text-teal-600" />
-                            </div>
-                            <span className="text-gray-700 font-medium">{loc}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-                </div>
-              </div>
-            )}
-
-            {/* Additional Services */}
-            {transportation.additionalServices && transportation.additionalServices.length > 0 && (
-              <div className="bg-white rounded-2xl shadow-md p-8 hover:shadow-xl transition-all duration-300 border border-gray-100">
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="bg-gradient-to-br from-yellow-500 to-orange-500 p-3 rounded-xl">
-                    <Package className="w-6 h-6 text-white" />
-                  </div>
-                  <h2 className="text-2xl font-bold text-gray-800">Additional Services</h2>
-                </div>
-                <div className="space-y-4">
-                  {transportation.additionalServices.map((service, idx) => (
-                    <div key={idx} className="flex justify-between items-center bg-gradient-to-r from-orange-50 to-yellow-50 p-5 rounded-xl hover:shadow-md transition-all border border-orange-100">
-                      <div className="flex-1">
-                        <p className="font-bold text-lg text-gray-800">{service.serviceName}</p>
-                        {service.description && (
-                          <p className="text-sm text-gray-600 mt-1">{service.description}</p>
-                        )}
+                {/* Locations Section - Split View */}
+                {(transportation.pickupLocations?.length > 0 || transportation.dropoffLocations?.length > 0) && (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {/* Pickup Card */}
+                    <div className="bg-white rounded-[2.5rem] p-8 border border-slate-300 shadow-sm">
+                      <div className="flex items-center gap-3 mb-6">
+                        <div className="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center text-blue-600">
+                          <MapPin className="w-5 h-5" />
+                        </div>
+                        <h3 className="font-semibold text-slate-900 uppercase tracking-widest text-md">Pickup Hubs</h3>
                       </div>
-                      <span className="font-bold text-2xl text-teal-600 ml-4">${service.price}</span>
+                      <div className="space-y-2">
+                        {transportation.pickupLocations.map((loc, idx) => (
+                          <div key={idx} className="flex items-center gap-3 p-3 bg-blue-50/30 rounded-xl text-slate-700 font-semibold text-md">
+                            <div className="w-1.5 h-1.5 rounded-full bg-blue-400" />
+                            {loc}
+                          </div>
+                        ))}
+                      </div>
                     </div>
-                  ))}
-                </div>
-              </div>
-            )}
 
-            {/* Cancellation Policy */}
-            {transportation.cancellationPolicy && (
-              <div className="bg-gradient-to-br from-red-50 to-pink-50 rounded-2xl shadow-md p-8 hover:shadow-xl transition-all duration-300 border border-red-100">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="bg-gradient-to-br from-red-500 to-pink-500 p-3 rounded-xl">
-                    <XCircle className="w-6 h-6 text-white" />
+                    {/* Dropoff Card */}
+                    <div className="bg-white rounded-[2.5rem] p-8 border border-slate-300 shadow-sm">
+                      <div className="flex items-center gap-3 mb-6">
+                        <div className="w-10 h-10 bg-emerald-50 rounded-xl flex items-center justify-center text-emerald-600">
+                          <Navigation className="w-5 h-5" />
+                        </div>
+                        <h3 className="font-semibold text-slate-900 uppercase tracking-widest text-md">Dropoff Hubs</h3>
+                      </div>
+                      <div className="space-y-2">
+                        {transportation.dropoffLocations.map((loc, idx) => (
+                          <div key={idx} className="flex items-center gap-3 p-3 bg-emerald-50/30 rounded-xl text-slate-700 font-semibold text-md">
+                            <div className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                            {loc}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
                   </div>
-                  <h2 className="text-2xl font-bold text-gray-800">Cancellation Policy</h2>
-                </div>
-                <p className="text-gray-700 leading-relaxed text-lg">{transportation.cancellationPolicy}</p>
-              </div>
-            )}
+                )}
+
+                {/* Additional Services - Pricing List */}
+                {transportation.additionalServices?.length > 0 && (
+                  <div className="bg-slate-900 rounded-[3rem] p-8 md:p-10 text-white overflow-hidden relative">
+                    <div className="absolute top-0 right-0 w-64 h-64 bg-teal-500/10 blur-[100px]" />
+                    <div className="flex items-center gap-4 mb-8">
+                      <div className="w-12 h-12 bg-white/10 backdrop-blur-md rounded-2xl flex items-center justify-center">
+                        <Package className="w-6 h-6 text-teal-400" />
+                      </div>
+                      <h2 className="text-2xl font-black tracking-tight">Add-on Services</h2>
+                    </div>
+                    <div className="space-y-3">
+                      {transportation.additionalServices.map((service, idx) => (
+                        <div key={idx} className="flex justify-between items-center bg-white/5 border border-white/10 p-5 rounded-3xl hover:bg-white/10 transition-all group">
+                          <div>
+                            <p className="font-black text-lg text-white tracking-tight">{service.serviceName}</p>
+                            {service.description && (
+                              <p className="text-sm text-slate-400 mt-0.5">{service.description}</p>
+                            )}
+                          </div>
+                          <div className="text-right">
+                            <span className="text-2xl font-black text-teal-400">${service.price}</span>
+                            <p className="text-[10px] text-slate-500 uppercase font-bold tracking-tighter">Fixed Price</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Cancellation Policy - Safety Card */}
+                {transportation.cancellationPolicy && (
+                  <div className="bg-rose-50 rounded-[2.5rem] p-8 border border-rose-100">
+                    <div className="flex items-center gap-3 mb-4">
+                      <AlertCircle className="w-6 h-6 text-rose-500" />
+                      <h2 className="text-lg font-black text-rose-900 uppercase tracking-widest">Cancellation Policy</h2>
+                    </div>
+                    <p className="text-rose-800/80 leading-relaxed font-semibold">
+                      {transportation.cancellationPolicy}
+                    </p>
+                  </div>
+                )}
               </div>
             )}
 
             {/* Driver Tab Content */}
             {mainTab === 'driver' && driver && (
-              <div className="space-y-6">
-                {/* Driver Info */}
-                <div className="bg-white rounded-2xl shadow-lg p-8 hover:shadow-xl transition-all duration-300 border border-gray-100">
-                  <div className="flex items-center gap-3 mb-6">
-                    <div className=" rounded-xl">
-                      <User className="w-6 h-6 text-teal-500" />
-                    </div>
-                    <h2 className="text-2xl font-semibold text-gray-800">Your Driver</h2>
-                  </div>
-
-                  {/* Driver Tabs */}
-                  <div className="flex gap-2 mb-6 border-b border-gray-200">
+              <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+                
+                {/* Profile Card Container */}
+                <div className="bg-white rounded-[2.5rem] shadow-[0_4px_20px_rgba(0,0,0,0.03)] border border-slate-300 overflow-hidden">
+                  
+                  {/* Dynamic Tab Switcher - "SaaS Glass" Style */}
+                  <div className="p-6 bg-slate-50/50 border-b border-slate-100 flex gap-3">
                     <button
                       onClick={() => setDriverTab('info')}
-                      className={`px-6 py-3 mb-4 font-bold transition-all ${
+                      className={`flex-1 flex items-center justify-center gap-2 py-3 px-6 rounded-2xl font-semibold text-md transition-all duration-300 ${
                         driverTab === 'info'
-                          ? 'text-white bg-teal-500 rounded-md  shadow-lg '
-                          : 'text-gray-600 hover:text-gray-800 border-2 border-gray-300 rounded-md '
+                          ? 'bg-teal-500 text-white shadow-lg shadow-slate-200 scale-[1.02]'
+                          : 'bg-white text-slate-500 border border-slate-200 hover:border-teal-500 hover:text-teal-600'
                       }`}
                     >
-                      <User className="inline w-4 h-4 mr-2" />
-                      Driver Info
+                      <User className="w-4 h-4" />
+                      Driver Profile
                     </button>
                     <button
                       onClick={() => setDriverTab('reviews')}
-                      className={`px-6 py-3 mb-4 font-bold transition-all ${
+                      className={`flex-1 flex items-center justify-center gap-2 py-3 px-6 rounded-2xl font-semibold text-md transition-all duration-300 ${
                         driverTab === 'reviews'
-                          ? 'text-white bg-teal-500 rounded-md shadow-lg'
-                          : 'text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200'
+                          ? 'bg-teal-500 text-white shadow-lg shadow-slate-200 scale-[1.02]'
+                          : 'bg-white text-slate-500 border border-slate-200 hover:border-teal-500 hover:text-teal-600'
                       }`}
                     >
-                      <MessageSquare className="inline w-4 h-4 mr-2" />
+                      <MessageSquare className="w-4 h-4" />
                       Reviews ({driver.reviews?.length || 0})
                     </button>
                   </div>
 
-                  {driverTab === 'info' && (
-                    <div className="space-y-6">
-                      {/* Driver Header */}
-                      <div className="flex items-start gap-6 pb-6 border-b border-gray-200">
-                        <div className="w-24 h-24 bg-gradient-to-br from-yellow-100 to-amber-100 rounded-full flex items-center justify-center flex-shrink-0">
-                          <User className="w-12 h-12 text-yellow-600" />
-                        </div>
-                        <div className="flex-1">
-                          <h3 className="text-2xl font-bold text-gray-800 mb-2">
-                            {driver.firstName} {driver.lastName}
-                          </h3>
-                          <div className="flex items-center gap-4 mb-3">
-                            <div className="flex items-center gap-1 bg-yellow-50 px-3 py-1 rounded-full">
-                              <Star className="w-4 h-4 text-yellow-500 fill-current" />
-                              <span className="font-bold text-gray-800">{driver.rating?.toFixed(1) || 0}</span>
-                              <span className="text-sm text-gray-600">({driver.reviews?.length || 0})</span>
+                  <div className="p-8 md:p-10">
+                    {driverTab === 'info' && (
+                      <div className="space-y-10">
+                        {/* Driver Hero Section */}
+                        <div className="flex flex-col md:flex-row items-center md:items-start gap-8 pb-8 border-b border-slate-100">
+                          <div className="relative group">
+                            <div className="w-32 h-32 bg-gradient-to-tr from-teal-500 to-emerald-400 rounded-[2.5rem] flex items-center justify-center shadow-xl shadow-teal-900 rotate-3 group-hover:rotate-0 transition-transform duration-500">
+                              <User className="w-16 h-16 text-white -rotate-3 group-hover:rotate-0 transition-transform duration-500" />
                             </div>
-                            {driver.gender && (
-                              <span className="text-sm bg-green-50 text-green-700 px-3 py-1 rounded-full font-semibold">
-                                {driver.gender.charAt(0).toUpperCase() + driver.gender.slice(1)}
-                              </span>
-                            )}
-                          </div>
-                          {driver.joinDate && (
-                            <p className="text-sm text-gray-600">
-                              Joined {new Date(driver.joinDate).toLocaleDateString()}
-                            </p>
-                          )}
-                        </div>
-                      </div>
-
-                      {/* Contact Information */}
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        {driver.phone && (
-                          <div className="bg-gradient-to-br from-blue-50/50 to-indigo-50/50 p-4 rounded-xl border border-blue-100">
-                            <div className="flex items-center gap-3 mb-2">
-                              <Phone className="w-5 h-5 text-blue-600" />
-                              <span className="text-sm font-medium text-gray-600">Phone</span>
+                            <div className="absolute -bottom-2 -right-2 bg-white p-2 rounded-xl shadow-md border border-slate-50">
+                              <ShieldCheck className="w-5 h-5 text-teal-500" />
                             </div>
-                            <p className="text-lg font-semibold text-gray-800">{driver.phone}</p>
                           </div>
-                        )}
-                        {driver.email && (
-                          <div className="bg-gradient-to-br from-purple-50/50 to-pink-50/50 p-4 rounded-xl border border-purple-100">
-                            <div className="flex items-center gap-3 mb-2">
-                              <Mail className="w-5 h-5 text-purple-600" />
-                              <span className="text-sm font-medium text-gray-600">Email</span>
-                            </div>
-                            <p className="text-sm font-semibold text-gray-800 truncate">{driver.email}</p>
-                          </div>
-                        )}
-                      </div>
 
-                      {/* Languages */}
-                      {driver.languagesSpoken && driver.languagesSpoken.length > 0 && (
-                        <div className="bg-gradient-to-br from-teal-50/50 to-green-50/50 p-4 rounded-xl ">
-                          <h4 className="font-semibold text-gray-800 mb-3">Languages Spoken</h4>
-                          <div className="flex flex-wrap gap-2">
-                            {driver.languagesSpoken.map((lang, idx) => (
-                              <span key={idx} className="bg-white px-4 py-2 rounded-full text-sm font-medium text-teal-700 border border-teal-200">
-                                {lang}
-                              </span>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-
-                      {/* Address */}
-                      {driver.address && (
-                        <div className="bg-gradient-to-br from-orange-50/50 to-yellow-50/50 p-4 rounded-xl border border-orange-100">
-                          <div className="flex items-center gap-3 mb-3">
-                            <MapPin className="w-5 h-5 text-orange-600" />
-                            <h4 className="font-semibold text-gray-800">Address</h4>
-                          </div>
-                          <p className="text-gray-700">
-                            {typeof driver.address === 'string' ? driver.address : `${driver.address.street || ''}, ${driver.address.city || ''}, ${driver.address.country || ''}`}
-                          </p>
-                        </div>
-                      )}
-                    </div>
-                  )}
-
-                  {driverTab === 'reviews' && (
-                    <div>
-                      <div className="grid grid-cols-1 gap-4">
-                        {driver?.reviews && driver.reviews.length > 0 ? (
-                          driver.reviews.map((review, index) => (
-                            <div key={index} className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
-                              <div className="mb-2 flex items-center justify-between">
-                                <div className="flex items-center">
-                                  <div className="flex items-center">
-                                    {[...Array(5)].map((_, i) => (
-                                      <svg
-                                        key={i}
-                                        className={`h-5 w-5 ${i < review.rating ? 'text-yellow-400' : 'text-gray-300'}`}
-                                        viewBox="0 0 20 20"
-                                        fill="currentColor"
-                                      >
-                                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.785.57-1.84-.197-1.54-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                      </svg>
-                                    ))}
-                                  </div>
-                                  <span className="ml-2 text-sm text-gray-600">{review.rating.toFixed(1)}</span>
-                                </div>
-                                <span className="text-xs text-gray-400">{new Date(review.createdAt).toLocaleDateString()}</span>
+                          <div className="text-center md:text-left flex-1">
+                            <div className="flex flex-col md:flex-row md:items-center gap-3 mb-4">
+                              <h3 className="text-4xl font-bold text-slate-900 tracking-tight">
+                                {driver.firstName} {driver.lastName}
+                              </h3>
+                              <div className="flex items-center justify-center md:justify-start gap-2 bg-amber-50 px-3 py-1 rounded-full border border-amber-100">
+                                <Star className="w-4 h-4 text-amber-500 fill-current" />
+                                <span className="font-bold text-amber-700">{driver.rating?.toFixed(1) || 0} Rating</span>
                               </div>
-                              <p className="text-gray-700">{review.comment}</p>
-                              {review.user && (
-                                <p className="mt-2 text-sm text-gray-500">
-                                  By {review.user.name || review.user.email || 'Anonymous'}
-                                </p>
+                            </div>
+                            
+                            <div className="flex flex-wrap justify-center md:justify-start gap-4 text-slate-500 font-medium text-sm">
+                              {driver.gender && (
+                                <span className="flex items-center gap-1 bg-slate-100 px-3 py-1 rounded-lg capitalize">
+                                  {driver.gender}
+                                </span>
+                              )}
+                              {driver.joinDate && (
+                                <span className="flex items-center gap-1 bg-slate-100 px-3 py-1 rounded-lg">
+                                  Expert since {new Date(driver.joinDate).getFullYear()}
+                                </span>
                               )}
                             </div>
-                          ))
-                        ) : (
-                          <p className="text-gray-500">No reviews yet.</p>
-                        )}
-                      </div>
-
-                      <form onSubmit={handleSubmitReview} className="mt-6 space-y-4 rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
-                        <h4 className="text-lg font-semibold text-gray-800">Add a Review</h4>
-
-                      <div className="flex flex-col items-start">
-                          <label className="mb-1 text-sm font-medium text-gray-700">Rating</label>
-                          <div className="flex space-x-1">
-                            {[1, 2, 3, 4, 5].map((star) => (
-                              <button
-                                key={star}
-                                type="button"
-                                onClick={() => setReviewRating(star)}
-                                disabled={submittingReview}
-                                className={`text-2xl transition-colors ${
-                                  reviewRating >= star ? 'text-yellow-500' : 'text-gray-300'
-                                } hover:text-yellow-600`}
-                              >
-                                ★
-                              </button>
-                            ))}
                           </div>
-                      </div>
-
-                        <div>
-                          <label className="mb-1 block text-sm font-medium text-gray-700">Comment</label>
-                          <textarea
-                            className="w-full rounded-md border border-gray-300 p-2 focus:border-indigo-500 focus:outline-none"
-                            rows="3"
-                            value={reviewComment}
-                            onChange={(e) => setReviewComment(e.target.value)}
-                            placeholder="Share your experience with this driver"
-                            disabled={submittingReview}
-                            required
-                          />
                         </div>
 
-                        {reviewError && <p className="text-sm text-red-600">{reviewError}</p>}
+                        {/* Contact & Languages Grid */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div className="p-6 bg-slate-50/50 rounded-3xl border border-slate-300">
+                            <p className="text-md font-semibold uppercase tracking-[0.2em] text-slate-500 mb-4">Secure Contact</p>
+                            <div className="space-y-4">
+                              {driver.phone && (
+                                <div className="flex items-center gap-4">
+                                  <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-sm border border-slate-100">
+                                    <Phone className="w-4 h-4 text-teal-600" />
+                                  </div>
+                                  <div>
+                                    <p className="text-sm text-slate-400 font-bold">Phone Number</p>
+                                    <p className="text-slate-900 font-bold">{driver.phone}</p>
+                                  </div>
+                                </div>
+                              )}
+                              {driver.email && (
+                                <div className="flex items-center gap-4">
+                                  <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-sm border border-slate-100">
+                                    <Mail className="w-4 h-4 text-indigo-600" />
+                                  </div>
+                                  <div className="overflow-hidden">
+                                    <p className="text-sm text-slate-400 font-bold">Official Email</p>
+                                    <p className="text-slate-900 font-bold truncate">{driver.email}</p>
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+                          </div>
 
-                        <button
-                          type="submit"
-                          className="w-full rounded-md bg-teal-300 px-4 py-2 text-white transition hover:bg-white hover:text-black border-2 border-teal-500 disabled:cursor-not-allowed disabled:bg-teal-500"
-                          disabled={submittingReview || !reviewComment.trim()}
-                        >
-                          {submittingReview ? 'Submitting...' : 'Submit Review'}
-                        </button>
-                      </form>
-                    </div>
-                  )}
+                          <div className="p-6 bg-slate-50/50 rounded-3xl border border-slate-300">
+                            <p className="text-md font-semibold uppercase tracking-[0.2em] text-slate-500 mb-4">Communication</p>
+                            <div className="flex flex-wrap gap-2">
+                              {driver.languagesSpoken?.map((lang, idx) => (
+                                <div key={idx} className="flex items-center gap-2 bg-white px-4 py-2 rounded-xl border border-slate-200 shadow-sm">
+                                  <div className="w-2 h-2 rounded-full bg-teal-500" />
+                                  <span className="text-sm font-bold text-slate-700">{lang}</span>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Address Info */}
+                        {driver.address && (
+                          <div className="p-6 bg-slate-50/50 rounded-[2rem] text-slate-700 border border-slate-300 flex items-center gap-6 relative overflow-hidden">
+                            <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full -mr-10 -mt-10" />
+                            <div className="w-14 h-14 bg-white/10 backdrop-blur-md rounded-2xl flex items-center justify-center flex-shrink-0">
+                              <MapPin className="w-6 h-6 text-teal-400" />
+                            </div>
+                            <div>
+                              <p className="text-md font-semibold uppercase tracking-[0.2em] text-slate-500 mb-1">Base Location</p>
+                              <p className="text-lg tracking-tight font-medium text-slate-700">
+                                {typeof driver.address === 'string' ? driver.address : `${driver.address.street || ''}, ${driver.address.city || ''}, ${driver.address.country || ''}`}
+                              </p>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    )}
+
+                    {driverTab === 'reviews' && (
+                      <div className="space-y-8">
+                        {/* Reviews List */}
+                        <div className="grid grid-cols-1 gap-6">
+                          {driver?.reviews && driver.reviews.length > 0 ? (
+                            driver.reviews.map((review, index) => (
+                              <div key={index} className="group p-6 rounded-[2rem] border border-slate-300 bg-white hover:bg-slate-50/50 transition-all">
+                                <div className="flex justify-between items-start mb-4">
+                                  <div className="flex flex-col gap-2">
+                                    <div className="flex gap-0.5">
+                                        {[...Array(5)].map((_, i) => (
+                                          <Star key={i} className={`w-4 h-4 ${i < review.rating ? 'text-amber-400 fill-current' : 'text-slate-200'}`} />
+                                        ))}
+                                    </div>
+                                    <p className="text-xs font-semibold text-slate-500 uppercase tracking-widest">
+                                        {new Date(review.createdAt).toLocaleDateString(undefined, { month: 'long', year: 'numeric' })}
+                                    </p>
+                                  </div>
+                                  <div className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-400 font-bold text-2xl">
+                                    {review.user?.email?.charAt(0) || 'U'}
+                                  </div>
+                                </div>
+                                <p className="text-slate-700 text-lg leading-relaxed mb-4">"{review.comment}"</p>
+                                <p className="text-sm font-bold text-slate-700">
+                                  — {review.user.name || review.user.email || 'Anonymous Traveler'}
+                                </p>
+                              </div>
+                            ))
+                          ) : (
+                            <div className="text-center py-12 bg-slate-50 rounded-[2rem] border-2 border-dashed border-slate-200">
+                              <MessageCircle className="w-12 h-12 text-slate-300 mx-auto mb-4" />
+                              <p className="text-slate-500 font-medium">Be the first to share your experience</p>
+                            </div>
+                          )}
+                        </div>
+
+                        {/* Review Form - "Elevated UI" */}
+                        <form onSubmit={handleSubmitReview} className="mt-12 p-8 rounded-[2.5rem] bg-slate-50 border border-slate-300">
+                          <h4 className="text-2xl font-semibold text-slate-900 tracking-tight mb-6 text-center">Rate your journey</h4>
+
+                          <div className="flex flex-col items-center mb-8">
+                            <div className="flex gap-2">
+                              {[1, 2, 3, 4, 5].map((star) => (
+                                <button
+                                  key={star}
+                                  type="button"
+                                  onClick={() => setReviewRating(star)}
+                                  disabled={submittingReview}
+                                  className="transition-all transform hover:scale-125 focus:scale-110"
+                                >
+                                  <Star className={`w-10 h-10 ${reviewRating >= star ? 'text-amber-400 fill-current' : 'text-slate-300'}`} />
+                                </button>
+                              ))}
+                            </div>
+                            <p className="text-md font-bold text-slate-400 uppercase mt-4 tracking-widest">Tap to rate</p>
+                          </div>
+
+                          <div className="mb-6">
+                            <textarea
+                              className="w-full rounded-2xl border-none p-5 text-slate-700 shadow-inner focus:ring-2 focus:ring-teal-500 transition-all text-lg"
+                              rows="4"
+                              value={reviewComment}
+                              onChange={(e) => setReviewComment(e.target.value)}
+                              placeholder="Tell us about the driver, the comfort, and the service..."
+                              disabled={submittingReview}
+                              required
+                            />
+                          </div>
+
+                          {reviewError && <p className="text-sm text-rose-600 mb-4 font-bold text-center">⚠️ {reviewError}</p>}
+
+                          <button
+                            type="submit"
+                            disabled={submittingReview || !reviewComment.trim()}
+                            className="w-full py-5 rounded-2xl bg-teal-500 text-white font-semibold hover:text-black uppercase tracking-widest text-md hover:bg-white border-2 hover:border-teal-500 disabled:bg-teal-800 transition-all shadow-xl shadow-slate-200 active:scale-[0.98]"
+                          >
+                            {submittingReview ? 'Submitting Feedback...' : 'Post Experience'}
+                          </button>
+                        </form>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
             )}
           </div>
 
           {/* Right Column - Booking Card */}
-          <div className="lg:col-span-1">
-            <div className="bg-gradient-to-br from-white to-teal-50 rounded-2xl shadow-md p-8 sticky top-4 border-1 border-teal-100/50 hover:border-teal-300/50 transition-all">
-              {/* Price */}
-              <div className="mb-8 text-center  -mx-8 -mt-8 p-6 rounded-t-2xl">
-                <p className="text-black/90 text-sm font-semibold uppercase tracking-wider mb-2">Starting From</p>
-                <div className="flex items-baseline justify-center gap-2">
-                  <span className="text-5xl font-bold text-gray-600">
-                    ${transportation.pricePerDay}
+        <div className="lg:col-span-1">
+          <div className="sticky top-6 flex flex-col gap-4">
+            
+            {/* Pricing Card */}
+            <div className="bg-white rounded-3xl border border-slate-300 shadow-[0_15px_40px_-10px_rgba(0,0,0,0.03)] overflow-hidden">
+              {/* Frosted Status Header */}
+              <div className="bg-slate-100 backdrop-blur-sm border-b border-slate-100 px-6 py-3 flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <div className={`w-2 h-2 rounded-full animate-pulse ${transportation.availability === 'available' ? 'bg-teal-500' : 'bg-rose-500'}`} />
+                  <span className="text-xs font-black text-slate-500 uppercase tracking-[0.15em]">
+                    Status: {transportation.availability}
                   </span>
-                  <span className="text-gray-600 text-2xl font-medium">/day</span>
                 </div>
-                {transportation.pricePerKm > 0 && (
-                  <p className="text-gray-600 text-md mt-3 font-medium">
-                    Plus ${transportation.pricePerKm} per kilometer
-                  </p>
-                )}
+                <ShieldCheck className="w-5 h-5 text-teal-500" />
               </div>
 
-              
+              <div className="p-8">
+                <div className="mb-6">
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-6xl font-bold text-slate-900 tracking-tighter">${transportation.pricePerDay}</span>
+                    <span className="text-slate-600 font-bold text-md uppercase tracking-widest">USD</span>
+                  </div>
+                  <p className="text-md text-slate-400 font-medium mt-1 uppercase tracking-tighter">Base rate per 24h period</p>
+                </div>
 
-              
-
-              {/* Contact Information */}
-              {transportation.contactDetails && (
-                <div className="mb-8 bg-white rounded-md p-6  border border-gray-200">
-                  <h3 className="font-semibold text-lg text-gray-800 mb-4 flex items-center gap-2">
-                    <Phone className="w-5 h-5 text-teal-500" />
-                    Contact Information
-                  </h3>
-                  <div className="space-y-3">
-                  {transportation.contactDetails.phone && (
-                    <a
-                      href={`tel:${transportation.contactDetails.phone}`}
-                      className="flex items-center gap-3 text-gray-700 hover:text-teal-600 hover:bg-teal-50 p-3 rounded-lg transition-all"
-                    >
-                      <div className="bg-teal-900 p-2 rounded-lg">
-                        <Phone className="w-4 h-4 text-teal-600" />
-                      </div>
-                      {transportation.contactDetails.phone}
-                    </a>
-                  )}
-                  {transportation.contactDetails.email && (
-                    <a
-                      href={`mailto:${transportation.contactDetails.email}`}
-                      className="flex items-center gap-3 text-gray-700 hover:text-teal-600 hover:bg-teal-50 p-3 rounded-lg transition-all"
-                    >
-                      <div className="bg-blue-100 p-2 rounded-lg">
-                        <Mail className="w-4 h-4 text-blue-600" />
-                      </div>
-                      {transportation.contactDetails.email}
-                    </a>
-                  )}
-                  {transportation.contactDetails.whatsapp && (
-                    <a
-                      href={`https://wa.me/${transportation.contactDetails.whatsapp}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-3 text-gray-700 hover:text-green-600 hover:bg-green-50 p-3 rounded-lg transition-all"
-                    >
-                      <div className="bg-green-100 p-2 rounded-lg">
-                        <MessageCircle className="w-4 h-4 text-green-600" />
-                      </div>
-                      Chat on WhatsApp
-                    </a>
-                  )}
+                {/* Pricing Specs Table */}
+                <div className="space-y-3 mb-8">
+                  <div className="flex justify-between items-center text-md py-2 border-b border-slate-50">
+                    <span className="text-slate-800">Kilometer Rate</span>
+                    <span className="font-bold text-slate-900">${transportation.pricePerKm || '0.00'}</span>
+                  </div>
+                  <div className="flex justify-between items-center text-md py-2 border-b border-slate-50">
+                    <span className="text-slate-800">Service Fee</span>
+                    <span className="font-bold text-teal-500">Included</span>
                   </div>
                 </div>
-              )}
 
-              {/* Book Now Button */}
-              <button
-                className={`w-full py-4 rounded-md font-bold text-lg transition-all duration-300 shadow-xl ${
-                  transportation.availability === 'available'
-                    ? 'bg-teal-500 text-white hover:bg-white hover:text-black border-2 hover:border-teal-500 hover:scale-102'
-                    : 'bg-gray-300 text-gray-500 cursor-not-allowed opacity-50'
-                }`}
-                disabled={transportation.availability !== 'available'}
-                onClick={openBooking}
-              >
-                {transportation.availability === 'available' ? (
-                  <span className="flex items-center justify-center gap-2">
-                    <CheckCircle className="w-5 h-5" />
-                    Book  Now
-                  </span>
-                ) : (
-                  <span className="flex items-center justify-center gap-2">
-                    <XCircle className="w-5 h-5" />
-                    Currently Unavailable
-                  </span>
-                )}
-              </button>
+                {/* The Primary Action Button */}
+                <button
+                  disabled={transportation.availability !== 'available'}
+                  onClick={openBooking}
+                  className="relative w-full overflow-hidden group/btn bg-teal-500 disabled:bg-slate-100 text-white disabled:text-slate-400 py-4 rounded-2xl font-bold transition-all duration-300"
+                >
+                  <div className="relative z-10 flex items-center justify-center gap-2">
+                    <Zap className={`w-4 h-4 ${transportation.availability === 'available' ? 'text-white hover:text-black fill-teal-400' : ''}`} />
+                    <span className="uppercase tracking-[0.1em] text-xs">Request Instant Booking</span>
+                  </div>
+                </button>
+              </div>
+            </div>
 
+            {/* Direct Contact Channels Card */}
+            <div className="bg-white rounded-3xl border border-slate-300 p-4 space-y-1">
+              <p className="text-sm font-bold text-slate-400 uppercase tracking-[0.2em] px-4 py-2">Direct Channels</p>
               
+              {/* Phone Link */}
+              <a href="tel:+94714749285" className="flex items-center gap-3 p-3 rounded-2xl hover:bg-slate-50 transition-colors group">
+                <div className="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center group-hover:bg-white group-hover:shadow-sm transition-all">
+                  <Phone className="w-4 h-4 text-slate-600" />
+                </div>
+                <span className="text-sm font-bold text-slate-700">+94 71 474 9285</span>
+              </a>
+
+              {/* Email Link */}
+              <a href="mailto:fleet@agency.com" className="flex items-center gap-3 p-3 rounded-2xl hover:bg-slate-50 transition-colors group">
+                <div className="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center group-hover:bg-white group-hover:shadow-sm transition-all">
+                  <Mail className="w-4 h-4 text-slate-600" />
+                </div>
+                <span className="text-sm font-bold text-slate-700">fleet@agency.com</span>
+              </a>
+
+              {/* WhatsApp Link */}
+              <a 
+                href="https://wa.me/94714749285" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="flex items-center gap-3 p-3 rounded-2xl bg-emerald-50/50 hover:bg-emerald-50 transition-colors group"
+              >
+                <div className="w-8 h-8 rounded-lg bg-emerald-500 flex items-center justify-center shadow-sm shadow-emerald-200">
+                  <MessageCircle className="w-4 h-4 text-white" />
+                </div>
+                <span className="text-sm font-bold text-emerald-700">Chat on WhatsApp</span>
+              </a>
+            </div>
+
+            {/* Trust Footer */}
+            <div className="px-6 py-2 flex items-center justify-center gap-4 border-t border-slate-300">
+                <div className="flex items-center gap-1 opacity-40">
+                    <ShieldCheck className="w-3 h-3" />
+                    <span className="text-xs font-bold uppercase tracking-widest">Verified Fleet</span>
+                </div>
+                <div className="w-1 h-1 rounded-full bg-slate-200" />
+                <div className="flex items-center gap-1 opacity-40">
+                    <CheckCircle className="w-3 h-3" />
+                    <span className="text-xs font-bold uppercase tracking-widest">Secure Payment</span>
+                </div>
             </div>
           </div>
+        </div>
         </div>
 
         {/* Related Vehicles */}

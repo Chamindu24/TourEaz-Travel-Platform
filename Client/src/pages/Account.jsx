@@ -116,25 +116,48 @@ const Account = () => {
     <div className="min-h-screen bg-gray-100 mt-4 py-10">
       <div className="max-w-6xl mx-auto px-2 sm:px-6 lg:px-8">
         <div className="bg-white border border-black/10 shadow-md rounded-xl overflow-hidden">
-          <div className="px-8 py-6 border-b border-[#B7C5C7] flex items-center gap-3">
-            <span className="inline-flex border border-teal-500 items-center justify-center h-12 w-12 rounded-full bg-teal-50 text-teal-500 text-2xl font-bold mr-2">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.5 20.25v-1.5A2.25 2.25 0 016.75 16.5h10.5a2.25 2.25 0 012.25 2.25v1.5" />
-              </svg>
-            </span>
-            <h1 className="text-3xl font-extrabold text-teal-500 tracking-tight">My Account</h1>
+          <header className="px-6 py-8">
+            <div className="max-w-5xl mx-auto flex flex-col sm:flex-row sm:items-end justify-between gap-6">
+              
+              <div className="space-y-4">
 
-            <div className="md:ml-auto">
-            {user.userType === 'service-provider' && (
-              <button
-                onClick={() => navigate('/service-provider/dashboard')}
-                className="px-4 py-2 text-sm font-medium text-white bg-teal-500 rounded-md hover:bg-white border-2 hover:border-teal-500 hover:text-black hover:scale-105 duration-300  transition-colors"
-              >
-                Manage Services
-              </button>
-            )}
-          </div>
-          </div>
+                <div className="flex items-center gap-5">
+                  {/* Abstract Icon Style */}
+                  <div className="relative">
+                    <div className="h-14 w-14 rounded-full bg-gradient-to-tr from-teal-500 to-emerald-400 p-[2px]">
+                      <div className="flex h-full w-full items-center justify-center rounded-full bg-white">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6 text-teal-600">
+                          <path fillRule="evenodd" d="M7.5 6a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM3.751 20.105a8.25 8.25 0 0116.498 0 .75.75 0 01-.437.695A18.683 18.683 0 0112 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 01-.437-.695z" clipRule="evenodd" />
+                        </svg>
+                      </div>
+                    </div>
+                    {/* Online Status Indicator */}
+                    <span className="absolute bottom-0 right-0 block h-4 w-4 rounded-full bg-green-500 ring-2 ring-white"></span>
+                  </div>
+
+                  <div>
+                    <h1 className="text-3xl font-light text-slate-900">
+                      Account <span className="font-semibold">Overview</span>
+                    </h1>
+                    <p className="text-slate-500 text-sm">Updated 2 minutes ago</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Action Area */}
+              <div className="flex items-center gap-3">
+                {user.userType === 'service-provider' && (
+                  <button
+                    onClick={() => navigate('/service-provider/dashboard')}
+                    className="group relative inline-flex items-center gap-2 px-6 py-3 font-semibold text-slate-700 transition-all duration-200 bg-white border border-slate-500 rounded-xl hover:bg-slate-50 hover:border-teal-500/30 hover:shadow-sm"
+                  >
+                    <span className="h-2 w-2 rounded-full bg-teal-500 group-hover:animate-pulse"></span>
+                    Manage Services
+                  </button>
+                )}
+              </div>
+            </div>
+          </header>
           {/* Tabs Navigation */}
           <div className="bg-white backdrop-blur-md sticky top-0 z-10 border-b border-gray-400 px-6">
             <div className="max-w-5xl mx-auto flex items-center justify-between gap-2 overflow-x-auto no-scrollbar">

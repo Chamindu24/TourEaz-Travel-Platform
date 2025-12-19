@@ -349,76 +349,78 @@ const Login = ({ setIsAuthenticated }) => {
             />
           ))}
 
-          {/* Main Content */}
-          <div className={`max-w-md text-start mt-24 bg-black/5 p-8 backdrop-blur-[6px] border-2 border-white/20 rounded-2xl shadow-2xl fixed z-40 space-y-4 ${animations.slideUp} `}>
-            <h1 className={`text-3xl font-bold text-white tracking-tight drop-shadow-lg ${animations.fadeIn}`}>
-              Embark on Your <span className="text-yellow-300 drop-shadow-[0_0_10px_rgba(255,228,94,0.9)]">Sri Lankan </span>Adventure
-            </h1>
+          <div className="fixed z-40 mt-20 max-w-2xl px-8 flex gap-8">
+                
+                {/* 1. Vertical Brand Side-Bar (Very 'Famous Site' Style) */}
+                <div className="hidden md:flex flex-col items-center justify-between py-2 border-r border-white/10 pr-6">
+                  <span className="text-[10px] font-black uppercase tracking-[0.5em] text-white/80 [writing-mode:vertical-lr] rotate-180">
+                    Ceylon Chronicles
+                  </span>
+                  <div className="h-24 w-[2px] bg-gradient-to-b from-transparent via-yellow-500 to-transparent" />
+                  <span className="text-yellow-500 font-serif italic text-xl">25’</span>
+                </div>
 
-            <p className={`text-lg text-gray-100 leading-relaxed mt-2 ${animations.slideUp}`}>
-              Log in to uncover secret destinations, experience local culture, and make every trip unforgettable.
-            </p>
+                <div className="flex-1 space-y-10">
+                  
+                  {/* 2. Overlapping Headlines */}
+                  <div className="relative">
+                    <motion.span 
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      className="block text-yellow-400 font-mono text-xs tracking-[0.3em] uppercase mb-2"
+                    >
+                      Exclusive Access
+                    </motion.span>
+                    <h1 className="text-7xl font-black text-white leading-[0.85] tracking-tighter">
+                      THE <br />
+                      <span className="relative inline-block mt-2">
+                        UNSEEN
+                        <motion.div 
+                          initial={{ width: 0 }}
+                          animate={{ width: '100%' }}
+                          transition={{ delay: 0.5, duration: 1 }}
+                          className="absolute -bottom-2 left-0 h-4 bg-yellow-400/20 -z-10" 
+                        />
+                      </span>
+                      <br />
+                      ISLAND.
+                    </h1>
+                  </div>
 
+                  {/* 3. The "Focus" Narrative */}
+                  <p className="text-xl text-gray-200 font-light leading-relaxed max-w-sm">
+                    Beyond the tourist trails lie <span className="text-white border-b border-white/90">ancient whispers</span> and untouched horizons. Log in to claim your itinerary.
+                  </p>
 
-            {/* Booking Intent Card */}
-            {location.state?.bookingIntent && (
-              <motion.div
-                className={`mb-6 p-5 rounded-2xl bg-gradient-to-r from-blue-500/30 to-teal-400/20 border border-blue-300/40 shadow-lg`}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8 }}
-              >
-                <div className="flex items-start space-x-4">
-                  <svg
-                    className="w-6 h-6 mt-0.5 text-blue-100"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                  <div className="text-left">
-                    <p className="font-semibold text-sm text-blue-200">Complete Your Booking</p>
-                    <p className="text-sm mt-1 text-blue-50">
-                      Login to continue with your{' '}
-                      {location.state.bookingIntent.type === 'hotel' && 'hotel reservation'}
-                      {location.state.bookingIntent.type === 'activity' && 'activity booking'}
-                      {location.state.bookingIntent.type === 'tour' && 'tour inquiry'}
-                    </p>
+                  {/* 4. Action-Driven Floating Card */}
+                  {location.state?.bookingIntent && (
+                    <motion.div 
+                      initial={{ y: 20, opacity: 0 }}
+                      animate={{ y: 0, opacity: 1 }}
+                      className="group flex items-center gap-4 p-1 bg-white/10 backdrop-blur-3xl border border-white/20 rounded-2xl hover:border-white/40 transition-all cursor-pointer"
+                    >
+                      <div className="h-14 w-14 rounded-xl bg-white overflow-hidden flex items-center justify-center">
+                        {/* This would be a tiny thumbnail of the hotel/activity */}
+                        <div className="text-black font-black text-xs">GO</div>
+                      </div>
+                      <div className="pr-6">
+                        <p className="text-[10px] uppercase tracking-widest text-white/50 font-bold">Resume Journey</p>
+                        <p className="text-white font-semibold text-sm">
+                          Finish booking your {location.state.bookingIntent.type}
+                        </p>
+                      </div>
+                    </motion.div>
+                  )}
+
+                  {/* 5. The "Trust" Bar */}
+                  <div className="pt-8 flex items-center gap-8 opacity-60 grayscale hover:grayscale-0 transition-all duration-700">
+                    {/* Replace these with real travel partner logos */}
+                    <span className="text-white font-bold tracking-tighter text-lg">LUXE</span>
+                    <span className="text-white font-serif italic text-lg">Voyager</span>
+                    <span className="text-white font-sans font-light tracking-[0.2em] text-xs uppercase">Safari Co.</span>
                   </div>
                 </div>
-              </motion.div>
-            )}
-
-            {/* Features */}
-            <div className={`grid grid-cols-1 gap-4`}>
-              {[
-                "Unlock Hidden Gems",
-                "Real-time Booking Control",
-                "24/7 Partner Support",
-              ].map((feature, idx) => (
-                <motion.div
-                  key={idx}
-                  className="flex items-center space-x-3 text-teal-50 hover:text-yellow-300 transition-colors duration-300"
-                  whileHover={{ scale: 1.05 }}
-                >
-                  <div className="w-8 h-8 bg-teal-400/80 rounded-lg flex items-center justify-center shadow-md">
-                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                      <path
-                        fillRule="evenodd"
-                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                  </div>
-                  <span className="font-medium">{feature}</span>
-                </motion.div>
-              ))}
-            </div>
-          </div>
+              </div>
         </div>
 
 
@@ -426,10 +428,16 @@ const Login = ({ setIsAuthenticated }) => {
         <div className="w-full lg:w-1/2  flex items-center justify-center -mt-20 p-4 sm:p-8">
           <div className="w-full max-w-md">
             <div className={`bg-white/50 backdrop-blur-lg rounded-md  p-8   ${animations.slideUp}`}>
-              {/* Form Header */}
-              <div className="text-start mb-8">
-                <h2 className="text-3xl font-bold text-black/80 mb-2 tracking-wide">Welcome Back</h2>
-                <p className="text-teal-200">Sign in to your travel agent portal</p>
+              <div className="text-start mb-10">
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="h-8 w-1 bg-teal-500 rounded-full"></div> {/* Brand accent line */}
+                  <h2 className="text-3xl font-bold text-slate-900 tracking-tight">
+                    Welcome Back
+                  </h2>
+                </div>
+                <p className="text-slate-500 font-medium pl-4">
+                  Sign in to your travel agent portal
+                </p>
               </div>
 
               {/* Enhanced Error Display */}
