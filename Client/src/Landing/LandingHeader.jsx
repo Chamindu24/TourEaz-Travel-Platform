@@ -87,7 +87,7 @@ const LandingHeader = () => {
       className={`fixed top-0 w-full z-50 transition-all duration-500 ease-out ${
         scrolled
           ? "bg-white backdrop-blur-lg shadow-xl "
-          : "py-2 bg-white/20 backdrop-blur-sm  "
+          : " bg-white backdrop-blur-sm  "
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -97,21 +97,44 @@ const LandingHeader = () => {
             onClick={scrollToTop}
             className="flex items-center space-x-2 group "
           >
-            <div className="flex items-center space-x-2">
-              <div className="flex-shrink-0 relative group">
-                <img
-                  className="relative h-14 w-14 cursor-pointer shadow-sm  transition-all duration-300 transform hover:scale-105"
-                  src="/logo12.png"
-                  alt="IsleKey Holidays Logo"
-                />
-              </div>
-              <div className="flex ">
-                <h1
-                  className="text-3xl tracking-widest cursor-pointer font-bold bg-black bg-clip-text text-transparent hover: from-teal-300 to-teal-400 transition-all duration-700 transform hover:scale-105"
-                >
-                  TourEaz
-                </h1>
+            <div 
+              className="flex items-center group cursor-pointer select-none" 
+              onClick={() => navigate('/')}
+            >
+              {/* The Mark: The Kinetic Chevron */}
+              <div className="relative h-12 w-12 flex items-center justify-center">
+                {/* The Geometric 'T' constructed from two paths */}
+                <div className="relative flex flex-col items-center">
+                  {/* Top Bar of the T */}
+                  <div className="h-1.5 w-8 bg-gray-900 group-hover:bg-[#005E84] group-hover:w-10 transition-all duration-500 rounded-full" />
+                  {/* Stem of the T */}
+                  <div className="h-6 w-1.5 bg-gray-900 group-hover:bg-teal-400 group-hover:h-8 transition-all duration-500 rounded-full mt-0.5" />
+                </div>
                 
+                {/* The "Sonic" Background Ring */}
+                <div className="absolute inset-0 border-[1px] border-gray-100 rounded-full scale-50 opacity-0 group-hover:scale-110 group-hover:opacity-100 transition-all duration-700" />
+              </div>
+
+              {/* Typography Block */}
+              <div className="ml-4 flex flex-col">
+                <div className="flex items-center">
+                  <h1 className="text-2xl font-light text-gray-900 tracking-tighter uppercase leading-none">
+                    Tour<span className="font-black text-[#005E84] group-hover:text-teal-500 transition-colors">Eaz</span>
+                  </h1>
+                  {/* The Status Indicator */}
+                  <div className="ml-3 flex items-center space-x-1">
+                    <span className="h-1 w-4 bg-gray-100 rounded-full overflow-hidden">
+                      <div className="h-full bg-teal-400 w-0 group-hover:w-full transition-all duration-1000" />
+                    </span>
+                  </div>
+                </div>
+                
+                {/* Professional Tagline */}
+                <div className="mt-1.5 flex items-center">
+                  <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-gray-400 group-hover:text-gray-900 transition-colors">
+                    TourEaz <span className="text-teal-500 italic">Travel</span>
+                  </span>
+                </div>
               </div>
             </div>
           </Link>

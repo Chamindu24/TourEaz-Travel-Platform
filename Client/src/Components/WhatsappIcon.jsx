@@ -1,44 +1,71 @@
-import React from "react";
+import React, { useState } from "react";
 
-const whatsappNumber = '9607781048'; // Maldives number
+const whatsappNumber = '9607781048';
 
 export default function WhatsappIcon() {
+  const [isHovered, setIsHovered] = useState(false);
+
   return (
-    <a
-      href={`https://wa.me/${whatsappNumber}`}
-      target="_blank"
-      rel="noopener noreferrer"
-      style={{
-        position: "fixed",
-        bottom: "24px",
-        right: "24px",
-        zIndex: 1000,
-        background: 'linear-gradient(135deg, #005E84 0%, #075375 50%, #0A435C 100%)',
-        borderRadius: '50%',
-        width: '60px',
-        height: '60px',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        boxShadow: '0 4px 16px rgba(0, 94, 132, 0.3), 0 2px 8px rgba(0, 0, 0, 0.1)',
-        cursor: 'pointer',
-        transition: 'all 0.3s ease-out',
-        border: '2px solid rgba(231, 233, 229, 0.2)',
-        backdropFilter: 'blur(8px)'
-      }}
-      onMouseEnter={(e) => {
-        e.target.style.transform = 'scale(1.1)';
-        e.target.style.boxShadow = '0 6px 20px rgba(0, 94, 132, 0.4), 0 4px 12px rgba(0, 0, 0, 0.15)';
-      }}
-      onMouseLeave={(e) => {
-        e.target.style.transform = 'scale(1)';
-        e.target.style.boxShadow = '0 4px 16px rgba(0, 94, 132, 0.3), 0 2px 8px rgba(0, 0, 0, 0.1)';
-      }}
-      aria-label="Chat on WhatsApp"
-    >
-      <svg width="32" height="32" viewBox="0 0 32 32" fill="#E7E9E5">
-        <path d="M16 3C9.373 3 4 8.373 4 15c0 2.385.697 4.604 1.902 6.51L4 29l7.684-2.522A12.93 12.93 0 0 0 16 27c6.627 0 12-5.373 12-12S22.627 3 16 3zm0 22c-1.97 0-3.85-.574-5.43-1.563l-.386-.237-4.56 1.497 1.497-4.56-.237-.386A9.96 9.96 0 0 1 6 15c0-5.514 4.486-10 10-10s10 4.486 10 10-4.486 10-10 10zm5.13-7.47c-.28-.14-1.65-.81-1.9-.9-.25-.09-.43-.14-.61.14-.18.28-.7.9-.86 1.08-.16.18-.32.2-.6.07-.28-.14-1.18-.44-2.25-1.4-.83-.74-1.39-1.65-1.55-1.93-.16-.28-.02-.43.12-.57.13-.13.28-.34.42-.51.14-.17.18-.29.28-.48.09-.19.05-.36-.02-.5-.07-.14-.61-1.47-.83-2.01-.22-.54-.44-.47-.61-.48-.16-.01-.36-.01-.56-.01-.19 0-.5.07-.76.36-.26.29-1 1-1 2.43s1.02 2.82 1.16 3.02c.14.2 2.01 3.08 4.88 4.19.68.27 1.21.43 1.62.55.68.22 1.3.19 1.79.12.55-.08 1.65-.67 1.88-1.32.23-.65.23-1.21.16-1.32-.07-.11-.25-.18-.53-.32z"/>
-      </svg>
-    </a>
+    <div className="fixed bottom-12 right-12 z-[1000] font-sans">
+      <a
+        href={`https://wa.me/${whatsappNumber}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+        className="group relative flex items-center justify-end"
+      >
+        {/* The Technical Data (Top Detail) */}
+        <div className={`
+          absolute -top-6 right-0 transition-all duration-500 flex items-center space-x-2
+          ${isHovered ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'}
+        `}>
+          <span className="text-[8px] font-black text-teal-500 uppercase tracking-[0.3em]">
+             Online
+          </span>
+          <div className="h-[1px] w-8 bg-gray-200" />
+        </div>
+
+        {/* The Main Body */}
+        <div className={`
+          relative flex items-center bg-white border border-gray-100 shadow-[0_20px_40px_rgba(0,0,0,0.06)]
+          transition-all duration-700 ease-[cubic-bezier(0.19,1,0.22,1)]
+          ${isHovered ? 'w-64 h-20 px-6 rounded-sm' : 'w-16 h-16 px-0 justify-center rounded-none'}
+        `}>
+          
+          {/* Section 1: The Icon & Badge */}
+          <div className="relative z-10">
+            <div className={`
+              flex items-center justify-center transition-all duration-500
+              ${isHovered ? 'text-teal-500 scale-110' : 'text-black scale-100'}
+            `}>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
+              </svg>
+            </div>
+          </div>
+
+          {/* Section 2: The Text Reveal */}
+          <div className={`
+            flex flex-col ml-6 transition-all duration-500
+            ${isHovered ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-4 absolute'}
+          `}>
+
+            <span className="text-sm font-black text-[#0A435C] uppercase tracking-tighter">
+              TourEaz <span className="text-teal-500">Global</span>
+            </span>
+          </div>
+
+          {/* Background Highlight (Fills on Hover) */}
+          <div className={`
+            absolute inset-0 bg-gray-50/50 transition-transform duration-700 origin-right
+            ${isHovered ? 'scale-x-100' : 'scale-x-0'}
+          `} />
+        </div>
+
+        {/* The "Anchor" Detail (A single pixel dot) */}
+        <div className="absolute -bottom-2 -right-2 h-4 w-4 border-b-2 border-r-2 border-[#0A435C]/50" />
+      </a>
+    </div>
   );
 }
