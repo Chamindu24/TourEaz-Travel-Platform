@@ -1050,7 +1050,7 @@ const Bookings = ({ sidebarOpen }) => {
                     <span className="text-xs text-gray-500">No transportation options selected.</span>
                   )}
                 </div>
-                <div className="bg-gradient-to-r from-indigo-50 to-blue-100 rounded-lg p-3 md:p-4 border border-indigo-100 shadow-sm">
+                <div className="bg-gradient-to-r from-teal-50 to-emerald-100 rounded-lg p-3 md:p-4 border border-indigo-100 shadow-sm">
                   <h4 className="text-xs md:text-sm font-semibold text-gray-800 mb-2 md:mb-3 flex items-center">
                     <svg className="w-4 h-4 mr-1 md:mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />

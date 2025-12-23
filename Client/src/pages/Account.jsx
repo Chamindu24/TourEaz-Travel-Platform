@@ -63,6 +63,7 @@ const Account = () => {
     const fetchHotels = async () => {
       try {
         const res = await bookingsAPI.getMy();
+        console.log("Hotel bookings API response:", res);
         if (Array.isArray(res)) setHotelBookings(res);
       } catch (err) {
         console.error('Failed to fetch hotel bookings', err);
@@ -74,6 +75,7 @@ const Account = () => {
     const fetchTours = async () => {
       try {
         const res = await toursAPI.getMy();
+        console.log("Tour bookings API response:", res);
         if (Array.isArray(res)) setTourBookings(res);
       } catch (err) {
         console.error('Failed to fetch tour bookings', err);
@@ -308,42 +310,80 @@ const Account = () => {
                 ) : (
                   <div className="space-y-4">
                     {hotelBookings.map(booking => (
-                      <div key={booking._id} className="bg-[#B7C5C7]/60 shadow-sm rounded-lg p-4 border border-[#B7C5C7]">
-                        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                          <div className="flex-1">
-                            <h4 className="text-md font-semibold text-[#005E84]">
-                              {booking.hotel?.name || 'Hotel Information'}
-                            </h4>
-                            <p className="text-sm text-[#075375] mt-1">
-                              Room: {booking.room?.roomName || booking.room?.roomType || 'N/A'}
-                            </p>
-                            <div className="mt-2 text-sm text-[#0A435C] space-y-1">
-                              <p>Check-in: {booking.checkIn ? new Date(booking.checkIn).toLocaleDateString() : 'N/A'}</p>
-                              <p>Check-out: {booking.checkOut ? new Date(booking.checkOut).toLocaleDateString() : 'N/A'}</p>
-                              <p>Guests: {booking.adults || 0} Adults, {booking.children || 0} Children</p>
-                              <p>Nights: {booking.nights || 'N/A'}</p>
-                              <p>Status: <span className={`font-medium ${
-                                booking.status === 'Confirmed' ? 'text-[#005E84]' :
-                                booking.status === 'Pending' ? 'text-[#075375]' :
-                                booking.status === 'Cancelled' ? 'text-red-600' : 'text-[#0A435C]'
-                              }`} title={
-                                booking.status === 'Confirmed' ? 'Your booking is confirmed.' :
-                                booking.status === 'Pending' ? 'Your booking is pending confirmation.' :
-                                booking.status === 'Cancelled' ? 'Your booking was cancelled.' : 'Status unknown.'
-                              }>{booking.status || 'Pending'}</span></p>
+                    <div key={booking._id} className="group bg-white border border-gray-300 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-500 overflow-hidden">
+                      <div className="flex flex-col md:flex-row">
+                        
+                        {/* 1. The Accent Bar (Left) */}
+                        <div className="w-0.5 bg-teal-500 hidden md:block"></div>
+
+                        <div className="flex-1 p-6 md:p-8">
+                          {/* 2. Top Header Area */}
+                          <div className="flex flex-wrap justify-between items-start gap-4 mb-8">
+                            <div>
+                              <div className="flex items-center gap-3 mb-2">
+                                <h4 className="text-2xl font-extrabold text-slate-800 tracking-tight group-hover:text-teal-600 transition-colors">
+                                  {booking.hotel?.name}
+                                </h4>
+                                <span className={`px-2.5 py-0.5 rounded text-[10px] font-black uppercase tracking-wider ${
+                                  booking.status === 'Confirmed' ? 'bg-teal-50 text-teal-600 border border-teal-200' : 'bg-gray-50 text-gray-500 border border-gray-200'
+                                }`}>
+                                  {booking.status}
+                                </span>
+                              </div>
+                              <p className="text-gray-500 font-medium text-sm flex items-center gap-2">
+                                <span>{booking.room?.roomName}</span>
+                                <span className="h-1 w-1 bg-gray-500 rounded-full"></span>
+                                <span className="opacity-90">{booking.mealPlan}</span>
+                              </p>
+                            </div>
+
+                            <div className="text-left md:text-right">
+                              <p className="text-[10px] font-bold text-teal-400 uppercase tracking-[0.15em]">Booking Reference</p>
+                              <p className="text-sm font-mono text-gray-500 font-semibold">{booking.bookingReference}</p>
                             </div>
                           </div>
-                          <div className="text-right min-w-[120px]">
-                            <p className="text-xs text-[#8b9482]">Booking Ref</p>
-                            <p className="text-sm font-medium text-[#005E84]">{booking.bookingReference}</p>
-                            {booking.priceBreakdown?.total && (
-                              <p className="text-lg font-bold text-[#005E84] mt-2">
-                                ${booking.priceBreakdown.total}
+
+                          {/* 3. The Info Grid */}
+                          <div className="grid grid-cols-2 lg:grid-cols-4 gap-y-6 gap-x-4 border-t border-teal-50 pt-4">
+                            <div className="space-y-1">
+                              <p className="text-xs font-bold text-gray-500 uppercase tracking-wide">Stay Period</p>
+                              <p className="text-[15px] font-semibold text-gray-900 leading-none">
+                                {new Date(booking.checkIn).toLocaleDateString('en-US', { day: 'numeric', month: 'short' })} — {new Date(booking.checkOut).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' })}
                               </p>
-                            )}
+                              <p className="text-xs text-gray-600/60 font-medium">{booking.nights} Night Stay</p>
+                            </div>
+
+                            <div className="space-y-1">
+                              <p className="text-xs font-bold text-gray-500 uppercase tracking-wide">Travelers</p>
+                              <p className="text-[15px] font-semibold text-gray-900 leading-none">
+                                {booking.adults} Adult, {booking.children?.length || 0} Child
+                              </p>
+                              <p className="text-xs text-gray-600/60 font-medium truncate">{booking.clientDetails?.name}</p>
+                            </div>
+
+                            <div className="space-y-1">
+                              <p className="text-xs font-bold text-gray-500 uppercase tracking-wide">Location</p>
+                              <p className="text-[15px] font-semibold text-gray-900 leading-none">
+                                {booking.hotel?.location || 'Galle, Sri Lanka'}
+                              </p>
+                              <p className="text-xs text-gray-600/60 font-medium italic underline underline-offset-2">View on map</p>
+                            </div>
+
+                            <div className="flex flex-col justify-end lg:items-end">
+                              <p className="text-[10px] font-bold text-gray-400 uppercase tracking-tighter">Total Price</p>
+                              <div className="flex items-baseline gap-1">
+                                <span className="text-xs font-bold text-gray-900">$</span>
+                                <span className="text-3xl font-black text-gray-900 tracking-tighter">
+                                  {booking.priceBreakdown?.roomTotal?.toLocaleString()}
+                                </span>
+                              </div>
+                            </div>
                           </div>
                         </div>
+
+
                       </div>
+                    </div>
                     ))}
                   </div>
                 )}
@@ -495,32 +535,137 @@ const Account = () => {
                 ) : (
                   <div className="space-y-4">
                     {tourBookings.map(booking => (
-                      <div key={booking._id} className="bg-[#B7C5C7]/60 shadow-sm rounded-lg p-4 border border-[#B7C5C7]">
-                        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                          <div className="flex-1">
-                            <h4 className="text-md font-semibold text-[#075375]">
-                              {booking.tour?.title || booking.tourName || 'Tour Information'}
-                            </h4>
-                            <div className="mt-2 text-sm text-[#0A435C] space-y-1">
-                              <p>Date: {booking.date ? new Date(booking.date).toLocaleDateString() : 'N/A'}</p>
-                              <p>Participants: {booking.participants || booking.guests || 'N/A'}</p>
-                              <p>Status: <span className={`font-medium ${
-                                booking.status === 'Confirmed' ? 'text-[#005E84]' :
-                                booking.status === 'Pending' ? 'text-[#075375]' :
-                                booking.status === 'Cancelled' ? 'text-red-600' : 'text-[#0A435C]'
-                              }`} title={
-                                booking.status === 'Confirmed' ? 'Your booking is confirmed.' :
-                                booking.status === 'Pending' ? 'Your booking is pending confirmation.' :
-                                booking.status === 'Cancelled' ? 'Your booking was cancelled.' : 'Status unknown.'
-                              }>{booking.status || 'Pending'}</span></p>
+                      <div 
+                        key={booking._id} 
+                        className="group relative bg-white border border-slate-200 rounded-2xl overflow-hidden hover:shadow-xl hover:border-blue-200 transition-all duration-300 mb-6 flex flex-col md:flex-row shadow-sm"
+                      >
+                        {/* 1. IMAGE SECTION with Dynamic Status Overlay */}
+                        <div className="w-full md:w-80 h-56 md:h-auto relative shrink-0 overflow-hidden">
+                          <img 
+                            src={booking.tourImage} 
+                            alt={booking.tourTitle} 
+                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                          />
+                          {/* Gradient Overlay for better legibility */}
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-60"></div>
+                          
+                          <div className="absolute top-4 left-4 flex flex-col gap-2">
+                            <span className={`backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider shadow-lg ${
+                              booking.status === 'Pending' ? 'bg-amber-500/90 text-white' : 'bg-emerald-500/90 text-white'
+                            }`}>
+                              {booking.status}
+                            </span>
+                            <span className="bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-bold text-slate-800 shadow-sm uppercase">
+                              {booking.paymentMethod?.replace('-', ' ')}
+                            </span>
+                          </div>
+
+                          {/* Quick Stats on Image */}
+                          <div className="absolute bottom-4 left-4 text-white">
+                            <p className="text-[10px] font-medium opacity-80 uppercase tracking-widest">Nationality</p>
+                            <p className="text-sm font-bold">{booking.nationality}</p>
+                          </div>
+                        </div>
+
+                        {/* 2. MAIN CONTENT AREA */}
+                        <div className="flex-1 flex flex-col">
+                          
+                          {/* Header: Reference and Client Identity */}
+                          <div className="flex flex-wrap justify-between items-center px-6 py-4 bg-slate-50/80 border-b border-slate-100 gap-3">
+                            <div className="flex items-center gap-2">
+                              <span className="bg-teal-500 text-white text-[10px] font-bold px-2 py-0.5 rounded">ID</span>
+                              <span className="text-xs font-mono font-bold text-slate-600 tracking-tight">{booking.bookingReference}</span>
+                            </div>
+                            
+                            <div className="flex items-center gap-3">
+                              <div className="text-right hidden sm:block">
+                                <p className="text-[10px] font-bold text-slate-400 uppercase leading-none">Primary Guest</p>
+                                <p className="text-xs font-bold text-slate-800">{booking.clientName}</p>
+                              </div>
+                              <div className="w-8 h-8 rounded-full ring-2 ring-white bg-teal-500 flex items-center justify-center text-xs text-white font-bold shadow-sm">
+                                {booking.clientName?.charAt(0)}
+                              </div>
                             </div>
                           </div>
-                          <div className="text-right min-w-[120px]">
-                            {booking.totalPrice && (
-                              <p className="text-lg font-bold text-[#075375]">
-                                ${booking.totalPrice}
-                              </p>
-                            )}
+
+                          <div className="p-6 flex-1 flex flex-col lg:flex-row gap-8">
+                            {/* LEFT: Tour Info */}
+                            <div className="flex-[2]">
+                              <h3 className="text-2xl font-black text-slate-900 mb-4 leading-tight group-hover:text-teal-600 transition-colors">
+                                {booking.tourTitle}
+                              </h3>
+                              
+                              <div className="grid grid-cols-2 gap-y-6 gap-x-4">
+                                {/* Travel Date */}
+                                <div className="space-y-1">
+                                  <p className="text-[10px] text-slate-400 uppercase font-black tracking-widest">Travel Date</p>
+                                  <div className="flex items-center gap-2 text-[#075375]">
+                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                                    <span className="text-sm font-extrabold text-slate-800">
+                                      {new Date(booking.travelDate).toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' })}
+                                    </span>
+                                  </div>
+                                </div>
+
+                                {/* Travellers */}
+                                <div className="space-y-1">
+                                  <p className="text-[10px] text-slate-400 uppercase font-black tracking-widest">Group Size</p>
+                                  <div className="flex items-center gap-2 text-[#075375]">
+                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                                    <span className="text-sm font-extrabold text-slate-800">{booking.travellerCount} Persons</span>
+                                  </div>
+                                </div>
+
+                                {/* Meal Plan & Nights */}
+                                <div className="col-span-full flex gap-4 p-3 bg-slate-50 rounded-xl border border-slate-100">
+                                  <div>
+                                      <p className="text-[9px] font-bold text-slate-400 uppercase">Meal Plan</p>
+                                      <p className="text-xs font-bold text-slate-700">{booking.selectedFoodCategory}</p>
+                                  </div>
+                                  <div className="w-px h-8 bg-slate-200"></div>
+                                  <div>
+                                      <p className="text-[9px] font-bold text-slate-400 uppercase">Country</p>
+                                      <p className="text-xs font-bold text-slate-700">{booking.country}</p>
+                                  </div>
+                                  <div className="w-px h-8 bg-slate-200"></div>
+                                  <div className="flex-1">
+                                      <p className="text-[9px] font-bold text-slate-400 uppercase">Validity</p>
+                                      <p className="text-[11px] font-medium text-slate-600">
+                                        {new Date(booking.validFrom).toLocaleDateString()} - {new Date(booking.validTo).toLocaleDateString()}
+                                      </p>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+
+                            {/* RIGHT: Pricing and Final CTA */}
+                            <div className="flex-[1] lg:border-l lg:border-slate-100 lg:pl-8 flex flex-col justify-between">
+                              <div className="space-y-4">
+                                <div className="text-right lg:text-left">
+                                  <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Total Summary</p>
+                                  <div className="inline-block lg:block">
+                                    <span className="text-sm text-slate-400 line-through block leading-none">
+                                      {booking.currency} {booking.finalOldPrice}
+                                    </span>
+                                    <span className="text-3xl font-black text-teal-300 block mt-1">
+                                      {booking.currency} {booking.finalPrice}
+                                    </span>
+                                    <div className="mt-1 flex items-center justify-end lg:justify-start gap-1">
+                                      <span className="w-2 h-2 rounded-full bg-green-500"></span>
+                                      <span className="text-[10px] font-bold text-green-600 uppercase tracking-tight">Best Price Guaranteed</span>
+                                    </div>
+                                  </div>
+                                </div>
+
+                                {/* Mini Contact Info */}
+                                <div className="bg-blue-50/50 p-3 rounded-xl border border-blue-100 space-y-1">
+                                  <p className="text-[9px] font-bold text-blue-400 uppercase tracking-tighter italic">Emergency Contact</p>
+                                  <p className="text-xs font-bold text-[#075375]">{booking.phoneCountryCode} {booking.emergencyContact}</p>
+                                </div>
+                              </div>
+
+
+                            </div>
                           </div>
                         </div>
                       </div>

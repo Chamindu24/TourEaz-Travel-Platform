@@ -23,16 +23,14 @@ const toursAPI = {
     }
   },
 
-  // Get user's tour bookings (placeholder - tour booking system not implemented yet)
+  // Get user's tour bookings
   getMy: async () => {
     try {
-      // This endpoint doesn't exist yet, so return empty array for now
-      // When tour booking system is implemented, this should call the appropriate endpoint
-      return [];
+      const response = await axios.get('/tour-bookings/my', { withCredentials: true });
+      return response.data;
     } catch (error) {
       console.error('Error fetching tour bookings:', error);
-      // Return empty array instead of throwing error since tour booking isn't implemented yet
-      return [];
+      throw error;
     }
   }
 };

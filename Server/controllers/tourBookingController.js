@@ -86,6 +86,7 @@ const sendCustomerConfirmationEmail = async (bookingData) => {
 exports.createTourBooking = async (req, res) => {
   try {
     const bookingData = {
+      user: req.user?.userId, // Add user if authenticated
       clientName: req.body.clientName,
       clientEmail: req.body.clientEmail,
       clientPhone: req.body.clientPhone,
@@ -234,6 +235,25 @@ exports.getBookingsByStatus = async (req, res) => {
     console.error('Error fetching bookings by status:', error);
     res.status(500).json({
       message: 'Error fetching bookings by status',
+      error: error.message
+    });
+  }
+};
+
+// Get current user's tour bookings
+exports.getMyTourBookings = async (req, res) => {
+  try {
+    const userId = req.user.userId;
+
+    const bookings = await TourBooking.find({ user: userId })
+      .sort({ createdAt: -1 });
+
+
+    res.status(200).json(bookings);
+  } catch (error) {
+    console.error('Error fetching user tour bookings:', error);
+    res.status(500).json({
+      message: 'Error fetching tour bookings',
       error: error.message
     });
   }

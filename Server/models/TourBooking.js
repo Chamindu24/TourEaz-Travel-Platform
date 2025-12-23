@@ -1,6 +1,9 @@
 const mongoose = require('mongoose');
 
 const tourBookingSchema = new mongoose.Schema({
+  // User reference
+  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+
   // Customer Information
   clientName: { type: String, required: true },
   clientEmail: { type: String, required: true },

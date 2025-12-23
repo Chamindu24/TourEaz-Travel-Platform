@@ -3,6 +3,7 @@ import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { useAuthCheck } from '../hooks/useAuthCheck';
 import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 import {
   FaBed,
   FaRulerCombined,
@@ -446,10 +447,10 @@ export default function EnhancedRoomProfile() {
                     Price Details
                   </h3>
                   <div className="flex items-baseline">
-                    <span className="text-4xl font-extrabold text-teal-300">
+                    <span className="text-4xl font-extrabold text-slate-800">
                       ${perNightPrice}
                     </span>
-                    <span className="ml-2 text-lg text-gray-600">/ night</span>
+                    <span className="ml-2 text-base text-gray-600">/ night</span>
                   </div>
                 </div>
 
@@ -458,12 +459,10 @@ export default function EnhancedRoomProfile() {
 
                 {/* Room Info */}
                 <div className="flex-1">
-                  <h1 className="text-3xl font-bold text-teal-300">
+                  <h1 className="text-2xl font-bold text-slate-800">
                     {roomData.roomName}
                   </h1>
-                  <p className="text-lg text-gray-800 mt-1">
-                    {roomData.hotelName}
-                  </p>
+
                 </div>
 
               </div>
