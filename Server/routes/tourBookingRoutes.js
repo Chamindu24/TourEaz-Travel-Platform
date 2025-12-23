@@ -4,7 +4,10 @@ const tourBookingController = require('../controllers/tourBookingController');
 const auth = require('../middleware/auth');
 
 // Create a new tour booking (public - no auth required)
-router.post('/', tourBookingController.createTourBooking);
+router.post('/',auth, tourBookingController.createTourBooking);
+
+// Get current user's tour bookings
+router.get('/my', auth, tourBookingController.getMyTourBookings);
 
 // Get all tour bookings (admin only)
 router.get('/', auth, tourBookingController.getAllTourBookings);

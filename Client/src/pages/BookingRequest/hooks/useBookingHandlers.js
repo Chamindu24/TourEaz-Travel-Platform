@@ -61,6 +61,47 @@ export const useBookingHandlers = ({
       if (!bookingData.clientEmail.trim()) errs.clientEmail = "Email is required"
       else if (!/\S+@\S+\.\S+/.test(bookingData.clientEmail)) errs.clientEmail = "Invalid email format"
       if (!bookingData.clientPhone.trim()) errs.clientPhone = "Phone is required"
+
+      // Validate passenger details
+      passengerDetails.forEach((room, roomIdx) => {
+        // Validate adults
+        room.adults.forEach((adult, adultIdx) => {
+          if (!adult.name || !adult.name.trim()) {
+            errs[`adult-${roomIdx}-${adultIdx}-name`] = "Adult name is required"
+          }
+          if (!adult.passport || !adult.passport.trim()) {
+            errs[`adult-${roomIdx}-${adultIdx}-passport`] = "Passport number is required"
+          }
+          if (!adult.country || !adult.country.trim()) {
+            errs[`adult-${roomIdx}-${adultIdx}-country`] = "Country is required"
+          }
+          if (!adult.arrivalFlightNumber || !adult.arrivalFlightNumber.trim()) {
+            errs[`adult-${roomIdx}-${adultIdx}-arrivalFlightNumber`] = "Arrival flight number is required"
+          }
+          if (!adult.arrivalTime || !adult.arrivalTime.trim()) {
+            errs[`adult-${roomIdx}-${adultIdx}-arrivalTime`] = "Arrival time is required"
+          }
+          if (!adult.departureFlightNumber || !adult.departureFlightNumber.trim()) {
+            errs[`adult-${roomIdx}-${adultIdx}-departureFlightNumber`] = "Departure flight number is required"
+          }
+          if (!adult.departureTime || !adult.departureTime.trim()) {
+            errs[`adult-${roomIdx}-${adultIdx}-departureTime`] = "Departure time is required"
+          }
+        })
+
+        // Validate children
+        room.children.forEach((child, childIdx) => {
+          if (!child.name || !child.name.trim()) {
+            errs[`child-${roomIdx}-${childIdx}-name`] = "Child name is required"
+          }
+          if (!child.passport || !child.passport.trim()) {
+            errs[`child-${roomIdx}-${childIdx}-passport`] = "Passport number is required"
+          }
+          if (!child.country || !child.country.trim()) {
+            errs[`child-${roomIdx}-${childIdx}-country`] = "Country is required"
+          }
+        })
+      })
     }
     setErrors(errs)
     return Object.keys(errs).length === 0
@@ -74,6 +115,15 @@ export const useBookingHandlers = ({
       }
       return arr
     })
+    // Clear error for this field when user types
+    const errorKey = `adult-${roomIdx}-${adultIdx}-${field}`
+    if (errors[errorKey]) {
+      setErrors((prev) => {
+        const newErrors = { ...prev }
+        delete newErrors[errorKey]
+        return newErrors
+      })
+    }
   }
 
   const handleChildPassengerChange = (roomIdx, childIdx, field, value) => {
@@ -84,6 +134,15 @@ export const useBookingHandlers = ({
       }
       return arr
     })
+    // Clear error for this field when user types
+    const errorKey = `child-${roomIdx}-${childIdx}-${field}`
+    if (errors[errorKey]) {
+      setErrors((prev) => {
+        const newErrors = { ...prev }
+        delete newErrors[errorKey]
+        return newErrors
+      })
+    }
   }
 
   const handleRoomConfigChange = (roomIdx, field, value) => {

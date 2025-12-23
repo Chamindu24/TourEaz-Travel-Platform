@@ -258,28 +258,73 @@ const Login = ({ setIsAuthenticated }) => {
 
       {/* Login Success Overlay */}
       {loginSuccess && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center
-                        bg-gradient-to-br from-teal-400 to-teal-200">
-            <h2
-              className="text-white font-bold tracking-widest text-4xl bsm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl animate-[trackingReveal_1s_ease-out_forwards]
-              "
-            >
-              TourEaz
-            </h2>
+        <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-white overflow-hidden">
+          {/* Minimalist Top/Bottom Borders (Frame) */}
+          <div className="absolute top-10 left-10 right-10 h-[1px] bg-gray-100 origin-left animate-[scaleX_1s_ease_forwards]" />
+          <div className="absolute bottom-10 left-10 right-10 h-[1px] bg-gray-100 origin-right animate-[scaleX_1s_ease_forwards]" />
+
+          <div className="relative flex flex-col items-center">
+            {/* The Counter-Slide Text Container */}
+            <div className="flex overflow-hidden">
+              <h2 className="text-[#0A435C] font-black text-6xl md:text-9xl tracking-tighter uppercase leading-none
+                            animate-[slideDown_0.8s_cubic-bezier(0.87,0,0.13,1)_both]">
+                TOUR
+              </h2>
+              <h2 className="text-teal-500 font-black text-6xl md:text-9xl tracking-tighter uppercase leading-none
+                            animate-[slideUp_0.8s_cubic-bezier(0.87,0,0.13,1)_both]">
+                EAZ
+              </h2>
+            </div>
+
+            {/* The Floating Vertical Liaison Tag */}
+            <div className="absolute -right-16 top-0 bottom-0 flex items-center">
+              <div className="h-full w-[1px] bg-teal-500/20 animate-[scaleY_0.8s_ease_0.4s_both]" />
+              <p className="ml-4 [writing-mode:vertical-lr] text-[10px] font-bold tracking-[0.6em] text-gray-300 uppercase
+                            opacity-0 animate-[fadeIn_0.5s_ease_1s_forwards]">
+                Digital Concierge
+              </p>
+            </div>
+
+            {/* Centered Decorative Dot */}
+            <div className="mt-8 flex flex-col items-center">
+              <div className="w-1 h-1 bg-teal-500 rounded-full animate-ping" />
+              <p className="mt-4 text-[10px] font-mono text-gray-400 tracking-widest opacity-0 animate-[fadeIn_0.5s_ease_0.8s_forwards]">
+                VERIFIED_SECURE_2025
+              </p>
+            </div>
+          </div>
+
+          {/* The Sweep Exit (A teal sheet that cleans the screen) */}
+          <div className="absolute inset-0 bg-[#0A435C] -translate-x-full animate-[finalSweep_0.8s_cubic-bezier(0.87,0,0.13,1)_1.8s_forwards]" />
+
           <style>{`
-            @keyframes trackingReveal {
-              0% {
-                letter-spacing: 1.5rem;
-                opacity: 0;
-              }
-              100% {
-                letter-spacing: 0.2em;
-                opacity: 1;
-              }
+            @keyframes scaleX {
+              0% { transform: scaleX(0); }
+              100% { transform: scaleX(1); }
+            }
+            @keyframes scaleY {
+              0% { transform: scaleY(0); }
+              100% { transform: scaleY(1); }
+            }
+            @keyframes slideDown {
+              0% { transform: translateY(-100%); opacity: 0; }
+              100% { transform: translateY(0); opacity: 1; }
+            }
+            @keyframes slideUp {
+              0% { transform: translateY(100%); opacity: 0; }
+              100% { transform: translateY(0); opacity: 1; }
+            }
+            @keyframes fadeIn {
+              0% { opacity: 0; }
+              100% { opacity: 1; }
+            }
+            @keyframes finalSweep {
+              0% { transform: translateX(-100%); }
+              50% { transform: translateX(0); }
+              100% { transform: translateX(100%); }
             }
           `}</style>
         </div>
-
       )}
 
       {/* Main Content - Split Screen Layout */}

@@ -606,135 +606,113 @@ const Tours = () => {
               {tours.map((tour, index) => (
                 <motion.div
                   key={tour._id}
-                  /*variants={{
-                    hidden: { opacity: 0, y: 50 },
-                    visible: { opacity: 1, y: 0 }
-                  }}
-                  transition={{ duration: 0.5 }}
-                  whileHover={{ y: -8 }}*/
-                  className="group cursor-pointer"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  className="group relative bg-white flex flex-col h-full rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500"
                   onClick={() => handleViewDetails(tour._id)}
                 >
-                  <div className="rounded-lg bg-white shadow-xl overflow-hidden transition-all duration-300 hover:shadow-lg border border-gray-100">
-                    <div className="relative h-64 sm:h-72">
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent z-10" />
-                      <motion.img
-                        src={tour.tour_image || 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=800'}
-                        alt={tour.title}
-                        className="w-full h-full object-cover "
-                        
-                      />
-                      
-                      {/* Duration Badge */}
-                      <motion.div 
-                        className="absolute top-0 left-0 z-20"
-                        initial={{ scale: 0 }}
-                        animate={{ scale: 1 }}
-                        transition={{ delay: 0.6, type: "spring" }}
-                      >
-                        <span className="inline-flex items-center px-3 py-1  text-sm font-medium bg-teal-300 text-white backdrop-blur-sm">
-                          <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                          </svg>
-                          {tour.nights && typeof tour.nights === 'object' && Object.keys(tour.nights).length > 0
-                            ? `${Object.keys(tour.nights)[0]} Days`
-                            : 'Multi-Day'}
-                        </span>
-                      </motion.div>
-                      
-                      {/* Duration Info */}
-                      {/*tour.nights && typeof tour.nights === 'object' && Object.keys(tour.nights).length > 0 && (
-                        <div className="flex items-center mb-3 text-gray-500 text-sm">
-                          <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                          </svg>
-                          {Object.keys(tour.nights)[0]} Days / {Object.keys(tour.nights)[0]} Nights
-                        </div>
-                      )*/}
-                      <div className="absolute bottom-0 left-0 right-0 h-full bg-black/0 group-hover:bg-black/35 transition-all duration-300 z-[15]"></div>
+                  {/* Image with Aspect Ratio Box */}
+                  <div className="relative aspect-[16/10] overflow-hidden">
+                    <motion.img
+                      src={tour.tour_image || 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=800'}
+                      alt={tour.title}
+                      className="w-full h-full object-cover grayscale-[20%] group-hover:grayscale-0 transition-all duration-700 group-hover:scale-105"
+                    />
+                    
+                    {/* Floating Tag */}
+                    <div className="absolute bottom-0 left-0 bg-white px-4 py-2 rounded-tr-xl z-20">
+                      <span className="text-teal-300 font-bold text-xs flex items-center gap-1">
+                        <span className="w-2 h-2 bg-teal-500 rounded-full animate-pulse"></span>
+                        LIVE DEALS
+                      </span>
+                    </div>
+                  </div>
 
-                      {/* Bottom Overlay Content */}
-                      <div className="absolute bottom-0 left-0 right-0 p-4 z-20 transform transition-all duration-300 hover:scale-105  group-hover:translate-x-4">
-                        <motion.h4 
-                          className="font-bold text-xl text-white line-clamp-2 mb-2"
-                          initial={{ opacity: 0, y: 20 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ delay: 0.7, duration: 0.5 }}
-                        >
-                          {tour.title}
-                        </motion.h4>
-                        <motion.p 
-                          className="text-gray-200 text-sm flex items-center"
-                          initial={{ opacity: 0, y: 20 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ delay: 0.8, duration: 0.5 }}
-                        >
-                          <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  {/* Content Area */}
+                  <div className="p-6 flex flex-col flex-grow">
+                      <div className="flex items-center gap-4 mb-3">
+                        {/* Location Icon */}
+                        <div className="flex items-center gap-1.5">
+                          <svg 
+                            className="w-3.5 h-3.5 text-teal-500" 
+                            fill="none" 
+                            stroke="currentColor" 
+                            viewBox="0 0 24 24"
+                          >
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                           </svg>
-                          {tour.country || 'Maldives'}
-                        </motion.p>
+                          <span className="text-[10px] font-black tracking-widest text-gray-500 uppercase">
+                            {tour.country || 'Maldives'}
+                          </span>
+                        </div>
+
+                        {/* Vertical Divider Line */}
+                        <span className="h-3 w-[1px] bg-gray-300"></span>
+
+                        {/* Clock/Duration Icon */}
+                        <div className="flex items-center gap-1.5">
+                          <svg 
+                            className="w-3.5 h-3.5 text-teal-500" 
+                            fill="none" 
+                            stroke="currentColor" 
+                            viewBox="0 0 24 24"
+                          >
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          </svg>
+                          <span className="text-[10px] font-bold text-gray-600 uppercase">
+                            {Object.keys(tour.nights || {})[0] || '7'} Days
+                          </span>
+                        </div>
                       </div>
-                    </div>
+
+                    <h4 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-teal-200 transition-colors line-clamp-2 leading-[1.3]">
+                      {tour.title}
+                    </h4>
+
+                    <p className="text-gray-900 text-sm line-clamp-2 mb-6 font-light leading-relaxed">
+                      {tour.tour_summary || 'Immerse yourself in the local culture and breathtaking landscapes of this iconic destination.'}
+                    </p>
+
+                    {/* Bottom Bar: Price & Action */}
+                    <div className="mt-auto flex items-center justify-between">
+                      <div className="flex flex-col">
+                        {tour.oldPrice && (
+                          <span className="text-xs text-gray-500 line-through">
+                            {selectedCurrency} {convertPrice(tour.oldPrice)}
+                          </span>
+                        )}
+                        <div className="flex items-baseline gap-1">
+                          <span className="text-2xl font-black text-gray-900 tracking-tight">
+                            {selectedCurrency} {convertPrice(tour.price)}
+                          </span>
+                        </div>
+                      </div>
 
                     <motion.div 
-                      className="p-5"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ delay: 0.9, duration: 0.5 }}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      className="flex items-center justify-center px-6 py-3 rounded-xl 
+                                bg-teal-500 text-white 
+                                hover:bg-white hover:text-black
+                                border-2 border-teal-500
+                                transition-all duration-300 shadow-md hover:shadow-lg
+                                cursor-pointer group/btn font-bold text-sm"
                     >
-                      {/* Description */}
-                      <p className="text-gray-600 text-sm mb-4 line-clamp-2">
-                        {tour.short_description || tour.description || 'Experience the beauty of this amazing destination with our carefully crafted tour package.'}
-                      </p>
-                      
-                      
-
-                      {/* Price and Action */}
-                      <div className="flex items-center justify-between pt-3 border-t border-gray-100">
-                        <div className="flex flex-col">
-                          <div className="mb-2">
-                            <div className="flex items-baseline">
-                              <span className="text-2xl font-bold text-gray-900 tracking-tight">
-                                {selectedCurrency} {tour.price && !isNaN(tour.price) ? convertPrice(tour.price) : '0.00'}
-                              </span>
-                              <span className="text-sm text-gray-700 ml-2">/ person</span>
-                            </div>
-                            {tour.oldPrice && !isNaN(tour.oldPrice) && (
-                              <div className="flex items-center mt-1">
-                                <span className="text-sm text-black mr-2 relative">
-                                  {selectedCurrency} {convertPrice(tour.oldPrice)}
-                                  <span className="absolute left-0 top-1/2 w-full h-[1px] bg-red-600 transform -translate-y-1/2"></span>
-                                </span>
-
-
-                                <div className="relative inline-flex items-center px-2 py-1 rounded-full bg-yellow-400/20
-                                40 text-black ">
-                                  <span className="absolute inset-0 bg-yellow-400/30 blur-[4px] rounded-full"></span>
-                                  <svg className="w-3 h-3 mr-1 relative" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/>
-                                  </svg>
-                                  <span className="text-[11px] font-semibold relative">
-                                    SAVE {selectedCurrency} {convertPrice(tour.oldPrice - tour.price)}
-                                  </span>
-                                </div>
-                              </div>
-
-                            )}
-                          </div>
-                          
-                        </div>
-                        
-                        <motion.div 
-                          className="bg-teal-500 text-white hover:bg-white hover:text-black border-2 hover:border-teal-500 rounded-md px-4 py-2 transition-colors duration-300 flex items-center"
-                          whileHover={{ scale: 1.05 }}
-                          whileTap={{ scale: 0.95 }}
-                        >
-                          <span className=" font-medium text-sm">View Details</span>
-                        </motion.div>
-                      </div>
+                      View Tour 
+                      <motion.svg 
+                        className="w-5 h-5 ml-2" 
+                        fill="none" 
+                        stroke="currentColor" 
+                        viewBox="0 0 24 24"
+                        initial={{ x: 0 }}
+                        whileHover={{ x: 3 }}
+                      >
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                      </motion.svg>
                     </motion.div>
+                    </div>
                   </div>
                 </motion.div>
               ))}

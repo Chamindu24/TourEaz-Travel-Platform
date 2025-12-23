@@ -113,9 +113,14 @@ const ClientInfoStep = ({
                         type="text"
                         value={passengerDetails[roomIdx]?.adults[adultIdx]?.name || ''}
                         onChange={e => handlePassengerChange(roomIdx, adultIdx, "name", e.target.value)}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
+                        className={`w-full px-3 py-2 border ${
+                          errors[`adult-${roomIdx}-${adultIdx}-name`] ? 'border-red-300' : 'border-gray-300'
+                        } rounded-lg text-sm`}
                         required
                       />
+                      {errors[`adult-${roomIdx}-${adultIdx}-name`] && (
+                        <p className="mt-1 text-xs text-red-600">{errors[`adult-${roomIdx}-${adultIdx}-name`]}</p>
+                      )}
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -125,9 +130,14 @@ const ClientInfoStep = ({
                         type="text"
                         value={passengerDetails[roomIdx]?.adults[adultIdx]?.passport || ''}
                         onChange={e => handlePassengerChange(roomIdx, adultIdx, "passport", e.target.value)}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
+                        className={`w-full px-3 py-2 border ${
+                          errors[`adult-${roomIdx}-${adultIdx}-passport`] ? 'border-red-300' : 'border-gray-300'
+                        } rounded-lg text-sm`}
                         required
                       />
+                      {errors[`adult-${roomIdx}-${adultIdx}-passport`] && (
+                        <p className="mt-1 text-xs text-red-600">{errors[`adult-${roomIdx}-${adultIdx}-passport`]}</p>
+                      )}
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -136,7 +146,9 @@ const ClientInfoStep = ({
                       <select
                         value={passengerDetails[roomIdx]?.adults[adultIdx]?.country || ''}
                         onChange={e => handlePassengerChange(roomIdx, adultIdx, "country", e.target.value)}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
+                        className={`w-full px-3 py-2 border ${
+                          errors[`adult-${roomIdx}-${adultIdx}-country`] ? 'border-red-300' : 'border-gray-300'
+                        } rounded-lg text-sm`}
                         required
                       >
                         <option value="">Select country</option>
@@ -144,6 +156,9 @@ const ClientInfoStep = ({
                           <option key={i} value={c.name}>{c.flag} {c.name}</option>
                         ))}
                       </select>
+                      {errors[`adult-${roomIdx}-${adultIdx}-country`] && (
+                        <p className="mt-1 text-xs text-red-600">{errors[`adult-${roomIdx}-${adultIdx}-country`]}</p>
+                      )}
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -153,9 +168,14 @@ const ClientInfoStep = ({
                         type="text"
                         value={passengerDetails[roomIdx]?.adults[adultIdx]?.arrivalFlightNumber || ''}
                         onChange={e => handlePassengerChange(roomIdx, adultIdx, "arrivalFlightNumber", e.target.value)}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
+                        className={`w-full px-3 py-2 border ${
+                          errors[`adult-${roomIdx}-${adultIdx}-arrivalFlightNumber`] ? 'border-red-300' : 'border-gray-300'
+                        } rounded-lg text-sm`}
                         required
                       />
+                      {errors[`adult-${roomIdx}-${adultIdx}-arrivalFlightNumber`] && (
+                        <p className="mt-1 text-xs text-red-600">{errors[`adult-${roomIdx}-${adultIdx}-arrivalFlightNumber`]}</p>
+                      )}
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -165,9 +185,14 @@ const ClientInfoStep = ({
                         type="time"
                         value={passengerDetails[roomIdx]?.adults[adultIdx]?.arrivalTime || ''}
                         onChange={e => handlePassengerChange(roomIdx, adultIdx, "arrivalTime", e.target.value)}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
+                        className={`w-full px-3 py-2 border ${
+                          errors[`adult-${roomIdx}-${adultIdx}-arrivalTime`] ? 'border-red-300' : 'border-gray-300'
+                        } rounded-lg text-sm`}
                         required
                       />
+                      {errors[`adult-${roomIdx}-${adultIdx}-arrivalTime`] && (
+                        <p className="mt-1 text-xs text-red-600">{errors[`adult-${roomIdx}-${adultIdx}-arrivalTime`]}</p>
+                      )}
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -177,9 +202,14 @@ const ClientInfoStep = ({
                         type="text"
                         value={passengerDetails[roomIdx]?.adults[adultIdx]?.departureFlightNumber || ''}
                         onChange={e => handlePassengerChange(roomIdx, adultIdx, "departureFlightNumber", e.target.value)}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
+                        className={`w-full px-3 py-2 border ${
+                          errors[`adult-${roomIdx}-${adultIdx}-departureFlightNumber`] ? 'border-red-300' : 'border-gray-300'
+                        } rounded-lg text-sm`}
                         required
                       />
+                      {errors[`adult-${roomIdx}-${adultIdx}-departureFlightNumber`] && (
+                        <p className="mt-1 text-xs text-red-600">{errors[`adult-${roomIdx}-${adultIdx}-departureFlightNumber`]}</p>
+                      )}
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -189,9 +219,14 @@ const ClientInfoStep = ({
                         type="time"
                         value={passengerDetails[roomIdx]?.adults[adultIdx]?.departureTime || ''}
                         onChange={e => handlePassengerChange(roomIdx, adultIdx, "departureTime", e.target.value)}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
+                        className={`w-full px-3 py-2 border ${
+                          errors[`adult-${roomIdx}-${adultIdx}-departureTime`] ? 'border-red-300' : 'border-gray-300'
+                        } rounded-lg text-sm`}
                         required
                       />
+                      {errors[`adult-${roomIdx}-${adultIdx}-departureTime`] && (
+                        <p className="mt-1 text-xs text-red-600">{errors[`adult-${roomIdx}-${adultIdx}-departureTime`]}</p>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -219,9 +254,14 @@ const ClientInfoStep = ({
                             type="text"
                             value={passengerDetails[roomIdx]?.children[childIdx]?.name || ''}
                             onChange={e => handleChildPassengerChange(roomIdx, childIdx, "name", e.target.value)}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
+                            className={`w-full px-3 py-2 border ${
+                              errors[`child-${roomIdx}-${childIdx}-name`] ? 'border-red-300' : 'border-gray-300'
+                            } rounded-lg text-sm`}
                             required
                           />
+                          {errors[`child-${roomIdx}-${childIdx}-name`] && (
+                            <p className="mt-1 text-xs text-red-600">{errors[`child-${roomIdx}-${childIdx}-name`]}</p>
+                          )}
                         </div>
                         <div>
                           <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -231,9 +271,14 @@ const ClientInfoStep = ({
                             type="text"
                             value={passengerDetails[roomIdx]?.children[childIdx]?.passport || ''}
                             onChange={e => handleChildPassengerChange(roomIdx, childIdx, "passport", e.target.value)}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
+                            className={`w-full px-3 py-2 border ${
+                              errors[`child-${roomIdx}-${childIdx}-passport`] ? 'border-red-300' : 'border-gray-300'
+                            } rounded-lg text-sm`}
                             required
                           />
+                          {errors[`child-${roomIdx}-${childIdx}-passport`] && (
+                            <p className="mt-1 text-xs text-red-600">{errors[`child-${roomIdx}-${childIdx}-passport`]}</p>
+                          )}
                         </div>
                         <div>
                           <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -242,7 +287,9 @@ const ClientInfoStep = ({
                           <select
                             value={passengerDetails[roomIdx]?.children[childIdx]?.country || ''}
                             onChange={e => handleChildPassengerChange(roomIdx, childIdx, "country", e.target.value)}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
+                            className={`w-full px-3 py-2 border ${
+                              errors[`child-${roomIdx}-${childIdx}-country`] ? 'border-red-300' : 'border-gray-300'
+                            } rounded-lg text-sm`}
                             required
                           >
                             <option value="">Select country</option>
@@ -250,6 +297,9 @@ const ClientInfoStep = ({
                               <option key={i} value={c.name}>{c.flag} {c.name}</option>
                             ))}
                           </select>
+                          {errors[`child-${roomIdx}-${childIdx}-country`] && (
+                            <p className="mt-1 text-xs text-red-600">{errors[`child-${roomIdx}-${childIdx}-country`]}</p>
+                          )}
                         </div>
                         <div>
                           <label className="block text-sm font-medium text-gray-700 mb-1">

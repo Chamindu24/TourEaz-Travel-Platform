@@ -31,6 +31,10 @@ import {
   Avatar,
   Stack,
   Tooltip,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
 
 } from '@mui/material';
 import {
@@ -639,16 +643,22 @@ const HotelManagement = () => {
               {formData.mealPlans.map((m, i) => (
                 <Grid container spacing={1} alignItems="center" key={i} sx={{ mb: 1 }}>
                   <Grid item xs={3}>
-                    <TextField
-                      label="Plan Name"
-                      fullWidth
-                      value={m.planName}
-                      onChange={e => {
-                        const list = [...formData.mealPlans];
-                        list[i].planName = e.target.value;
-                        setFormData(f => ({ ...f, mealPlans: list }));
-                      }}
-                    />
+                    <FormControl fullWidth>
+                      <InputLabel>Plan Name</InputLabel>
+                      <Select
+                        label="Plan Name"
+                        value={m.planName}
+                        onChange={e => {
+                          const list = [...formData.mealPlans];
+                          list[i].planName = e.target.value;
+                          setFormData(f => ({ ...f, mealPlans: list }));
+                        }}
+                      >
+                        <MenuItem value="Full Board">Full Board</MenuItem>
+                        <MenuItem value="Half Board">Half Board</MenuItem>
+                        <MenuItem value="All-Inclusive">All-Inclusive</MenuItem>
+                      </Select>
+                    </FormControl>
                   </Grid>
                   <Grid item xs={5}>
                     <TextField
